@@ -8,9 +8,9 @@ package ventanas;
 
 	public class ventanaInicio extends JFrame {
 
-	    // Constructor
+	   
 	    public ventanaInicio() {
-	        // Configuración básica de la ventana
+	       
 	        setTitle("Sistema de Gestión de Hospital - Inicio de Sesión");
 	        setSize(400, 200);
 	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,18 +22,18 @@ package ventanas;
 	        panel.setLayout(new GridLayout(3, 2, 10, 10));  // 3 filas, 2 columnas, espacio entre componentes
 	        add(panel);
 
-	        // Crear etiquetas y campos de texto
+	        
 	        JLabel usuarioLabel = new JLabel("Usuario:");
 	        JTextField usuarioCampo = new JTextField();
 
 	        JLabel contrasenaLabel = new JLabel("Contraseña:");
 	        JPasswordField contrasenaCampo = new JPasswordField();
 
-	        // Crear botones
+	        
 	        JButton botonLogin = new JButton("Iniciar Sesión");
 	        JButton botonSalir = new JButton("Salir");
 
-	        // Agregar los elementos al panel
+	       
 	        panel.add(usuarioLabel);
 	        panel.add(usuarioCampo);
 	        panel.add(contrasenaLabel);
@@ -42,7 +42,7 @@ package ventanas;
 	        panel.add(botonSalir);
 	        
 	        String usuarioI = "";
-	        // Configurar acciones de los botones
+	     
 	        botonLogin.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
@@ -50,10 +50,13 @@ package ventanas;
 	                
 	                String contrasena = new String(contrasenaCampo.getPassword());
 
-	                // Verificación simple (por ejemplo, usuario: admin, contraseña: admin)
+	                // Verificación  usuario: admin, contraseña: admin)
 	                if (usuario.equals("admin") && contrasena.equals("admin")) {
 	                    JOptionPane.showMessageDialog(null, "¡Inicio de sesión exitoso!", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
 	                    // Aquí podrías abrir la ventana principal del sistema de gestión de hospital
+	                    panel.setVisible(false);
+	                    MenuPaciente ventana = new MenuPaciente();
+	                    ventana.setVisible(true);
 	                } else {
 	                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
 	                }

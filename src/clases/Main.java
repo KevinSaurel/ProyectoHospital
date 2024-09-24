@@ -12,7 +12,8 @@ public class Main {
             
             public void run() {
                 
-                MenuPaciente ventana = new MenuPaciente();
+                //MenuPaciente ventana = new MenuPaciente();
+            	ventanaInicio ventana = new ventanaInicio();
                 ventana.setVisible(true);
             }
         });
