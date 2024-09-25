@@ -7,11 +7,18 @@ package ventanas;
 	import java.awt.event.ActionListener;
 
 	public class ventanaInicio extends JFrame {
-
+		
+		private JTextField usuarioCampo;
+		
+		private JPasswordField contrasenaCampo;
+		
+		private JFrame vActual;
 	   
 	    public ventanaInicio() {
 	       
-	        setTitle("Sistema de Gestión de Hospital - Inicio de Sesión");
+	    	vActual = this;
+	    	
+	        setTitle("Sistema de Gestiï¿½n de Hospital - Inicio de Sesiï¿½n");
 	        setSize(400, 200);
 	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        setLocationRelativeTo(null);  
@@ -26,11 +33,11 @@ package ventanas;
 	        JLabel usuarioLabel = new JLabel("Usuario:");
 	        JTextField usuarioCampo = new JTextField();
 
-	        JLabel contrasenaLabel = new JLabel("Contraseña:");
+	        JLabel contrasenaLabel = new JLabel("Contraseï¿½a:");
 	        JPasswordField contrasenaCampo = new JPasswordField();
 
 	        
-	        JButton botonLogin = new JButton("Iniciar Sesión");
+	        JButton botonLogin = new JButton("Iniciar Sesiï¿½n");
 	        JButton botonSalir = new JButton("Salir");
 
 	       
@@ -50,15 +57,18 @@ package ventanas;
 	                
 	                String contrasena = new String(contrasenaCampo.getPassword());
 
-	                // Verificación  usuario: admin, contraseña: admin)
+	                // Verificaciï¿½n  usuario: admin, contraseï¿½a: admin)
 	                if (usuario.equals("admin") && contrasena.equals("admin")) {
-	                    JOptionPane.showMessageDialog(null, "¡Inicio de sesión exitoso!", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
-	                    // Aquí podrías abrir la ventana principal del sistema de gestión de hospital
+	                    JOptionPane.showMessageDialog(null, "ï¿½Inicio de sesiï¿½n exitoso!", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
+	                    // Aquï¿½ podrï¿½as abrir la ventana principal del sistema de gestiï¿½n de hospital
 	                    panel.setVisible(false);
+//	                    vaciarCampos();
+//						vActual.dispose();
 	                    MenuPaciente ventana = new MenuPaciente();
 	                    ventana.setVisible(true);
 	                } else {
-	                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+	                    JOptionPane.showMessageDialog(null, "Usuario o contraseï¿½a incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+//	                    vaciarCampos();
 	                }
 	            }
 	        });
@@ -69,7 +79,15 @@ package ventanas;
 	                System.exit(0);  
 	            }
 	        });
+	        
+	        
+	        
 	    }
+//	    public void vaciarCampos() {
+//    		//Vaciamos los cuadros de texto
+//        	usuarioCampo.setText("");
+//        	contrasenaCampo.setText("");
+//    	}
 
 	  
 	}
