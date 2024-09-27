@@ -18,7 +18,7 @@ package ventanas;
 	       
 	    	vActual = this;
 	    	
-	        setTitle("Sistema de Gestiï¿½n de Hospital - Inicio de Sesiï¿½n");
+	        setTitle("Sistema de Gestion de Hospital - Inicio de Sesion");
 	        setSize(400, 200);
 	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        setLocationRelativeTo(null);  
@@ -33,11 +33,11 @@ package ventanas;
 	        JLabel usuarioLabel = new JLabel("Usuario:");
 	        JTextField usuarioCampo = new JTextField();
 
-	        JLabel contrasenaLabel = new JLabel("Contraseï¿½a:");
+	        JLabel contrasenaLabel = new JLabel("Contraseïña:");
 	        JPasswordField contrasenaCampo = new JPasswordField();
 
 	        
-	        JButton botonLogin = new JButton("Iniciar Sesiï¿½n");
+	        JButton botonLogin = new JButton("Iniciar Sesion");
 	        JButton botonSalir = new JButton("Salir");
 
 	       
@@ -59,7 +59,7 @@ package ventanas;
 
 	                // Verificaciï¿½n  usuario: admin, contraseï¿½a: admin)
 	                if (usuario.equals("admin") && contrasena.equals("admin")) {
-	                    JOptionPane.showMessageDialog(null, "ï¿½Inicio de sesiï¿½n exitoso!", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
+	                    JOptionPane.showMessageDialog(null, "Inicio de sesion exitoso!", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
 	                    // Aquï¿½ podrï¿½as abrir la ventana principal del sistema de gestiï¿½n de hospital
 	                    panel.setVisible(false);
 //	                    vaciarCampos();
@@ -67,7 +67,7 @@ package ventanas;
 	                    MenuPaciente ventana = new MenuPaciente();
 	                    ventana.setVisible(true);
 	                } else {
-	                    JOptionPane.showMessageDialog(null, "Usuario o contraseï¿½a incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+	                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
 //	                    vaciarCampos();
 	                }
 	            }
