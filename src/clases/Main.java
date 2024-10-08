@@ -3,7 +3,7 @@ package clases;
 import javax.swing.SwingUtilities;
 
 import ventanas.MenuPaciente;
-import ventanas.ventanaInicio;
+import ventanas.VentanaInicioPaciente;
 
 public class Main {
 	 
@@ -13,7 +13,7 @@ public class Main {
             public void run() {
                 
                 //MenuPaciente ventana = new MenuPaciente();
-            	ventanaInicio ventana = new ventanaInicio();
+            	VentanaInicioPaciente ventana = new VentanaInicioPaciente();
                 ventana.setVisible(true);
             }
         });

@@ -6,7 +6,7 @@ package ventanas;
 	import java.awt.event.ActionEvent;
 	import java.awt.event.ActionListener;
 
-	public class ventanaInicio extends JFrame {
+	public class VentanaInicioTrabajador extends JFrame {
 		
 		private JTextField usuarioCampo;
 		
@@ -14,7 +14,7 @@ package ventanas;
 		
 		private JFrame vActual;
 	   
-	    public ventanaInicio() {
+	    public VentanaInicioTrabajador() {
 	       
 	    	vActual = this;
 	    	
@@ -33,7 +33,7 @@ package ventanas;
 	        JLabel usuarioLabel = new JLabel("Usuario:");
 	        JTextField usuarioCampo = new JTextField();
 
-	        JLabel contrasenaLabel = new JLabel("Contraseïña:");
+	        JLabel contrasenaLabel = new JLabel("Contraseï¿½ï¿½a:");
 	        JPasswordField contrasenaCampo = new JPasswordField();
 
 	        
@@ -64,10 +64,10 @@ package ventanas;
 	                    panel.setVisible(false);
 //	                    vaciarCampos();
 //						vActual.dispose();
-	                    MenuPaciente ventana = new MenuPaciente();
-	                    ventana.setVisible(true);
+	                   // MenuPaciente ventana = new MenuPaciente();
+	                   // ventana.setVisible(true);
 	                } else {
-	                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+	                    JOptionPane.showMessageDialog(null, "Usuario o contraseï¿½a incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
 //	                    vaciarCampos();
 	                }
 	            }
