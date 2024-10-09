@@ -4,6 +4,7 @@ import javax.swing.SwingUtilities;
 
 import ventanas.MenuPaciente;
 import ventanas.VentanaInicioPaciente;
+import ventanas.VentanaSeleccion;
 
 public class Main {
 	 
@@ -13,7 +14,7 @@ public class Main {
             public void run() {
                 
                 //MenuPaciente ventana = new MenuPaciente();
-            	VentanaInicioPaciente ventana = new VentanaInicioPaciente();
+            	VentanaSeleccion ventana = new VentanaSeleccion();
                 ventana.setVisible(true);
             }
         });

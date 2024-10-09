@@ -20,14 +20,14 @@ public class VentanaSeleccion extends JFrame{
 	
 	public VentanaSeleccion() {
 		
-		ImageIcon h = new ImageIcon("src/Imagenes/h.png");
+		ImageIcon h = new ImageIcon("src/Imagenes/hospital.png");
 		setIconImage(h.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		
 		
 		botonCerrar = new JButton("CERRAR");
-		botonCliente = new JButton("SOY CLIENTE");
+		botonCliente = new JButton("SOY PACIENTE");
 		botonTrabajador = new JButton("SOY TRABAJADOR");
 
 
