@@ -26,6 +26,7 @@ public class VentanaSeleccion extends JFrame{
 		setBounds(300, 200, 600, 400);
 		
 		
+		
 		botonCerrar = new JButton("CERRAR");
 		botonPaciente = new JButton("SOY PACIENTE");
 		botonTrabajador = new JButton("SOY TRABAJADOR");
