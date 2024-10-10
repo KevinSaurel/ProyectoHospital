@@ -12,6 +12,7 @@ public class Cita {
 		this.paciente = paciente;
 		this.doctor = doctor;
 		this.fechaHora = fechaHora;
+		
 	}
 
 	public Paciente getPaciente() {

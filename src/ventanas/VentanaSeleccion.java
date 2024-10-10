@@ -13,21 +13,22 @@ import javax.swing.SwingUtilities;
 public class VentanaSeleccion extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
-	protected JButton botonCerrar, botonCliente, botonTrabajador;
+	protected JButton botonCerrar, botonPaciente, botonTrabajador;
 	protected JPanel pAbajo, pCentro;
 	protected JTextField textoIdentificacion;
 	protected JLabel lblIdentificacion, lblImagenTrabajador, lblImagenCliente;
 	
 	public VentanaSeleccion() {
 		
-		ImageIcon h = new ImageIcon("src/Imagenes/hospital.png");
-		setIconImage(h.getImage());
+		ImageIcon i = new ImageIcon("src/recursos/hospital.png");
+		setIconImage(i.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(300, 200, 600, 400);
+		
 		
 		
 		botonCerrar = new JButton("CERRAR");
-		botonCliente = new JButton("SOY PACIENTE");
+		botonPaciente = new JButton("SOY PACIENTE");
 		botonTrabajador = new JButton("SOY TRABAJADOR");
 
 
@@ -43,7 +44,7 @@ public class VentanaSeleccion extends JFrame{
 		pCentro.add(lblIdentificacion);
 		pCentro.add(botonTrabajador);
 		pCentro.add(lblImagenTrabajador);
-		pCentro.add(botonCliente);
+		pCentro.add(botonPaciente);
 		pCentro.add(lblImagenCliente);
 		pAbajo.add(botonCerrar);
 
@@ -66,7 +67,7 @@ public class VentanaSeleccion extends JFrame{
             dispose();
 		});
 
-		botonCliente.addActionListener((e) -> {
+		botonPaciente.addActionListener((e) -> {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
