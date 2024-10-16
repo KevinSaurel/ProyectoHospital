@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -55,12 +57,14 @@ public class VentanaMedicos extends JFrame {
         // https://stackoverflow.com/questions/38150025/adding-jtable-into-jframe
         // me he basado un poco con eso 
         JPanel panelPrincipal = new JPanel(new BorderLayout());
+        
 
         panelPrincipal.setBorder(BorderFactory.createTitledBorder("Tabla Médicos"));
-
+        panelPrincipal.setBackground(Color.red);
         String[] nombreColumnas = {"Nombre", "Apellido", "Especialidad", "Horario"};
         modeloDatosMedicos = new DefaultTableModel(nombreColumnas, 0);
         tablaMedicos = new JTable(modeloDatosMedicos);
+        tablaMedicos.setGridColor(Color.black);
         initTables(); // Call the method to initialize the table
 
         for (Doctor medico : medicos) {
@@ -68,7 +72,7 @@ public class VentanaMedicos extends JFrame {
             modeloDatosMedicos.addRow(fila);
         }
         
-        btnAnadirM = new JButton("Añadir Médico");
+       
 
         // voy a usar icono en recursos para icono8 atras 
         ImageIcon iconBack = new ImageIcon(getClass().getResource("/recursos/icons8-back-25.png"));
@@ -83,7 +87,32 @@ public class VentanaMedicos extends JFrame {
             ventana.setVisible(true);
             this.dispose(); // Close the current window
         });
+        btnBack.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnBack.setBackground(new Color(248,160,148)); // Change to hover color
+            }
 
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnBack.setBackground(Color.RED); // Revert to original color
+            }
+        });
+        
+        
+        btnAnadirM = new JButton("Añadir Médico");
+        btnAnadirM.setBackground(Color.RED);
+        btnAnadirM.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnAnadirM.setBackground(new Color(248,160,148)); // Change to hover color
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnAnadirM.setBackground(Color.RED); // Revert to original color
+            }
+        });
         // aqui creo el boton para anadir el medico
         btnAnadirM.addActionListener(e -> {
             JFrame frameNuevoMedico = new JFrame("Añadir Nuevo Médico");
@@ -190,6 +219,13 @@ public class VentanaMedicos extends JFrame {
         tablaMedicos.getTableHeader().setResizingAllowed(false);
         tablaMedicos.setAutoCreateRowSorter(true);
         tablaMedicos.getColumnModel().getColumn(2).setPreferredWidth(400);
+        //intento poner color 
+        tablaMedicos.getTableHeader().setBackground(Color.red);
+        //bold para la cabecerA
+        tablaMedicos.getTableHeader().setFont(tablaMedicos.getFont().deriveFont(java.awt.Font.BOLD));
+        
+        tablaMedicos.setForeground(Color.RED);
+        tablaMedicos.setBackground(Color.WHITE);
     }
 
     private void filtrarMedicos() {
@@ -207,4 +243,6 @@ public class VentanaMedicos extends JFrame {
         }
     }
 }
+// he usado chatgpt y stack overflow  para resolver errores y dudas . 
+//https://stackoverflow.com/questions/14563799/jtable-cellrenderer-changes-backgroundcolor-of-cells-while-running
 
