@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -18,12 +19,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import clases.Doctor;
 import clases.Paciente;
 
 public class MenuPaciente extends JFrame{
 	
 //	private JFrame vActual, vAnterior;
 //	
+	
 	private JButton btnVolver;
 	private JButton btnCitas;
 	private JButton btnHospitales;
@@ -35,7 +38,7 @@ public class MenuPaciente extends JFrame{
 	
 	
 	public MenuPaciente() {
-		
+		  ArrayList<Doctor> medicos = new ArrayList<>();
 //		vActual = this;
 //		this.vAnterior = vAnterior;
 		
@@ -96,7 +99,7 @@ public class MenuPaciente extends JFrame{
 		JPanel ubicacionHospital = new JPanel();
 		ubicacionHospital.setLayout(new GridLayout(1,2,10,10));
 		ubicacionHospital.add(btnCitas);
-		ubicacionHospital.add(btnHospitales);
+		ubicacionHospital.add(btnMedicos);
 		ubicacionHospital.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
 		cita.add(ubicacionHospital);
@@ -159,6 +162,12 @@ public class MenuPaciente extends JFrame{
 //				
 //			}
 //		});
+		 btnMedicos.addActionListener(e -> {
+	            // Assuming you have a MenuPaciente window to go back to
+	            VentanaMedicos ventana = new VentanaMedicos(medicos);
+	            ventana.setVisible(true);
+	            this.dispose(); // Close the current window
+	        });
 		
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

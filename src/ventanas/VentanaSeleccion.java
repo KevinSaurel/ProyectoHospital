@@ -1,6 +1,8 @@
 package ventanas;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -67,17 +69,13 @@ public class VentanaSeleccion extends JFrame{
             dispose();
 		});
 
-		botonPaciente.addActionListener((e) -> {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					new VentanaInicioPaciente();
-					
-				}
-			});
-			
-            dispose();
-		});
+
+		 botonPaciente.addActionListener(e -> {
+	       
+	            VentanaInicioPaciente ventana = new VentanaInicioPaciente();
+	            ventana.setVisible(true);
+	            this.dispose(); 
+	        });
 		
 		
 		pack();
