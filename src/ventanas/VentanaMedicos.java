@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
@@ -37,7 +38,7 @@ public class VentanaMedicos extends JFrame {
 
     public VentanaMedicos(List<Doctor> medicos) {
         this.medicos = medicos;
-
+        Color color = new Color(6,99,133);
         // aqui pongo las llamadas para que filtra por nombre 
         txtFiltro = new JTextField(20);
         txtFiltro.getDocument().addDocumentListener(new DocumentListener() {
@@ -60,7 +61,7 @@ public class VentanaMedicos extends JFrame {
         
 
         panelPrincipal.setBorder(BorderFactory.createTitledBorder("Tabla Médicos"));
-        panelPrincipal.setBackground(Color.red);
+        panelPrincipal.setBackground(color);
         String[] nombreColumnas = {"Nombre", "Apellido", "Especialidad", "Horario"};
         modeloDatosMedicos = new DefaultTableModel(nombreColumnas, 0);
         tablaMedicos = new JTable(modeloDatosMedicos);
@@ -79,7 +80,7 @@ public class VentanaMedicos extends JFrame {
 
         // Create a button with the custom icon
         JButton btnBack = new JButton(iconBack);
-        btnBack.setBackground(Color.RED);
+        btnBack.setBackground(color);
         btnBack.setPreferredSize(new Dimension(80, 25));
         btnBack.addActionListener(e -> {
             // Assuming you have a MenuPaciente window to go back to
@@ -90,27 +91,27 @@ public class VentanaMedicos extends JFrame {
         btnBack.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                btnBack.setBackground(new Color(248,160,148)); // Change to hover color
+                btnBack.setBackground(color); // Change to hover color
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                btnBack.setBackground(Color.RED); // Revert to original color
+                btnBack.setBackground(color); // Revert to original color
             }
         });
         
         
         btnAnadirM = new JButton("Añadir Médico");
-        btnAnadirM.setBackground(Color.RED);
+        btnAnadirM.setBackground(color);
         btnAnadirM.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                btnAnadirM.setBackground(new Color(248,160,148)); // Change to hover color
+                btnAnadirM.setBackground(Color.blue); // Change to hover color
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                btnAnadirM.setBackground(Color.RED); // Revert to original color
+                btnAnadirM.setBackground(color); // Revert to original color
             }
         });
         // aqui creo el boton para anadir el medico
@@ -220,12 +221,16 @@ public class VentanaMedicos extends JFrame {
         tablaMedicos.setAutoCreateRowSorter(true);
         tablaMedicos.getColumnModel().getColumn(2).setPreferredWidth(400);
         //intento poner color 
-        tablaMedicos.getTableHeader().setBackground(Color.red);
-        //bold para la cabecerA
-        tablaMedicos.getTableHeader().setFont(tablaMedicos.getFont().deriveFont(java.awt.Font.BOLD));
-        
-        tablaMedicos.setForeground(Color.RED);
-        tablaMedicos.setBackground(Color.WHITE);
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(new Color(6, 99, 133));  //color cabecera
+        headerRenderer.setForeground(Color.WHITE);  // Texto color cabecera
+        headerRenderer.setHorizontalAlignment(JLabel.CENTER);  
+        headerRenderer.setFont(tablaMedicos.getFont().deriveFont(java.awt.Font.BOLD));  
+
+       
+        for (int i = 0; i < tablaMedicos.getColumnModel().getColumnCount(); i++) {
+            tablaMedicos.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
     }
 
     private void filtrarMedicos() {

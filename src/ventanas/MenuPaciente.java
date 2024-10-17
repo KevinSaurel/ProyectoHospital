@@ -75,7 +75,7 @@ public class MenuPaciente extends JFrame{
 		grid.add(btnHistorial);
 		
 		grid.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-		grid.setBackground(Color.RED);
+		grid.setBackground(new Color(6,99,133));
 		panel.add(grid,BorderLayout.NORTH);
 		
 		
