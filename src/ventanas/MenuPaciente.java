@@ -178,7 +178,7 @@ public class MenuPaciente extends JFrame{
 	private void anadirColores(Component[] components ,Color color) {
 		for(Component component :components) {
 			if(component instanceof JButton) {
-		}
+		
 			component.setBackground(color);
 			component.setForeground(Color.white);
 			component.addMouseListener(new MouseAdapter() {
@@ -195,6 +195,7 @@ public class MenuPaciente extends JFrame{
 		            	component.setForeground(Color.white);
 		            }
 		        });
+			}
 		}
 	}
 }
