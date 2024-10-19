@@ -59,14 +59,9 @@ public class VentanaSeleccion extends JFrame{
 		});
 
 		botonTrabajador.addActionListener((e) -> {
-			SwingUtilities.invokeLater(new Runnable() {
-			    @Override
-				public void run() {
-					new VentanaInicioTrabajador();	
-					
-				}
-			});	
-            dispose();
+			 VentanaInicioTrabajador ventana = new VentanaInicioTrabajador();
+	            ventana.setVisible(true);
+	            this.dispose(); 
 		});
 
 

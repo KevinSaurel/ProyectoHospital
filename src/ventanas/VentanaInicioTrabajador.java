@@ -63,9 +63,10 @@ package ventanas;
 	                    // Aqu� podr�as abrir la ventana principal del sistema de gesti�n de hospital
 	                    panel.setVisible(false);
 //	                    vaciarCampos();
-//						vActual.dispose();
-	                   // MenuPaciente ventana = new MenuPaciente();
-	                   // ventana.setVisible(true);
+	                    //vActual.dispose();
+	                    MenuTrabajador ventana = new MenuTrabajador();
+	                   ventana.setVisible(true);
+	                   panel.setVisible(false);
 	                } else {
 	                    JOptionPane.showMessageDialog(null, "Usuario o contrase�a incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
 //	                    vaciarCampos();
