@@ -18,7 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import clases.Doctor;
-
+import java.awt.BorderLayout;
 public class MenuTrabajador extends JFrame{
 	
 //	private JFrame vActual, vAnterior;
@@ -32,7 +32,7 @@ public class MenuTrabajador extends JFrame{
 	private JButton btnUsuario;
 	
 	
-	public void MenuPaciente() {
+	public  MenuTrabajador() {
 		  ArrayList<Doctor> medicos = new ArrayList<>();
 //		vActual = this;
 //		this.vAnterior = vAnterior;
@@ -103,23 +103,7 @@ public class MenuTrabajador extends JFrame{
 		cita.add(ubicacionHospital);
 		pngHistorial.add(cita);
 		panel.add(pngHistorial , BorderLayout.CENTER);
-		
-		
-//		box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
-//		box.add(new JTextField("Aqui nombre del paciente"),BorderLayout.CENTER);
-//		box.add(new JTextField("Otros datos de paciente"),BorderLayout.CENTER);
-//		panel.add(box,BorderLayout.WEST);
-		
 		panel.add(btnVolver,BorderLayout.SOUTH);
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		/**
 		 * Cambiamos el tipo de letra en los botones
 		 * 
