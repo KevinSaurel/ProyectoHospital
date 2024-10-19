@@ -62,12 +62,13 @@ public class VentanaMedicos extends JFrame {
 
         panelPrincipal.setBorder(BorderFactory.createTitledBorder("Tabla Médicos"));
         panelPrincipal.setBackground(color);
+        
+       
         String[] nombreColumnas = {"Nombre", "Apellido", "Especialidad", "Horario"};
         modeloDatosMedicos = new DefaultTableModel(nombreColumnas, 0);
         tablaMedicos = new JTable(modeloDatosMedicos);
         tablaMedicos.setGridColor(Color.black);
-        initTables(); // Call the method to initialize the table
-
+        initTables(); 
         for (Doctor medico : medicos) {
             Object[] fila = {medico.getNombre(), medico.getApellido(), medico.getEspecialidad(), medico.getHorario()};
             modeloDatosMedicos.addRow(fila);
@@ -78,40 +79,45 @@ public class VentanaMedicos extends JFrame {
         // voy a usar icono en recursos para icono8 atras 
         ImageIcon iconBack = new ImageIcon(getClass().getResource("/recursos/icons8-back-25.png"));
 
-        // Create a button with the custom icon
+        
         JButton btnBack = new JButton(iconBack);
         btnBack.setBackground(color);
         btnBack.setPreferredSize(new Dimension(80, 25));
         btnBack.addActionListener(e -> {
-            // Assuming you have a MenuPaciente window to go back to
+           
             MenuPaciente ventana = new MenuPaciente();
             ventana.setVisible(true);
-            this.dispose(); // Close the current window
+            this.dispose(); 
         });
         btnBack.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                btnBack.setBackground(color); // Change to hover color
+                btnBack.setBackground(Color.white); 
+                btnBack.setForeground(color);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                btnBack.setBackground(color); // Revert to original color
+                btnBack.setBackground(color); 
+                btnBack.setForeground(Color.white);
             }
         });
         
         
         btnAnadirM = new JButton("Añadir Médico");
         btnAnadirM.setBackground(color);
+        btnAnadirM.setForeground(Color.white);
         btnAnadirM.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                btnAnadirM.setBackground(Color.blue); // Change to hover color
+                btnAnadirM.setBackground(Color.white); 
+                btnAnadirM.setForeground(color);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                btnAnadirM.setBackground(color); // Revert to original color
+                btnAnadirM.setBackground(color); 
+                btnAnadirM.setForeground(Color.white);
             }
         });
         // aqui creo el boton para anadir el medico
@@ -119,7 +125,8 @@ public class VentanaMedicos extends JFrame {
             JFrame frameNuevoMedico = new JFrame("Añadir Nuevo Médico");
             frameNuevoMedico.setSize(400, 300);
             frameNuevoMedico.setLayout(new GridLayout(8, 2)); // 7 labels + text fields, and 1 button
-
+            frameNuevoMedico.getContentPane().setBackground(color);
+            
             JLabel lblContrasena = new JLabel("Contraseña:");
             JTextField txtContrasena = new JTextField();
             JLabel lblNombre = new JLabel("Nombre:");
@@ -137,21 +144,42 @@ public class VentanaMedicos extends JFrame {
 
             
             JButton btnAnadir = new JButton("Añadir Médico");
+            btnAnadir.setBackground(color);
+            btnAnadir.setForeground(Color.white);
+            btnAnadir.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    btnAnadir.setBackground(Color.white); 
+                    btnAnadir.setForeground(color);
+                }
 
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    btnAnadir.setBackground(color); 
+                    btnAnadir.setForeground(Color.white);
+                }
+            });
            
             frameNuevoMedico.add(lblContrasena);
+            lblContrasena.setForeground(Color.WHITE);
             frameNuevoMedico.add(txtContrasena);
             frameNuevoMedico.add(lblNombre);
+            lblNombre.setForeground(Color.WHITE);
             frameNuevoMedico.add(txtNombre);
             frameNuevoMedico.add(lblApellido);
+            lblApellido.setForeground(Color.WHITE);
             frameNuevoMedico.add(txtApellido);
             frameNuevoMedico.add(lblEdad);
+            lblEdad.setForeground(Color.WHITE);
             frameNuevoMedico.add(txtEdad);
             frameNuevoMedico.add(lblUbicacion);
+            lblUbicacion.setForeground(Color.WHITE);
             frameNuevoMedico.add(txtUbicacion);
             frameNuevoMedico.add(lblEspecialidad);
+            lblEspecialidad.setForeground(Color.WHITE);
             frameNuevoMedico.add(txtEspecialidad);
             frameNuevoMedico.add(lblHorario);
+            lblHorario.setForeground(Color.WHITE);
             frameNuevoMedico.add(txtHorario);
             frameNuevoMedico.add(new JLabel()); // Label vacio para llenar ultimo grid
             frameNuevoMedico.add(btnAnadir);

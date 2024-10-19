@@ -8,6 +8,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -51,6 +53,8 @@ public class MenuPaciente extends JFrame{
 		btnContacto = new JButton("Contacto");
 		btnParametros = new JButton("Parametros");
 		btnUsuario = new JButton("Usuario");
+		Color color = new Color(6,99,133);
+		
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
@@ -72,10 +76,11 @@ public class MenuPaciente extends JFrame{
 		grid.add(btnContacto);
 		grid.add(btnParametros);
 		grid.add(btnUsuario);
-		grid.add(btnHistorial);
+		anadirColores(grid.getComponents(),color);
+		
 		
 		grid.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-		grid.setBackground(new Color(6,99,133));
+		grid.setBackground(Color.white);
 		panel.add(grid,BorderLayout.NORTH);
 		
 		
@@ -93,7 +98,9 @@ public class MenuPaciente extends JFrame{
 		
 		JPanel cita = new JPanel();
 		cita.setLayout(new GridLayout(2,1,10,10));
+		
 		cita.add(btnHistorial);
+		anadirColores(cita.getComponents(),color);
 		cita.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
 		JPanel ubicacionHospital = new JPanel();
@@ -101,7 +108,7 @@ public class MenuPaciente extends JFrame{
 		ubicacionHospital.add(btnCitas);
 		ubicacionHospital.add(btnMedicos);
 		ubicacionHospital.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-		
+		anadirColores(ubicacionHospital.getComponents(),color);
 		cita.add(ubicacionHospital);
 		pngHistorial.add(cita);
 		panel.add(pngHistorial , BorderLayout.CENTER);
@@ -135,17 +142,7 @@ public class MenuPaciente extends JFrame{
 		btnParametros.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
 		btnUsuario.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
 		
-		/**
-		 * Establecemos el color de el fondo de los botones en blanco
-		 **/
-		btnVolver.setBackground(Color.WHITE);
-		btnCitas.setBackground(Color.WHITE);
-		btnHistorial.setBackground(Color.WHITE);
-		btnHospitales.setBackground(Color.WHITE);
-		btnMedicos.setBackground(Color.WHITE);
-		btnUsuario.setBackground(Color.WHITE);
-		btnParametros.setBackground(Color.WHITE);
-		btnContacto.setBackground(Color.WHITE);
+		
 		
 //		
 //		
@@ -177,5 +174,27 @@ public class MenuPaciente extends JFrame{
 		
 		
 	}
+	
+	private void anadirColores(Component[] components ,Color color) {
+		for(Component component :components) {
+			if(component instanceof JButton) {
+		}
+			component.setBackground(color);
+			component.setForeground(Color.white);
+			component.addMouseListener(new MouseAdapter() {
+				 
+		            @Override
+		            public void mouseEntered(MouseEvent e) {
+		            	component.setBackground(Color.white); 
+		            	component.setForeground(color);
+		            }
 
+		            @Override
+		            public void mouseExited(MouseEvent e) {
+		            	component.setBackground(color); 
+		            	component.setForeground(Color.white);
+		            }
+		        });
+		}
+	}
 }
