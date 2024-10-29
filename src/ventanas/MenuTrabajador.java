@@ -9,6 +9,7 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -17,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import clases.Context;
 import clases.Doctor;
 import clases.Paciente;
 import clases.Persona;
@@ -26,7 +28,7 @@ public class MenuTrabajador extends JFrame{
 	
 //	private JFrame vActual, vAnterior;
 //	
-	
+	private List<Paciente> pacientes;
 	private JButton btnVolver;
 	private JButton btnCitas;
 	private JButton btnPacientes;
@@ -36,8 +38,11 @@ public class MenuTrabajador extends JFrame{
 	
 	
 	public  MenuTrabajador(Persona usuario) {
-		  ArrayList<Doctor> medicos = new ArrayList<>();
-		  ArrayList<Paciente>pacientes = new ArrayList<>();
+		ArrayList<Doctor> medicos = new ArrayList<>();
+		  
+		Context context = Context.getInstance();  
+    	this.pacientes = context.getPacientes();
+		  
 //		vActual = this;
 //		this.vAnterior = vAnterior;
 		

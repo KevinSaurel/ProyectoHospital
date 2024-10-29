@@ -32,6 +32,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
+import clases.Context;
 import clases.Doctor;
 import clases.Historial;
 import clases.Paciente;
@@ -48,7 +49,10 @@ public class VentanaPacientes extends JFrame{
     private Persona usuario;
 
     public VentanaPacientes(List<Paciente> pacientes , Persona usuarioP) {
-        this.pacientes = pacientes;
+    	
+    	Context context = Context.getInstance();  
+    	this.pacientes = context.getPacientes(); 
+        
         usuario = usuarioP;
         Color color = new Color(6,99,133);
         // llamada para que filtre por nombre
@@ -241,14 +245,10 @@ public class VentanaPacientes extends JFrame{
         panelPrincipal.add(scrollPanePacientes, BorderLayout.CENTER);
         panelPrincipal.add(panelArriba, BorderLayout.NORTH);
 
-        JPanel buttonGrid = new JPanel(new GridLayout(1,pacientes.size()));
-        for(Paciente p : pacientes) {
-        	JButton btnPaciente = new JButton();
-        	btnPaciente.setText("Historial");
-        	buttonGrid.add(btnPaciente);
+      
         	
-        }
-        panelPrincipal.add(buttonGrid,BorderLayout.EAST);
+        
+        
         
         setTitle("Lista de Pacientes");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

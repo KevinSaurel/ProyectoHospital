@@ -3,6 +3,7 @@ package ventanas;
 
 	import javax.swing.*;
 
+import clases.Context;
 import clases.Doctor;
 
 import java.awt.*;
@@ -26,10 +27,12 @@ import java.util.StringTokenizer;
 		private Doctor usuario;
 	   
 	    public VentanaInicioTrabajador() {
-	       listaMedicos = new ArrayList<>();
+	      // listaMedicos = new ArrayList<>()
 	    	vActual = this;
 	    	//Doctor usuario ;
-	    	cargarDoctores();
+	    	Context context = Context.getInstance();  // Get the singleton instance
+	    	listaMedicos = context.getMedicos(); 
+	    	
 	    	System.out.println(listaMedicos);
 	    	
 	        setTitle("Sistema de Gestion de Hospital - Inicio de Sesion");
@@ -126,30 +129,7 @@ import java.util.StringTokenizer;
 	    	return false;
 	    }
 	   
-	    public void cargarDoctores() {
-	        try (BufferedReader br = new BufferedReader(new FileReader("src/recursos/doctores.csv"))) {
-	            String linea;
-	            while ((linea = br.readLine()) != null) {
-	            	 StringTokenizer st = new StringTokenizer(linea , ",");
-	    			 String contrasena = st.nextToken();
-	    			 String nombre = st.nextToken();
-	    			 String apellido = st.nextToken();
-	    			 int edad = Integer.parseInt(st.nextToken());
-	    			 String ubicacion = st.nextToken();
-	    			 String especialidad = st.nextToken();
-	    			 String horario = st.nextToken();
-	    			 
-	    			 
-	    			 Doctor nuevoDoctor = new Doctor( contrasena , nombre , apellido , edad , 
-	    					 ubicacion ,especialidad , horario);
-	               
-	                listaMedicos.add(nuevoDoctor);
-	            }
-	        } catch (IOException e) {
-	            JOptionPane.showMessageDialog(this, "Error al cargar los doctores", "Error", JOptionPane.ERROR_MESSAGE);
-	            e.printStackTrace();
-	        }
-	    }
+	  
 	}
 
 
