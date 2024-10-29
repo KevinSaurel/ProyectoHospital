@@ -1,17 +1,20 @@
 package clases;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Paciente extends Persona{
 	private int codigoPaciente;
-	private ArrayList<String>historialPaciente;
+	private List<Historial> historialPaciente = new ArrayList() ;
 	
 	public Paciente(String contrasena, String nombre, String apellido, int edad, String ubicacion, int codigoPaciente,
-			ArrayList<String> historialPaciente) {
+			List<Historial> historialEntries) {
 		super(contrasena, nombre, apellido, edad, ubicacion);
 		this.codigoPaciente = codigoPaciente;
-		this.historialPaciente = historialPaciente;
+		this.historialPaciente = historialEntries;
 	}
+
+	
 
 	public int getCodigoPaciente() {
 		return codigoPaciente;
@@ -21,11 +24,11 @@ public class Paciente extends Persona{
 		this.codigoPaciente = codigoPaciente;
 	}
 
-	public ArrayList<String> getHistorialPaciente() {
+	public List<Historial> getHistorialPaciente() {
 		return historialPaciente;
 	}
 
-	public void setHistorialPaciente(ArrayList<String> historialPaciente) {
+	public void setHistorialPaciente(ArrayList<Historial> historialPaciente) {
 		this.historialPaciente = historialPaciente;
 	}
 

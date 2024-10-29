@@ -18,6 +18,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import clases.Doctor;
+import clases.Paciente;
+import clases.Persona;
+
 import java.awt.BorderLayout;
 public class MenuTrabajador extends JFrame{
 	
@@ -32,8 +35,9 @@ public class MenuTrabajador extends JFrame{
 	private JButton btnUsuario;
 	
 	
-	public  MenuTrabajador() {
+	public  MenuTrabajador(Persona usuario) {
 		  ArrayList<Doctor> medicos = new ArrayList<>();
+		  ArrayList<Paciente>pacientes = new ArrayList<>();
 //		vActual = this;
 //		this.vAnterior = vAnterior;
 		
@@ -119,24 +123,22 @@ public class MenuTrabajador extends JFrame{
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); 
-		
+        
+        
+        btnPacientes .addActionListener(e -> {
+            // Assuming you have a MenuPaciente window to go back to
+            VentanaPacientes ventana = new VentanaPacientes(pacientes , usuario);
+            ventana.setVisible(true);
+            this.dispose(); // Close the current window
+        });
 	}
-//		
-//		
-//		btnVolver.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				/*Aqui escribimos el codigo a ejecutar cuando se clicke el boton
-//				 * */
-//				vActual.dispose();
-//				
-//				//Volvemos a visualizar la ventana anterior
-//				vAnterior.setVisible(true);
-//				
-//			}
-//		});
-
+	
+//	 btnMedicos.addActionListener(e -> {
+//         // Assuming you have a MenuPaciente window to go back to
+//         VentanaMedicos ventana = new VentanaMedicos(medicos);
+//         ventana.setVisible(true);
+//         this.dispose(); // Close the current window
+//     });
 	private void anadirColores(Component[] components ,Color color) {
 		for(Component component :components) {
 			if(component instanceof JButton) {

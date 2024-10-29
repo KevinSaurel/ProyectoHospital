@@ -2,9 +2,17 @@ package ventanas;
 
 
 	import javax.swing.*;
-	import java.awt.*;
+
+import clases.Doctor;
+
+import java.awt.*;
 	import java.awt.event.ActionEvent;
 	import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 	public class VentanaInicioTrabajador extends JFrame {
 		
@@ -14,9 +22,15 @@ package ventanas;
 		
 		private JFrame vActual;
 	   
+		private ArrayList<Doctor> listaMedicos;
+		private Doctor usuario;
+	   
 	    public VentanaInicioTrabajador() {
-	       
+	       listaMedicos = new ArrayList<>();
 	    	vActual = this;
+	    	//Doctor usuario ;
+	    	cargarDoctores();
+	    	System.out.println(listaMedicos);
 	    	
 	        setTitle("Sistema de Gestion de Hospital - Inicio de Sesion");
 	        setSize(400, 200);
@@ -53,21 +67,30 @@ package ventanas;
 	        botonLogin.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
-	                String usuario = usuarioCampo.getText();
+	                String usuarioN = usuarioCampo.getText();
 	                
 	                String contrasena = new String(contrasenaCampo.getPassword());
-
+	                
 	                // Verificaci�n  usuario: admin, contrase�a: admin)
-	                if (usuario.equals("admin") && contrasena.equals("admin")) {
+	                if ( usuarioN.equals("admin") && contrasena.equals("admin")) {
 	                    JOptionPane.showMessageDialog(null, "Inicio de sesion exitoso!", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
 	                    // Aqu� podr�as abrir la ventana principal del sistema de gesti�n de hospital
 	                    panel.setVisible(false);
 //	                    vaciarCampos();
 	                    //vActual.dispose();
-	                    MenuTrabajador ventana = new MenuTrabajador();
+	                    MenuTrabajador ventana = new MenuTrabajador(usuario);
+	                    
 	                   ventana.setVisible(true);
 	                   panel.setVisible(false);
-	                } else {
+	                }else if(listaGetNombre(usuarioN, contrasena)==true){
+	                	
+	                	JOptionPane.showMessageDialog(null, "Inicio de sesion exitoso!", "Bienvenido: "+ usuarioN, JOptionPane.INFORMATION_MESSAGE);
+	                	MenuTrabajador ventana = new MenuTrabajador(usuario);
+	                //	System.out.println(usuario);
+		                   ventana.setVisible(true);
+		                   panel.setVisible(false);
+	                }else {
+	                
 	                    JOptionPane.showMessageDialog(null, "Usuario o contrase�a incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
 //	                    vaciarCampos();
 	                }
@@ -89,8 +112,44 @@ package ventanas;
 //        	usuarioCampo.setText("");
 //        	contrasenaCampo.setText("");
 //    	}
-
-	  
+	    public boolean listaGetNombre(String nombre , String contrasena) {
+	    	for(Doctor medico :listaMedicos) {
+	    		if (medico.getNombre().equals(nombre) && medico.getContrasena().equals(contrasena)) {
+	    			usuario = medico;
+	    			System.out.println(usuario);
+	    			return true ;
+	    			
+	    		
+	    		}
+	    		
+	    	}
+	    	return false;
+	    }
+	   
+	    public void cargarDoctores() {
+	        try (BufferedReader br = new BufferedReader(new FileReader("src/recursos/doctores.csv"))) {
+	            String linea;
+	            while ((linea = br.readLine()) != null) {
+	            	 StringTokenizer st = new StringTokenizer(linea , ",");
+	    			 String contrasena = st.nextToken();
+	    			 String nombre = st.nextToken();
+	    			 String apellido = st.nextToken();
+	    			 int edad = Integer.parseInt(st.nextToken());
+	    			 String ubicacion = st.nextToken();
+	    			 String especialidad = st.nextToken();
+	    			 String horario = st.nextToken();
+	    			 
+	    			 
+	    			 Doctor nuevoDoctor = new Doctor( contrasena , nombre , apellido , edad , 
+	    					 ubicacion ,especialidad , horario);
+	               
+	                listaMedicos.add(nuevoDoctor);
+	            }
+	        } catch (IOException e) {
+	            JOptionPane.showMessageDialog(this, "Error al cargar los doctores", "Error", JOptionPane.ERROR_MESSAGE);
+	            e.printStackTrace();
+	        }
+	    }
 	}
 
 

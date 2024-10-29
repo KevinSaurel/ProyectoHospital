@@ -32,7 +32,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
+import clases.Doctor;
+import clases.Historial;
 import clases.Paciente;
+import clases.Persona;
 
 public class VentanaPacientes extends JFrame{
 
@@ -42,9 +45,11 @@ public class VentanaPacientes extends JFrame{
     private JTextField txtFiltro;
     private DefaultTableModel modeloDatosPacientes;
     private JButton btnAnadirP;
+    private Persona usuario;
 
-    public VentanaPacientes(List<Paciente> pacientes) {
+    public VentanaPacientes(List<Paciente> pacientes , Persona usuarioP) {
         this.pacientes = pacientes;
+        usuario = usuarioP;
         Color color = new Color(6,99,133);
         // llamada para que filtre por nombre
         txtFiltro = new JTextField(20);
@@ -98,7 +103,7 @@ public class VentanaPacientes extends JFrame{
         btnBack.setBackground(color);
         btnBack.setPreferredSize(new Dimension(80, 25));
         btnBack.addActionListener(e -> {
-            MenuTrabajador ventana = new MenuTrabajador();
+            MenuTrabajador ventana = new MenuTrabajador(usuario);
             ventana.setVisible(true);
             ((JFrame) btnBack.getTopLevelAncestor()).dispose(); 
         });
@@ -198,7 +203,7 @@ public class VentanaPacientes extends JFrame{
                 String apellido = txtApellido.getText();
                 String ubicacion = txtUbicacion.getText();
                 int codigoP = Integer.parseInt(txtCodigoPaciente.getText());
-                ArrayList<String> historial = new ArrayList<>();
+                List<Historial> historial = new ArrayList<>();
                 int edad;
 
                 try {
@@ -352,10 +357,15 @@ class ButtonEditor extends AbstractCellEditor implements TableCellEditor, Action
             	int	edad=p.getEdad();
             	String	ubicacion=p.getUbicacion();
             		codigoP = p.getCodigoPaciente();
-            		ArrayList<String> lista = p.getHistorialPaciente();
+            		List<Historial> lista = p.getHistorialPaciente();
             		Paciente pac = new Paciente(contrasena,nombre,apellido,
             									edad,ubicacion,codigoP,lista);
             		System.out.println(pac);
+            		if(usuario instanceof Doctor) {
+            		VentanaHistorial ventanaHistorial = new VentanaHistorial(pac , usuario);
+            		ventanaHistorial.setVisible(true);
+            		//this.dispose();
+            		}
             	}
             }
         }

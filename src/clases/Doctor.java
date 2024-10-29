@@ -1,5 +1,7 @@
 package clases;
 
+import java.util.StringTokenizer;
+
 public class Doctor extends Persona{
 	protected String especialidad;
 	protected String horario;
@@ -25,6 +27,12 @@ public class Doctor extends Persona{
 
 	public void setHorario(String horario) {
 		this.horario = horario;
+	}
+
+	@Override
+	public String toString() {
+		return "Doctor [especialidad=" + especialidad + ", horario=" + horario + ", contrasena=" + contrasena
+				+ ", nombre=" + nombre + ", apellido=" + apellido + ", edad=" + edad + ", ubicacion=" + ubicacion + "]";
 	}
 	
 
