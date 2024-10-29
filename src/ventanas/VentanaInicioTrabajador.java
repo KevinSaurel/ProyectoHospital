@@ -30,7 +30,7 @@ import java.util.StringTokenizer;
 	      // listaMedicos = new ArrayList<>()
 	    	vActual = this;
 	    	//Doctor usuario ;
-	    	Context context = Context.getInstance();  // Get the singleton instance
+	    	Context context = Context.getInstance(); 
 	    	listaMedicos = context.getMedicos(); 
 	    	
 	    	System.out.println(listaMedicos);

@@ -10,20 +10,20 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class Context {
-    private static Context instance;  // Singleton instance
+    private static Context instance;  
     
     private ArrayList<Doctor> medicos = new ArrayList<>();
     private List<Paciente> pacientes = new ArrayList<>();
     private List<Enfermero> enfermeros = new ArrayList<>();
 
-    // Private constructor for Singleton pattern
+   
     private Context() {
-        loadDoctors();
-        loadPatients();
-        loadNurses();
+        cargarMedicos();
+        cargarPacientes();
+       
     }
     
-    // Public method to get the singleton instance
+    // creo un unico instace de esta classe
     public static Context getInstance() {
         if (instance == null) {
             instance = new Context();
@@ -31,8 +31,8 @@ public class Context {
         return instance;
     }
 
-    // Method to load patients from file
-    private void loadPatients() {
+   
+    private void cargarPacientes() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try (BufferedReader br = new BufferedReader(new FileReader("src/recursos/pacientes.csv"))) {
             String linea;
@@ -47,7 +47,7 @@ public class Context {
                 int codigoPaciente = Integer.parseInt(parts[5]);
 
                 String historialEntriesSerialized = parts[6];
-                List<Historial> historialEntries = parseHistorialEntries(historialEntriesSerialized, dateFormat);
+                List<Historial> historialEntries = creaHistorial(historialEntriesSerialized, dateFormat);
 
                 Paciente nuevoPaciente = new Paciente(contrasena, nombre, apellido, edad, ubicacion, codigoPaciente, historialEntries);
                 pacientes.add(nuevoPaciente);
@@ -57,8 +57,8 @@ public class Context {
         }
     }
 
-    // Parse historial entries for each patient
-    private List<Historial> parseHistorialEntries(String serialized, SimpleDateFormat dateFormat) {
+    
+    private List<Historial> creaHistorial(String serialized, SimpleDateFormat dateFormat) {
         List<Historial> historialEntries = new ArrayList<>();
         String[] entries = serialized.split(";");
         
@@ -83,8 +83,7 @@ public class Context {
         return historialEntries;
     }
 
-    // Method to load doctors from file
-    private void loadDoctors() {
+    private void cargarMedicos() {
         try (BufferedReader br = new BufferedReader(new FileReader("src/recursos/doctores.csv"))) {
             String linea;
             while ((linea = br.readLine()) != null) {
@@ -105,12 +104,7 @@ public class Context {
         }
     }
 
-    // Load nurses (placeholder, to be implemented if needed)
-    private void loadNurses() {
-        // Implementation for loading nurses from file if required
-    }
-
-    // Getter methods for accessing data
+   
     public ArrayList<Doctor> getMedicos() {
         return medicos;
     }
