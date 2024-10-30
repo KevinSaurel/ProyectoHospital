@@ -224,6 +224,7 @@ public class VentanaPacientes extends JFrame{
                 }
                 Paciente nuevoPaciente = new Paciente(contrasena, nombre, apellido, edad, ubicacion, codigoP, historial);
                 pacientes.add(nuevoPaciente);
+                context.guardarPaciente(nuevoPaciente);
 
                 modeloDatosPacientes.addRow(new Object[]{nombre, apellido, edad, codigoP});
 

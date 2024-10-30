@@ -1,7 +1,9 @@
 package clases;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -102,6 +104,29 @@ public class Context {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public void guardarPaciente(Paciente paciente) {
+    	try(BufferedWriter bw = new BufferedWriter(new FileWriter("src/recursos/pacientes.csv"))){
+    		StringBuilder linea = new StringBuilder();
+
+    		linea.append(paciente.getContrasena()).append(",");
+    		linea.append(paciente.getNombre()).append(",");
+    		linea.append(paciente.getApellido()).append(",");
+    		linea.append(paciente.getEdad()).append(",");
+    		linea.append(paciente.getUbicacion()).append(",");
+    		linea.append(paciente.getCodigoPaciente()).append(",");
+    		
+    		 StringBuilder historial = new StringBuilder();
+    		 List<Historial> lista = new ArrayList<>();
+    		    
+
+    		 
+    		 linea.append(lista);
+    		
+    	}catch (IOException e) {
+            System.out.println("Error al guardar paciente : " + e.getMessage());
+        }
+    			
     }
 
    
