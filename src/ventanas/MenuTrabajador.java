@@ -136,7 +136,15 @@ public class MenuTrabajador extends JFrame{
             ventana.setVisible(true);
             this.dispose(); // Close the current window
         });
+        btnUsuario.addActionListener(e -> {
+            // Assuming you have a MenuPaciente window to go back to
+            VentanaVisualizarUsuario ventana = new VentanaVisualizarUsuario(usuario);
+            ventana.setVisible(true);
+            this.dispose(); // Close the current window
+        });
+  	
 	}
+	
 	
 //	 btnMedicos.addActionListener(e -> {
 //         // Assuming you have a MenuPaciente window to go back to
