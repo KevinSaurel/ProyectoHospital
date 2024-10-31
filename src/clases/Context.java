@@ -17,11 +17,13 @@ public class Context {
     private ArrayList<Doctor> medicos = new ArrayList<>();
     private List<Paciente> pacientes = new ArrayList<>();
     private List<Enfermero> enfermeros = new ArrayList<>();
+    private ArrayList<Administrador> administradores = new ArrayList<>();
 
    
     private Context() {
         cargarMedicos();
         cargarPacientes();
+        cargarAdmins();
        
     }
     
@@ -58,7 +60,29 @@ public class Context {
             System.out.println("Error al cargar los pacientes: " + e.getMessage());
         }
     }
+    private void cargarAdmins() {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/recursos/Administradores.csv"))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] parts = linea.split(",");
+                
+                String contrasena = parts[0];
+                String nombre = parts[1];
+                String apellido = parts[2];
+                int edad = Integer.parseInt(parts[3]);
+                String ubicacion = parts[4];
+                String turno = parts[5];
 
+                
+                
+
+                Administrador nuevoAdmin = new Administrador(contrasena, nombre, apellido, edad, ubicacion, turno);
+                administradores.add(nuevoAdmin);
+            }
+        } catch (IOException e) {
+            System.out.println("Error al cargar los admins: " + e.getMessage());
+        }
+    }
     
     private List<Historial> creaHistorial(String serialized, SimpleDateFormat dateFormat) {
         List<Historial> historialEntries = new ArrayList<>();
@@ -132,6 +156,9 @@ public class Context {
    
     public ArrayList<Doctor> getMedicos() {
         return medicos;
+    }
+    public ArrayList<Administrador> getAdministrador() {
+        return administradores;
     }
 
     public List<Paciente> getPacientes() {

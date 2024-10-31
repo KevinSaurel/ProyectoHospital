@@ -3,8 +3,10 @@ package ventanas;
 
 	import javax.swing.*;
 
+import clases.Administrador;
 import clases.Context;
 import clases.Doctor;
+import clases.Persona;
 
 import java.awt.*;
 	import java.awt.event.ActionEvent;
@@ -24,7 +26,8 @@ import java.util.StringTokenizer;
 		private JFrame vActual;
 	   
 		private ArrayList<Doctor> listaMedicos;
-		private Doctor usuario;
+		private ArrayList<Administrador>listaAdmin;
+		private Persona usuario;
 	   
 	    public VentanaInicioTrabajador() {
 	      // listaMedicos = new ArrayList<>()
@@ -32,6 +35,7 @@ import java.util.StringTokenizer;
 	    	//Doctor usuario ;
 	    	Context context = Context.getInstance(); 
 	    	listaMedicos = context.getMedicos(); 
+	    	listaAdmin = context.getAdministrador();
 	    	
 	    	System.out.println(listaMedicos);
 	    	
@@ -124,6 +128,18 @@ import java.util.StringTokenizer;
 	    			
 	    		
 	    		}
+	    
+	    		
+	    	}
+	    	for(Administrador admin :listaAdmin) {
+	    		if (admin.getNombre().equals(nombre) && admin.getContrasena().equals(contrasena)) {
+	    			usuario = admin;
+	    			System.out.println(usuario);
+	    			return true ;
+	    			
+	    		
+	    		}
+	    
 	    		
 	    	}
 	    	return false;

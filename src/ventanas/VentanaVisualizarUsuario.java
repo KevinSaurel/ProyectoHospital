@@ -28,6 +28,7 @@ public class VentanaVisualizarUsuario extends JFrame{
 	private JButton btnVolver;
 	private Persona usuario;
 	private Color color;
+	private Color color2;
 	
 	public  VentanaVisualizarUsuario(Persona usuario) {
 		this.usuario = usuario;
@@ -102,7 +103,7 @@ private Component crearCentro(JPanel panel) {
 	panel.add(btnContrasena);
 	panel.add(lUbicacion);
 	panel.add(btnUbicacion);
-	
+	//panel.setBackground(color2);
 	return panel;
 	
 }
@@ -144,7 +145,7 @@ private void anadirColores(Component[] components ,Color color) {
 	            }
 	        });
 		}else if(component instanceof JLabel) {
-			Font font = new Font("Arial", Font.PLAIN, 20);
+			Font font = new Font(Font.SANS_SERIF, Font.BOLD, 18);
 			((JLabel) component).setHorizontalAlignment(SwingConstants.CENTER);
 			component.setBackground(color);
 			component.setForeground(color);

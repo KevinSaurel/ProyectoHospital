@@ -16,8 +16,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
+import clases.Administrador;
 import clases.Context;
 import clases.Doctor;
 import clases.Paciente;
@@ -35,6 +38,7 @@ public class MenuTrabajador extends JFrame{
 	private JButton btnCamas;
 	private JButton btnParametros;
 	private JButton btnUsuario;
+	private JButton btnMedicos;
 	
 	
 	public  MenuTrabajador(Persona usuario) {
@@ -53,6 +57,7 @@ public class MenuTrabajador extends JFrame{
 		btnPacientes = new JButton("Pacientes");
 		btnParametros = new JButton("Parametros");
 		btnUsuario = new JButton("Usuario");
+		btnMedicos = new JButton("Medicos");
 		Color color = new Color(6,99,133);
 		
 		
@@ -63,6 +68,8 @@ public class MenuTrabajador extends JFrame{
 		JPanel grid = new JPanel();
 		grid.setLayout(new GridLayout(1,5,10,50));
 // aqui quiero meter el logo donde el primer hueco de grid 
+		
+		
 
 		ImageIcon iconoHospital = new ImageIcon(getClass().getResource("/recursos/hospital.png"));
 
@@ -76,7 +83,13 @@ public class MenuTrabajador extends JFrame{
 		grid.add(btnVolver);
 		grid.add(btnParametros);
 		grid.add(btnUsuario);
+		if(usuario instanceof Administrador ) {
+			grid.add(btnMedicos);
+		}
+		
 		anadirColores(grid.getComponents(),color);
+		
+		
 		
 		
 		grid.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -117,12 +130,11 @@ public class MenuTrabajador extends JFrame{
 		 * Cambiamos el tipo de letra en los botones
 		 * 
 		 **/
-		btnVolver.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
+		
 		btnCitas.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
 		btnPacientes.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
 		btnCamas.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
-		btnParametros.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
-		btnUsuario.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
+		
 		
 		
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -142,6 +154,10 @@ public class MenuTrabajador extends JFrame{
             ventana.setVisible(true);
             this.dispose(); // Close the current window
         });
+        
+        
+        
+        
   	
 	}
 	
@@ -158,6 +174,7 @@ public class MenuTrabajador extends JFrame{
 		
 			component.setBackground(color);
 			component.setForeground(Color.white);
+			component.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
 			component.addMouseListener(new MouseAdapter() {
 				 
 		            @Override
