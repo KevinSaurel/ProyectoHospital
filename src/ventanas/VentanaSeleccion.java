@@ -1,8 +1,13 @@
 package ventanas;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,6 +31,7 @@ public class VentanaSeleccion extends JFrame{
 		setIconImage(i.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(300, 200, 600, 400);
+		Color color = new Color(6,99,133);
 		
 		
 		
@@ -40,6 +46,8 @@ public class VentanaSeleccion extends JFrame{
 
 		pAbajo = new JPanel();
 		pCentro = new JPanel();
+		pCentro.setBackground(color.white);
+		pAbajo.setBackground(color.white);
 
 		textoIdentificacion = new JTextField(20);
 
@@ -49,7 +57,9 @@ public class VentanaSeleccion extends JFrame{
 		pCentro.add(botonPaciente);
 		pCentro.add(lblImagenCliente);
 		pAbajo.add(botonCerrar);
-
+		
+		anadirColores(pCentro.getComponents(), color);
+		anadirColores(pAbajo.getComponents(), color);
 		getContentPane().add(pAbajo, BorderLayout.SOUTH);
 		getContentPane().add(pCentro, BorderLayout.CENTER);
 
@@ -76,5 +86,29 @@ public class VentanaSeleccion extends JFrame{
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
+	}
+	private void anadirColores(Component[] components ,Color color) {
+		for(Component component :components) {
+			if(component instanceof JButton) {
+		
+			component.setBackground(color);
+			component.setForeground(Color.white);
+			component.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+			component.addMouseListener(new MouseAdapter() {
+				 
+		            @Override
+		            public void mouseEntered(MouseEvent e) {
+		            	component.setBackground(Color.white); 
+		            	component.setForeground(color);
+		            }
+
+		            @Override
+		            public void mouseExited(MouseEvent e) {
+		            	component.setBackground(color); 
+		            	component.setForeground(Color.white);
+		            }
+		        });
+			}
+		}
 	}
 }

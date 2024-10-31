@@ -36,7 +36,7 @@ public class MenuTrabajador extends JFrame{
 	private JButton btnCitas;
 	private JButton btnPacientes;
 	private JButton btnCamas;
-	private JButton btnParametros;
+	private JButton btnSesion;
 	private JButton btnUsuario;
 	private JButton btnMedicos;
 	
@@ -49,13 +49,14 @@ public class MenuTrabajador extends JFrame{
 		  
 //		vActual = this;
 //		this.vAnterior = vAnterior;
+    	
 		
 		btnVolver = new JButton("Salir");
 		
 		btnCitas = new JButton("CITAS");
 		btnCamas = new JButton("Camas");
 		btnPacientes = new JButton("Pacientes");
-		btnParametros = new JButton("Parametros");
+		btnSesion = new JButton("cerrar sesion");
 		btnUsuario = new JButton("Usuario");
 		btnMedicos = new JButton("Medicos");
 		Color color = new Color(6,99,133);
@@ -72,7 +73,7 @@ public class MenuTrabajador extends JFrame{
 		
 
 		ImageIcon iconoHospital = new ImageIcon(getClass().getResource("/recursos/hospital.png"));
-
+		setIconImage(iconoHospital.getImage());
 		
 		Image imagenEscalada = iconoHospital.getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
 		iconoHospital = new ImageIcon(imagenEscalada);
@@ -80,8 +81,8 @@ public class MenuTrabajador extends JFrame{
 
 		grid.add(labelConIcono);
 		
-		grid.add(btnVolver);
-		grid.add(btnParametros);
+		
+		grid.add(btnSesion);
 		grid.add(btnUsuario);
 		if(usuario instanceof Administrador ) {
 			grid.add(btnMedicos);
@@ -125,7 +126,8 @@ public class MenuTrabajador extends JFrame{
 		cita.add(ubicacionHospital);
 		pngHistorial.add(cita);
 		panel.add(pngHistorial , BorderLayout.CENTER);
-		panel.add(btnVolver,BorderLayout.SOUTH);
+		//panel.add(btnVolver,BorderLayout.SOUTH);
+		
 		/**
 		 * Cambiamos el tipo de letra en los botones
 		 * 
@@ -151,6 +153,12 @@ public class MenuTrabajador extends JFrame{
         btnUsuario.addActionListener(e -> {
             // Assuming you have a MenuPaciente window to go back to
             VentanaVisualizarUsuario ventana = new VentanaVisualizarUsuario(usuario);
+            ventana.setVisible(true);
+            this.dispose(); // Close the current window
+        });
+        btnSesion.addActionListener(e -> {
+            // Assuming you have a MenuPaciente window to go back to
+            VentanaSeleccion ventana = new VentanaSeleccion();
             ventana.setVisible(true);
             this.dispose(); // Close the current window
         });
