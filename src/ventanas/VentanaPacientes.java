@@ -32,6 +32,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
+import clases.Administrador;
 import clases.Context;
 import clases.Doctor;
 import clases.Historial;
@@ -346,7 +347,7 @@ class ButtonEditor extends AbstractCellEditor implements TableCellEditor, Action
     public Object getCellEditorValue() {
         if (isPushed) {
             
-            System.out.println("Historial button clicked on row " + tablaPacientes.getSelectedRow());
+            //System.out.pintln("Historial button clicked on row " + tablaPacientes.getSelectedRow());
             int row = tablaPacientes.getSelectedRow();
            
             int codigoP = (int) modeloDatosPacientes.getValueAt(row, 3);
@@ -361,11 +362,13 @@ class ButtonEditor extends AbstractCellEditor implements TableCellEditor, Action
             		List<Historial> lista = p.getHistorialPaciente();
             		Paciente pac = new Paciente(contrasena,nombre,apellido,
             									edad,ubicacion,codigoP,lista);
-            		System.out.println(pac);
+            		//System.out.println(pac);
             		if(usuario instanceof Doctor) {
             		VentanaHistorial ventanaHistorial = new VentanaHistorial(pac , usuario);
             		ventanaHistorial.setVisible(true);
             		//this.dispose();
+            		}else if (usuario instanceof Administrador){
+            			JOptionPane.showMessageDialog(null, "Solo un medico puede acceder al historial de un paciente", "Acceso rechazado", JOptionPane.ERROR_MESSAGE);
             		}
             	}
             }
