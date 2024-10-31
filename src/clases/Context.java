@@ -15,7 +15,7 @@ public class Context {
     private static Context instance;  
     
     private ArrayList<Doctor> medicos = new ArrayList<>();
-    private List<Paciente> pacientes = new ArrayList<>();
+    private ArrayList<Paciente> pacientes = new ArrayList<>();
     private List<Enfermero> enfermeros = new ArrayList<>();
     private ArrayList<Administrador> administradores = new ArrayList<>();
 
@@ -145,13 +145,58 @@ public class Context {
     		    
 
     		 
-    		 linea.append(lista);
-    		
+    		 //linea.append(lista);
+    		 bw.write(linea.toString());
+    	        bw.newLine();  
     	}catch (IOException e) {
             System.out.println("Error al guardar paciente : " + e.getMessage());
         }
     			
     }
+    public void guardarHistorial(Paciente paciente, Historial historial) {
+        // Encontrar al paciente y agregarle el historial en memoria
+        for (Paciente p : pacientes) {
+            if (paciente.equals(p)) {
+                p.getHistorialPaciente().add(historial);
+                break;
+            }
+        }
+
+        // Reescribir todos los datos en pacientes.csv
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/recursos/pacientes.csv", false))) { 
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            for (Paciente p : pacientes) {
+                StringBuilder linea = new StringBuilder();
+                linea.append(p.getContrasena()).append(",");
+                linea.append(p.getNombre()).append(",");
+                linea.append(p.getApellido()).append(",");
+                linea.append(p.getEdad()).append(",");
+                linea.append(p.getUbicacion()).append(",");
+                linea.append(p.getCodigoPaciente()).append(",");
+
+                // Serializar historial del paciente
+                StringBuilder historialSerializado = new StringBuilder();
+                for (Historial h : p.getHistorialPaciente()) {
+                    historialSerializado.append(h.getCausa()).append("|").append(dateFormat.format(h.getFecha())).append(";");
+                }
+
+                
+                linea.append(historialSerializado);
+
+                // Escribir la línea completa para este paciente
+                bw.write(linea.toString());
+                bw.newLine();  // Mover a la siguiente línea para el próximo paciente
+            }
+
+            System.out.println("Archivo pacientes.csv reescrito correctamente.");
+        } catch (IOException e) {
+            System.out.println("Error al guardar el historial del paciente: " + e.getMessage());
+        }
+    }
+
+    	
+    		
 
    
     public ArrayList<Doctor> getMedicos() {
@@ -161,7 +206,7 @@ public class Context {
         return administradores;
     }
 
-    public List<Paciente> getPacientes() {
+    public ArrayList<Paciente> getPacientes() {
         return pacientes;
     }
 
