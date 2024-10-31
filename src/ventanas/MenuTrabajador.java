@@ -145,22 +145,19 @@ public class MenuTrabajador extends JFrame{
         
         
         btnPacientes .addActionListener(e -> {
-            // Assuming you have a MenuPaciente window to go back to
             VentanaPacientes ventana = new VentanaPacientes(pacientes , usuario);
             ventana.setVisible(true);
-            this.dispose(); // Close the current window
+            this.dispose(); 
         });
         btnUsuario.addActionListener(e -> {
-            // Assuming you have a MenuPaciente window to go back to
             VentanaVisualizarUsuario ventana = new VentanaVisualizarUsuario(usuario);
             ventana.setVisible(true);
-            this.dispose(); // Close the current window
+            this.dispose(); 
         });
         btnSesion.addActionListener(e -> {
-            // Assuming you have a MenuPaciente window to go back to
             VentanaSeleccion ventana = new VentanaSeleccion();
             ventana.setVisible(true);
-            this.dispose(); // Close the current window
+            this.dispose(); 
         });
         
         
@@ -169,13 +166,7 @@ public class MenuTrabajador extends JFrame{
   	
 	}
 	
-	
-//	 btnMedicos.addActionListener(e -> {
-//         // Assuming you have a MenuPaciente window to go back to
-//         VentanaMedicos ventana = new VentanaMedicos(medicos);
-//         ventana.setVisible(true);
-//         this.dispose(); // Close the current window
-//     });
+
 	private void anadirColores(Component[] components ,Color color) {
 		for(Component component :components) {
 			if(component instanceof JButton) {
