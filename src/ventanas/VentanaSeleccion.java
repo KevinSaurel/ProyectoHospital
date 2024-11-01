@@ -53,9 +53,9 @@ public class VentanaSeleccion extends JFrame{
 
 		pCentro.add(lblIdentificacion);
 		pCentro.add(botonTrabajador);
-		pCentro.add(lblImagenTrabajador);
+//		pCentro.add(lblImagenTrabajador);
 		pCentro.add(botonPaciente);
-		pCentro.add(lblImagenCliente);
+//		pCentro.add(lblImagenCliente);
 		pAbajo.add(botonCerrar);
 		
 		anadirColores(pCentro.getComponents(), color);

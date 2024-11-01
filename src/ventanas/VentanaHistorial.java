@@ -38,8 +38,8 @@ public class VentanaHistorial extends JFrame{
 		 btnAnadir = new JButton("Anadir");
 		Color color =  new Color(6,99,133);
 		
-//		ImageIcon im = new ImageIcon("src/recursos/hospital.png");
-//		setIconImage(im.getImage());
+		ImageIcon im = new ImageIcon("src/recursos/hospital.png");
+		setIconImage(im.getImage());
 		 
 		 JPanel panelN = new JPanel(new BorderLayout());
 		GridLayout grid1 = new GridLayout(1,6);

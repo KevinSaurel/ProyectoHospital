@@ -18,8 +18,8 @@ package ventanas;
 	       
 	    	vActual = this;
 	    	
-//	    	ImageIcon i = new ImageIcon("src/recursos/hospital.png");
-//			setIconImage(i.getImage());
+	    	ImageIcon i = new ImageIcon("src/recursos/hospital.png");
+			setIconImage(i.getImage());
 	    	
 	        setTitle("Sistema de Gestion de Hospital - Inicio de Sesion");
 	        setSize(400, 200);

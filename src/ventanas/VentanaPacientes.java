@@ -57,8 +57,8 @@ public class VentanaPacientes extends JFrame{
         usuario = usuarioP;
         Color color = new Color(6,99,133);
         
-//        ImageIcon i = new ImageIcon("src/recursos/hospital.png");
-//		setIconImage(i.getImage());
+        ImageIcon i = new ImageIcon("src/recursos/hospital.png");
+		setIconImage(i.getImage());
         
         // llamada para que filtre por nombre
         txtFiltro = new JTextField(20);

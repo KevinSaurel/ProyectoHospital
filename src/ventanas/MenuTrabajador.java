@@ -47,8 +47,8 @@ public class MenuTrabajador extends JFrame{
 		Context context = Context.getInstance();  
     	this.pacientes = context.getPacientes();
 		  
-//    	ImageIcon i = new ImageIcon("src/recursos/hospital.png");
-//		setIconImage(i.getImage());
+    	ImageIcon i = new ImageIcon("src/recursos/hospital.png");
+		setIconImage(i.getImage());
     	
 		
 		btnVolver = new JButton("Salir");
@@ -158,6 +158,12 @@ public class MenuTrabajador extends JFrame{
             VentanaSeleccion ventana = new VentanaSeleccion();
             ventana.setVisible(true);
             this.dispose(); 
+        });
+        
+        btnCamas.addActionListener((e) -> {
+        	VentanaCamas ventana = new VentanaCamas(usuario);
+            ventana.setVisible(true);
+            this.dispose();
         });
         
         

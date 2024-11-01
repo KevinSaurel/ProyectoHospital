@@ -40,8 +40,8 @@ public class VentanaMedicos extends JFrame {
         this.medicos = medicos;
         Color color = new Color(6,99,133);
         
-//        ImageIcon i = new ImageIcon("src/recursos/hospital.png");
-//		setIconImage(i.getImage());
+        ImageIcon i = new ImageIcon("src/recursos/hospital.png");
+		setIconImage(i.getImage());
         
         // aqui pongo las llamadas para que filtra por nombre 
         txtFiltro = new JTextField(20);
