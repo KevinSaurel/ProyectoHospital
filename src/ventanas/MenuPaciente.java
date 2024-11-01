@@ -43,6 +43,9 @@ public class MenuPaciente extends JFrame{
 		  ArrayList<Doctor> medicos = new ArrayList<>();
 //		vActual = this;
 //		this.vAnterior = vAnterior;
+		  
+//		ImageIcon i = new ImageIcon("src/recursos/hospital.png");
+//		setIconImage(i.getImage());
 		
 		btnVolver = new JButton("VOLVER");
 		

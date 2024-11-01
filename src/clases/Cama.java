@@ -1,15 +1,16 @@
 package clases;
 
+import java.time.LocalDate;
+
 public class Cama {
 	private int numCama;
 	private boolean ocupada;
 	private String tipoCama;
-	
+	protected LocalDate fecha;
 	
 	
 	public Cama() {
 		super();
-		
 	}
 
 
@@ -29,11 +30,11 @@ public class Cama {
 
 
 
-	public void setNumCama(int numCama) {
-		this.numCama = numCama;
+	public void setNumCama(int numCamasDisponibles) {
+		this.numCama = numCamasDisponibles;
 	}
 
-
+	
 
 	public boolean isOcupada() {
 		return ocupada;

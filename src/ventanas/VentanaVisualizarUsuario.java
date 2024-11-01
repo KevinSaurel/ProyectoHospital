@@ -34,7 +34,9 @@ public class VentanaVisualizarUsuario extends JFrame{
 		this.usuario = usuario;
 		 this.color = new Color(6,99,133);
 		Color color2 = new Color(7,120,163);
-
+		
+//		ImageIcon i = new ImageIcon("src/recursos/hospital.png");
+//		setIconImage(i.getImage());
 		
 		
 		JPanel panel = new JPanel();

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -30,6 +31,9 @@ public class VentanaCitas extends JFrame{
 	    public VentanaCitas(List<Cita> citas, Persona usuario) {
 	    	
 	    	Color MainColor = new Color(6,99,133);
+	    	
+//	    	ImageIcon i = new ImageIcon("src/recursos/hospital.png");
+//			setIconImage(i.getImage());
 	    
 	    //Se crea el panel base
 	    	 JPanel panelBase = new JPanel(new BorderLayout());

@@ -41,8 +41,8 @@ public class VentanaSeleccion extends JFrame{
 
 
 		lblIdentificacion = new JLabel("Introduce que eres: ");
-		lblImagenTrabajador = new JLabel(new ImageIcon("src\\Imagenes\\imagenTrabajador.jpeg"));
-		lblImagenCliente = new JLabel(new ImageIcon("src\\Imagenes\\ImagenCliente.jpeg"));
+//		lblImagenTrabajador = new JLabel(new ImageIcon("src\\Imagenes\\imagenTrabajador.jpeg"));
+//		lblImagenCliente = new JLabel(new ImageIcon("src\\Imagenes\\ImagenCliente.jpeg"));
 
 		pAbajo = new JPanel();
 		pCentro = new JPanel();

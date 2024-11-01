@@ -47,8 +47,8 @@ public class MenuTrabajador extends JFrame{
 		Context context = Context.getInstance();  
     	this.pacientes = context.getPacientes();
 		  
-//		vActual = this;
-//		this.vAnterior = vAnterior;
+//    	ImageIcon i = new ImageIcon("src/recursos/hospital.png");
+//		setIconImage(i.getImage());
     	
 		
 		btnVolver = new JButton("Salir");

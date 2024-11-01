@@ -56,6 +56,10 @@ public class VentanaPacientes extends JFrame{
         
         usuario = usuarioP;
         Color color = new Color(6,99,133);
+        
+//        ImageIcon i = new ImageIcon("src/recursos/hospital.png");
+//		setIconImage(i.getImage());
+        
         // llamada para que filtre por nombre
         txtFiltro = new JTextField(20);
         txtFiltro.getDocument().addDocumentListener(new DocumentListener() {
@@ -72,11 +76,11 @@ public class VentanaPacientes extends JFrame{
             }
         });
 
-        // Panel principal y configuración general
+        // Panel principal y configuraciï¿½n general
         JPanel panelPrincipal = new JPanel(new BorderLayout());
         panelPrincipal.setBackground(color);
 
-        String[] nombreColumnas = { "Nombre", "Apellido", "Edad", "Código Paciente", "Historial" };
+        String[] nombreColumnas = { "Nombre", "Apellido", "Edad", "Cï¿½digo Paciente", "Historial" };
         modeloDatosPacientes = new DefaultTableModel(nombreColumnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -127,7 +131,7 @@ public class VentanaPacientes extends JFrame{
         });
 
        
-        btnAnadirP = new JButton("Añadir Paciente");
+        btnAnadirP = new JButton("Aï¿½adir Paciente");
         btnAnadirP.setBackground(color);
         btnAnadirP.setForeground(Color.white);
         btnAnadirP.addMouseListener(new MouseAdapter() {
@@ -146,12 +150,12 @@ public class VentanaPacientes extends JFrame{
 
         
         btnAnadirP.addActionListener(e -> {
-            JFrame frameNuevoPaciente = new JFrame("Añadir Nuevo Paciente");
+            JFrame frameNuevoPaciente = new JFrame("Aï¿½adir Nuevo Paciente");
             frameNuevoPaciente.setSize(400, 300);
             frameNuevoPaciente.setLayout(new GridLayout(8, 2)); 
             frameNuevoPaciente.getContentPane().setBackground(color);
 
-            JLabel lblContrasena = new JLabel("Contraseña:");
+            JLabel lblContrasena = new JLabel("Contraseï¿½a:");
             JTextField txtContrasena = new JTextField();
             JLabel lblNombre = new JLabel("Nombre:");
             JTextField txtNombre = new JTextField();
@@ -159,12 +163,12 @@ public class VentanaPacientes extends JFrame{
             JTextField txtApellido = new JTextField();
             JLabel lblEdad = new JLabel("Edad:");
             JTextField txtEdad = new JTextField();
-            JLabel lblUbicacion = new JLabel("Ubicación:");
+            JLabel lblUbicacion = new JLabel("Ubicaciï¿½n:");
             JTextField txtUbicacion = new JTextField();
-            JLabel lblCodigoPaciente = new JLabel("Código Paciente:");
+            JLabel lblCodigoPaciente = new JLabel("Cï¿½digo Paciente:");
             JTextField txtCodigoPaciente = new JTextField();
 
-            JButton btnAnadir = new JButton("Añadir Paciente");
+            JButton btnAnadir = new JButton("Aï¿½adir Paciente");
             btnAnadir.setBackground(color);
             btnAnadir.setForeground(Color.white);
             btnAnadir.addMouseListener(new MouseAdapter() {
@@ -199,7 +203,7 @@ public class VentanaPacientes extends JFrame{
             frameNuevoPaciente.add(lblCodigoPaciente);
             lblCodigoPaciente.setForeground(Color.WHITE);
             frameNuevoPaciente.add(txtCodigoPaciente);
-            frameNuevoPaciente.add(new JLabel()); // Label vacío para llenar último grid
+            frameNuevoPaciente.add(new JLabel()); // Label vacï¿½o para llenar ï¿½ltimo grid
             frameNuevoPaciente.add(btnAnadir);
 
             btnAnadir.addActionListener(e2 -> {
@@ -214,7 +218,7 @@ public class VentanaPacientes extends JFrame{
                 try {
                     edad = Integer.parseInt(txtEdad.getText());
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(frameNuevoPaciente, "Edad debe ser un número válido.");
+                    JOptionPane.showMessageDialog(frameNuevoPaciente, "Edad debe ser un nï¿½mero vï¿½lido.");
                     return;
                 }
 

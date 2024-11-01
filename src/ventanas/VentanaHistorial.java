@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,6 +37,9 @@ public class VentanaHistorial extends JFrame{
 	public VentanaHistorial(Paciente paciente , Persona medico) {
 		 btnAnadir = new JButton("Anadir");
 		Color color =  new Color(6,99,133);
+		
+//		ImageIcon im = new ImageIcon("src/recursos/hospital.png");
+//		setIconImage(im.getImage());
 		 
 		 JPanel panelN = new JPanel(new BorderLayout());
 		GridLayout grid1 = new GridLayout(1,6);
@@ -59,8 +63,8 @@ public class VentanaHistorial extends JFrame{
 		JLabel nombre = new JLabel("Nombre: " + paciente.getNombre());
 		JLabel apellido = new JLabel("Apellido: " + paciente.getApellido());
 		JLabel edad = new JLabel("Edad: " + paciente.getEdad());
-		JLabel ubicacion = new JLabel("Ubicación: " + paciente.getUbicacion());
-		JLabel codigoPaciente = new JLabel("Código Paciente: " + paciente.getCodigoPaciente());
+		JLabel ubicacion = new JLabel("Ubicaciï¿½n: " + paciente.getUbicacion());
+		JLabel codigoPaciente = new JLabel("Cï¿½digo Paciente: " + paciente.getCodigoPaciente());
 		
 		//nombre.setFont(font);
 		
@@ -153,13 +157,13 @@ public void anadirHistorial(Paciente paciente , Persona medico) {
 
             // Update table model after adding new entry
             tableModel.fireTableDataChanged();
-            JOptionPane.showMessageDialog(this, "Historial añadido exitosamente.");
+            JOptionPane.showMessageDialog(this, "Historial aï¿½adido exitosamente.");
         } else {
             JOptionPane.showMessageDialog(panel, "Por favor, ingrese un texto.");
         }
     });
 
-    JOptionPane.showMessageDialog(this, panel, "Añadir Historial", JOptionPane.PLAIN_MESSAGE);
+    JOptionPane.showMessageDialog(this, panel, "Aï¿½adir Historial", JOptionPane.PLAIN_MESSAGE);
 }
 
 
