@@ -7,6 +7,7 @@ public class Cama {
 	private boolean ocupada;
 	private String tipoCama;
 	protected LocalDate fecha;
+	private Paciente paciente;
 	
 	
 	public Cama() {
@@ -14,14 +15,14 @@ public class Cama {
 	}
 
 
-
-	public Cama(int numCama, boolean ocupada, String tipoCama) {
+	public Cama(int numCama, boolean ocupada, String tipoCama, LocalDate fecha, Paciente paciente) {
 		super();
 		this.numCama = numCama;
 		this.ocupada = ocupada;
 		this.tipoCama = tipoCama;
+		this.fecha = fecha;
+		this.paciente = paciente;
 	}
-
 
 
 	public int getNumCama() {
@@ -58,6 +59,16 @@ public class Cama {
 		this.tipoCama = tipoCama;
 	}
 
+
+
+	public Paciente getPaciente() {
+		return paciente;
+	}
+
+
+	public void setPaciente(Paciente paciente) {
+		this.paciente = paciente;
+	}
 
 
 	@Override
