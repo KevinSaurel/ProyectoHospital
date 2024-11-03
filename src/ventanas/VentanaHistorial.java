@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
+import clases.Administrador;
 import clases.Doctor;
 import clases.Historial;
 import clases.Paciente;
@@ -34,7 +35,7 @@ public class VentanaHistorial extends JFrame{
 	private HistorialTableModel tableModel;	
 	
 	//JLabel jlabel;
-	public VentanaHistorial(Paciente paciente , Persona medico) {
+	public VentanaHistorial(Paciente paciente , Persona usuario) {
 		 btnAnadir = new JButton("Anadir");
 		Color color =  new Color(6,99,133);
 		
@@ -52,7 +53,9 @@ public class VentanaHistorial extends JFrame{
 			JLabel l = new JLabel("");
 			panelUpper.add(l);
 			}
+		if(usuario instanceof Doctor || usuario instanceof Administrador) {
 		panelUpper.add(btnAnadir);
+		}
 		panelN.add(panelUpper , BorderLayout.NORTH);
 		///panelN , center
 		GridLayout grid2 = new GridLayout(2,3);
@@ -106,9 +109,9 @@ public class VentanaHistorial extends JFrame{
         
 		
 		  btnAnadir.addActionListener(e ->{
-			  if(medico instanceof Doctor) {
+			  if(usuario instanceof Doctor) {
 				  
-			  anadirHistorial(paciente , medico);
+			  anadirHistorial(paciente , usuario);
 			  }
 	        });
 

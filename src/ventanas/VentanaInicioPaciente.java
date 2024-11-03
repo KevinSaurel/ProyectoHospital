@@ -2,9 +2,17 @@ package ventanas;
 
 
 	import javax.swing.*;
-	import java.awt.*;
+
+import clases.Context;
+import clases.Doctor;
+import clases.Paciente;
+import clases.Persona;
+
+import java.awt.*;
 	import java.awt.event.ActionEvent;
 	import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 
 	public class VentanaInicioPaciente extends JFrame {
 		
@@ -13,11 +21,15 @@ package ventanas;
 		private JPasswordField contrasenaCampo;
 		
 		private JFrame vActual;
-	   
+		private ArrayList<Paciente>listaPacientes;
+	    private Paciente usuario;
+	    
 	    public VentanaInicioPaciente() {
 	       
 	    	vActual = this;
-	    	
+	    	Context context = Context.getInstance(); 
+	    	listaPacientes = context.getPacientes(); 
+	    	System.out.println(listaPacientes);
 	    	ImageIcon i = new ImageIcon("src/recursos/hospital.png");
 			setIconImage(i.getImage());
 	    	
@@ -56,20 +68,27 @@ package ventanas;
 	        botonLogin.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
-	                String usuario = usuarioCampo.getText();
+	                String usuarioN = usuarioCampo.getText();
 	                
-	                String contrasena = new String(contrasenaCampo.getPassword());
+	                String contrasenaN = new String(contrasenaCampo.getPassword());
 
 	                // Verificaci�n  usuario: admin, contrase�a: admin)
-	                if (usuario.equals("admin") && contrasena.equals("admin")) {
+	                if (usuarioN.equals("admin") && contrasenaN.equals("admin")) {
 	                    JOptionPane.showMessageDialog(null, "Inicio de sesion exitoso!", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
 	                    // Aqu� podr�as abrir la ventana principal del sistema de gesti�n de hospital
 	                    panel.setVisible(false);
-//	                    vaciarCampos();
-//						vActual.dispose();
-	                    MenuPaciente ventana = new MenuPaciente();
+	                    MenuPaciente ventana = new MenuPaciente(usuario);
 	                    ventana.setVisible(true);
-	                } else {
+	                } else if(listaGetNombre(usuarioN, contrasenaN)==true){
+	                	
+	                	JOptionPane.showMessageDialog(null, "Inicio de sesion exitoso!", "Bienvenido: "+ usuarioN, JOptionPane.INFORMATION_MESSAGE);
+	                	MenuPaciente ventana = new MenuPaciente(usuario);
+	               
+		                   ventana.setVisible(true);
+		                   vActual.dispose();
+	                
+	                }else{
+	                
 	                    JOptionPane.showMessageDialog(null, "Usuario o contrase�a incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
 //	                    vaciarCampos();
 	                }
@@ -91,8 +110,23 @@ package ventanas;
 //        	usuarioCampo.setText("");
 //        	contrasenaCampo.setText("");
 //    	}
-
+	    
+	    public boolean listaGetNombre(String nombre , String contrasena) {
+	    	for(Paciente paciente :listaPacientes) {
+	    		if (paciente.getNombre().equals(nombre) && paciente.getContrasena().equals(contrasena)) {
+	    			usuario = paciente;
+	    			System.out.println(usuario);
+	    			return true ;
+	    			
+	    		
+	    		}
+	    		}
+	    return false;
+	    	
+	    	
+			
 	  
+	    }
 	}
 
 

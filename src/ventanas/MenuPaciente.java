@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 
 import clases.Doctor;
 import clases.Paciente;
+import clases.Persona;
 
 public class MenuPaciente extends JFrame{
 	
@@ -38,11 +39,10 @@ public class MenuPaciente extends JFrame{
 	private JButton btnParametros;
 	private JButton btnUsuario;
 	
-	
-	public MenuPaciente() {
+	public MenuPaciente(Persona usuario) {
 		  ArrayList<Doctor> medicos = new ArrayList<>();
 //		vActual = this;
-//		this.vAnterior = vAnterior;
+		 //this.vAnterior = vAnterior;
 		  
 		ImageIcon i = new ImageIcon("src/recursos/hospital.png");
 		setIconImage(i.getImage());
@@ -52,7 +52,7 @@ public class MenuPaciente extends JFrame{
 		btnCitas = new JButton("CITAS");
 		btnHospitales = new JButton("HOSPITALES");
 		btnMedicos = new JButton("MEDICOS");
-		btnHistorial = new JButton("HISTORIAL");
+		btnHistorial = new JButton("MI HISTORIAL");
 		btnContacto = new JButton("Contacto");
 		btnParametros = new JButton("Parametros");
 		btnUsuario = new JButton("Usuario");
@@ -162,11 +162,21 @@ public class MenuPaciente extends JFrame{
 //				
 //			}
 //		});
-		 btnMedicos.addActionListener(e -> {
-	            // Assuming you have a MenuPaciente window to go back to
-	            VentanaMedicos ventana = new VentanaMedicos(medicos);
+//		 btnMedicos.addActionListener(e -> {
+//	            // Assuming you have a MenuPaciente window to go back to
+//	            VentanaMedicos ventana = new VentanaMedicos(medicos);
+//	            ventana.setVisible(true);
+//	            this.dispose(); // Close the current window
+//	        });
+		 btnHistorial.addActionListener(e -> {
+			 Persona p = new Persona("title", "title", "title",1,"");
+			 ArrayList<Doctor> l = new ArrayList();
+			 if(usuario instanceof Paciente) {
+				 Paciente paciente = (Paciente) usuario; 
+	            VentanaHistorial ventana = new VentanaHistorial(paciente, p);
 	            ventana.setVisible(true);
-	            this.dispose(); // Close the current window
+	            this.dispose(); 
+			 }
 	        });
 		
 		setExtendedState(JFrame.MAXIMIZED_BOTH);

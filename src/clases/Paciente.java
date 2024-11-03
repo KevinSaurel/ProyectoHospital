@@ -32,16 +32,16 @@ public class Paciente extends Persona{
 		this.historialPaciente = historialPaciente;
 	}
 
+
+
 	@Override
 	public String toString() {
 		return "Paciente [codigoPaciente=" + codigoPaciente + ", historialPaciente=" + historialPaciente
 				+ ", contrasena=" + contrasena + ", nombre=" + nombre + ", apellido=" + apellido + ", edad=" + edad
-				+ ", ubicacion=" + ubicacion + ", getCodigoPaciente()=" + getCodigoPaciente()
-				+ ", getHistorialPaciente()=" + getHistorialPaciente() + ", getContrasena()=" + getContrasena()
-				+ ", getNombre()=" + getNombre() + ", getApellido()=" + getApellido() + ", getEdad()=" + getEdad()
-				+ ", getUbicacion()=" + getUbicacion() + ", toString()=" + super.toString() + ", getClass()="
-				+ getClass() + ", hashCode()=" + hashCode() + "]";
+				+ ", ubicacion=" + ubicacion + "]";
 	}
+
+	
 	
 	
 	
