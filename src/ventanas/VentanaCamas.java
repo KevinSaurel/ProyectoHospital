@@ -35,11 +35,7 @@ public class VentanaCamas extends JFrame{
 	private Persona usuario;
 	
 	public VentanaCamas(List<Cama> camas, Persona usuarioP) {
-		
-		btnAsignarCama = new JButton("Asignar");
-		btnVaciarCama = new JButton("Vaciar");
-		
-		
+	
 		
 		usuario = usuarioP;
 		Color color =  new Color(6,99,133);
@@ -62,6 +58,11 @@ public class VentanaCamas extends JFrame{
         tableModel = new CamaTableModel(null);
         tableCama = new JTable(tableModel);
         scrollTabla = new JScrollPane(tableCama);
+        
+        
+        btnAsignarCama = new JButton("Asignar");
+		btnVaciarCama = new JButton("Vaciar");
+        
         pCentro.add(scrollTabla);
         pSur.add(btnAsignarCama);
         pSur.add(btnVaciarCama);
@@ -190,7 +191,7 @@ public class VentanaCamas extends JFrame{
 //
 //                tableCama.addRow(new Object[]{nombre, apellido, edad, codigoP});
 
-                frameAsignarCama.dispose(); 
+//                frameAsignarCama.dispose(); 
             });
         });
         
@@ -261,9 +262,9 @@ public class VentanaCamas extends JFrame{
                     JOptionPane.showMessageDialog(frameAñadirCama, "Por favor, rellena todos los campos.");
                     return;
                 }
-                Cama nuevaCama = new Cama(numCama, ocupada, respuesta);
-               
-                camas.add(nuevaCama);
+//                Cama nuevaCama = new Cama(numCama, ocupada, tipo);
+//               
+//                camas.add(nuevaCama);
 //                context.guardarPaciente(nuevoPaciente);
 
 //                tableCama.addRow(new Object[]{numCama, ocupada, tipo});
