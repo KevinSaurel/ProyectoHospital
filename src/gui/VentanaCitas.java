@@ -117,6 +117,7 @@ public class VentanaCitas extends JFrame{
 	    // Ultimos toques para que salga todo en pantalla
 	         
 	         this.setVisible(true);
+	         this.add(panelBase);
 	    }
 	    
 	    // Funcionalidad 
