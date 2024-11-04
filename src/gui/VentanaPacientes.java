@@ -58,7 +58,7 @@ public class VentanaPacientes extends JFrame{
         usuario = usuarioP;
         Color color = new Color(6,99,133);
         
-        ImageIcon i = new ImageIcon("src/recursos/hospital.png");
+        ImageIcon i = new ImageIcon("src/db/hospital.png");
 		setIconImage(i.getImage());
         
         // llamada para que filtre por nombre
@@ -108,7 +108,7 @@ public class VentanaPacientes extends JFrame{
         }
 
      
-        ImageIcon iconBack = new ImageIcon(getClass().getResource("/recursos/icons8-back-25.png"));
+        ImageIcon iconBack = new ImageIcon(getClass().getResource("/db/icons8-back-25.png"));
         JButton btnBack = new JButton(iconBack);
         btnBack.setBackground(color);
         btnBack.setPreferredSize(new Dimension(80, 25));

@@ -50,7 +50,7 @@ public class MenuPaciente extends JFrame{
 //		vActual = this;
 		 //this.vAnterior = vAnterior;
 		  
-		ImageIcon i = new ImageIcon("src/recursos/hospital.png");
+		ImageIcon i = new ImageIcon("src/db/hospital.png");
 		setIconImage(i.getImage());
 		
 		btnVolver = new JButton("VOLVER");
@@ -73,7 +73,7 @@ public class MenuPaciente extends JFrame{
 		grid.setLayout(new GridLayout(1,5,10,50));
 // aqui quiero meter el logo donde el primer hueco de grid 
 
-		ImageIcon iconoHospital = new ImageIcon(getClass().getResource("/recursos/hospital.png"));
+		ImageIcon iconoHospital = new ImageIcon(getClass().getResource("/db/hospital.png"));
 
 		
 		Image imagenEscalada = iconoHospital.getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
@@ -96,7 +96,7 @@ public class MenuPaciente extends JFrame{
 		JPanel pngHistorial = new JPanel();
 		pngHistorial.setLayout(new GridLayout(1 , 2 , 10 , 10 ));
 		
-		ImageIcon imagenMedicos = new ImageIcon(getClass().getResource("/recursos/MedicosFelices.png"));
+		ImageIcon imagenMedicos = new ImageIcon(getClass().getResource("/db/MedicosFelices.png"));
 
 		
 		Image imagenmodi = imagenMedicos.getImage().getScaledInstance(800, 500, java.awt.Image.SCALE_SMOOTH);

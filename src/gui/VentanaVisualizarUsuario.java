@@ -111,7 +111,7 @@ private Component crearCentro(JPanel panel) {
 }
 
 private Component crearBtnVolver(JButton btnBack) {
-	ImageIcon iconBack = new ImageIcon("src/recursos/icons8-back-25.png");
+	ImageIcon iconBack = new ImageIcon("src/db/icons8-back-25.png");
 	 if (iconBack.getImageLoadStatus() == java.awt.MediaTracker.ERRORED) {
 	        System.out.println("Error loading icon.");
 	    }
@@ -163,7 +163,7 @@ private JPanel crearPanelN() {
 	JButton btnParametros = new JButton("Parametros");
 	JButton btnUsuario = new JButton("Usuario");
 	
-	ImageIcon iconoHospital = new ImageIcon(getClass().getResource("/recursos/hospital.png"));
+	ImageIcon iconoHospital = new ImageIcon(getClass().getResource("/db/hospital.png"));
 
 	
 	Image imagenEscalada = iconoHospital.getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);

@@ -36,7 +36,7 @@ public class VentanaCitas extends JFrame{
 	    	
 	    	Color MainColor = new Color(6,99,133);
 	    	
-	    	ImageIcon i = new ImageIcon("src/recursos/hospital.png");
+	    	ImageIcon i = new ImageIcon("src/db/hospital.png");
 			setIconImage(i.getImage());
 	    
 	    // Se crea el panel base
@@ -70,7 +70,7 @@ public class VentanaCitas extends JFrame{
 	         
 	         // Se añade el botón que te lleva atrás
 	         
-	         ImageIcon iconBack = new ImageIcon(getClass().getResource("/recursos/icons8-back-25.png"));
+	         ImageIcon iconBack = new ImageIcon(getClass().getResource("/db/icons8-back-25.png"));
 	         btnBack = new JButton(iconBack);
 	         btnBack.setBackground(MainColor);
 	         btnBack.setPreferredSize(new Dimension(80, 25));

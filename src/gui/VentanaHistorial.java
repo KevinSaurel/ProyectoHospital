@@ -54,7 +54,7 @@ public class VentanaHistorial extends JFrame{
 		 
 		 color =  new Color(6,99,133);
 		
-		ImageIcon im = new ImageIcon("src/recursos/hospital.png");
+		ImageIcon im = new ImageIcon("src/db/hospital.png");
 		setIconImage(im.getImage());
 		 
 		 JPanel panelN = new JPanel(new BorderLayout());
@@ -229,7 +229,7 @@ private JPanel crearPanelN() {
 	JButton btnParametros = new JButton("Parametros");
 	JButton btnUsuario = new JButton("Usuario");
 	
-	ImageIcon iconoHospital = new ImageIcon(getClass().getResource("/recursos/hospital.png"));
+	ImageIcon iconoHospital = new ImageIcon(getClass().getResource("/db/hospital.png"));
 
 	
 	Image imagenEscalada = iconoHospital.getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);

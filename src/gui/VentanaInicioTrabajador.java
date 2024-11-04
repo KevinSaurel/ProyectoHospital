@@ -32,7 +32,7 @@ import java.util.StringTokenizer;
 		private Persona usuario;
 	   
 	    public VentanaInicioTrabajador() {
-	    	ImageIcon i = new ImageIcon("src/recursos/hospital.png");
+	    	ImageIcon i = new ImageIcon("src/db/hospital.png");
 			setIconImage(i.getImage());
 	    	Color color = new Color(6,99,133);
 	      // listaMedicos = new ArrayList<>()

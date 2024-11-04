@@ -39,7 +39,7 @@ public class Context {
    
     private void cargarPacientes() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try (BufferedReader br = new BufferedReader(new FileReader("src/recursos/pacientes.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/db/pacientes.csv"))) {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] parts = linea.split(",");
@@ -62,7 +62,7 @@ public class Context {
         }
     }
     private void cargarAdmins() {
-        try (BufferedReader br = new BufferedReader(new FileReader("src/recursos/Administradores.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/db/Administradores.csv"))) {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] parts = linea.split(",");
@@ -111,7 +111,7 @@ public class Context {
     }
 
     private void cargarMedicos() {
-        try (BufferedReader br = new BufferedReader(new FileReader("src/recursos/doctores.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/db/doctores.csv"))) {
             String linea;
             while ((linea = br.readLine()) != null) {
                 StringTokenizer st = new StringTokenizer(linea, ",");
@@ -131,7 +131,7 @@ public class Context {
         }
     }
     public void guardarPaciente(Paciente paciente) {
-    	try(BufferedWriter bw = new BufferedWriter(new FileWriter("src/recursos/pacientes.csv",true))){
+    	try(BufferedWriter bw = new BufferedWriter(new FileWriter("src/db/pacientes.csv",true))){
     		StringBuilder linea = new StringBuilder();
 
     		linea.append(paciente.getContrasena()).append(",");
@@ -155,7 +155,7 @@ public class Context {
     			
     }
     public void guardarCama(Cama cama) {
-    	try(BufferedWriter bw = new BufferedWriter(new FileWriter("src/recursos/camas.csv",true))){
+    	try(BufferedWriter bw = new BufferedWriter(new FileWriter("src/db/camas.csv",true))){
     		StringBuilder linea = new StringBuilder();
 
     		linea.append(cama.getNumCama()).append(",");
@@ -188,7 +188,7 @@ public class Context {
         }
 
         // Reescribir todos los datos en pacientes.csv
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/recursos/pacientes.csv", false))) { 
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/db/pacientes.csv", false))) { 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
             for (Paciente p : pacientes) {

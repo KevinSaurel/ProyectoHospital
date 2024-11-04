@@ -40,7 +40,7 @@ public class VentanaCamas extends JFrame{
 		usuario = usuarioP;
 		Color color =  new Color(6,99,133);
 		
-		ImageIcon i = new ImageIcon("src/recursos/hospital.png");
+		ImageIcon i = new ImageIcon("src/db/hospital.png");
 		setIconImage(i.getImage());
 		
 		pEste = new JPanel();

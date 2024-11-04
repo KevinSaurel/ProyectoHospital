@@ -30,7 +30,7 @@ import java.util.ArrayList;
 	    	Context context = Context.getInstance(); 
 	    	listaPacientes = context.getPacientes(); 
 	    	System.out.println(listaPacientes);
-	    	ImageIcon i = new ImageIcon("src/recursos/hospital.png");
+	    	ImageIcon i = new ImageIcon("src/db/hospital.png");
 			setIconImage(i.getImage());
 	    	
 	        setTitle("Sistema de Gestion de Hospital - Inicio de Sesion");

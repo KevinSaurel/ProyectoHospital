@@ -27,7 +27,7 @@ public class VentanaSeleccion extends JFrame{
 	
 	public VentanaSeleccion() {
 		
-		ImageIcon i = new ImageIcon("src/recursos/hospital.png");
+		ImageIcon i = new ImageIcon("src/db/hospital.png");
 		setIconImage(i.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(300, 200, 600, 400);
