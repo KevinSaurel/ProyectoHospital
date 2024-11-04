@@ -1,12 +1,12 @@
-package ventanas;
+package gui;
 
 
 	import javax.swing.*;
 
-import clases.Context;
-import clases.Doctor;
-import clases.Paciente;
-import clases.Persona;
+import domain.Context;
+import domain.Doctor;
+import domain.Paciente;
+import domain.Persona;
 
 import java.awt.*;
 	import java.awt.event.ActionEvent;

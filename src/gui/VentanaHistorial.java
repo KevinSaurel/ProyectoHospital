@@ -1,4 +1,4 @@
-package ventanas;
+package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -25,12 +25,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
-import clases.Administrador;
-import clases.Context;
-import clases.Doctor;
-import clases.Historial;
-import clases.Paciente;
-import clases.Persona;
+import domain.Administrador;
+import domain.Context;
+import domain.Doctor;
+import domain.Historial;
+import domain.Paciente;
+import domain.Persona;
 
 public class VentanaHistorial extends JFrame{
 	JButton btnAnadir ;

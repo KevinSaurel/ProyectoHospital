@@ -1,4 +1,4 @@
-package ventanas;
+package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -6,61 +6,62 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
-import clases.Administrador;
-import clases.Cama;
-import clases.Context;
-import clases.Doctor;
-import clases.Paciente;
-import clases.Persona;
+import domain.Context;
+import domain.Doctor;
+import domain.Paciente;
+import domain.Persona;
 
-import java.awt.BorderLayout;
-public class MenuTrabajador extends JFrame{
+public class MenuPaciente extends JFrame{
 	
 //	private JFrame vActual, vAnterior;
 //	
-	private List<Cama> camas;
-	private List<Paciente> pacientes;
+	
 	private JButton btnVolver;
 	private JButton btnCitas;
-	private JButton btnPacientes;
-	private JButton btnCamas;
-	private JButton btnSesion;
-	private JButton btnUsuario;
+	private JButton btnHospitales;
 	private JButton btnMedicos;
-	
-	
-	public  MenuTrabajador(Persona usuario) {
-		ArrayList<Doctor> medicos = new ArrayList<>();
+	private JButton btnHistorial;
+	private JButton btnContacto;
+	private JButton btnParametros;
+	private JButton btnUsuario;
+	private ArrayList<Doctor>medicos;
+	private Paciente paciente;
+	public MenuPaciente(Persona usuario) {
+		 paciente = (Paciente) usuario; 
+		   medicos = new ArrayList<>();
+		  Context context = Context.getInstance();  
+	    	this.medicos = context.getMedicos();
+	    	context.setPaciente(paciente);
+//		vActual = this;
+		 //this.vAnterior = vAnterior;
 		  
-		Context context = Context.getInstance();  
-    	this.pacientes = context.getPacientes();
-		  
-    	ImageIcon i = new ImageIcon("src/recursos/hospital.png");
+		ImageIcon i = new ImageIcon("src/recursos/hospital.png");
 		setIconImage(i.getImage());
-    	
 		
-		btnVolver = new JButton("Salir");
+		btnVolver = new JButton("VOLVER");
 		
 		btnCitas = new JButton("CITAS");
-		btnCamas = new JButton("Camas");
-		btnPacientes = new JButton("Pacientes");
-		btnSesion = new JButton("cerrar sesion");
+		btnHospitales = new JButton("HOSPITALES");
+		btnMedicos = new JButton("MEDICOS");
+		btnHistorial = new JButton("MI HISTORIAL");
+		btnContacto = new JButton("Contacto");
+		btnParametros = new JButton("Parametros");
 		btnUsuario = new JButton("Usuario");
-		btnMedicos = new JButton("Medicos");
 		Color color = new Color(6,99,133);
 		
 		
@@ -71,11 +72,9 @@ public class MenuTrabajador extends JFrame{
 		JPanel grid = new JPanel();
 		grid.setLayout(new GridLayout(1,5,10,50));
 // aqui quiero meter el logo donde el primer hueco de grid 
-		
-		
 
 		ImageIcon iconoHospital = new ImageIcon(getClass().getResource("/recursos/hospital.png"));
-		setIconImage(iconoHospital.getImage());
+
 		
 		Image imagenEscalada = iconoHospital.getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
 		iconoHospital = new ImageIcon(imagenEscalada);
@@ -83,16 +82,10 @@ public class MenuTrabajador extends JFrame{
 
 		grid.add(labelConIcono);
 		
-		
-		grid.add(btnSesion);
+		grid.add(btnContacto);
+		grid.add(btnParametros);
 		grid.add(btnUsuario);
-		if(usuario instanceof Administrador ) {
-			grid.add(btnMedicos);
-		}
-		
 		anadirColores(grid.getComponents(),color);
-		
-		
 		
 		
 		grid.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -115,73 +108,85 @@ public class MenuTrabajador extends JFrame{
 		JPanel cita = new JPanel();
 		cita.setLayout(new GridLayout(2,1,10,10));
 		
-		cita.add(btnPacientes);
+		cita.add(btnHistorial);
 		anadirColores(cita.getComponents(),color);
 		cita.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
 		JPanel ubicacionHospital = new JPanel();
 		ubicacionHospital.setLayout(new GridLayout(1,2,10,10));
 		ubicacionHospital.add(btnCitas);
-		ubicacionHospital.add(btnCamas);
+		ubicacionHospital.add(btnMedicos);
 		ubicacionHospital.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		anadirColores(ubicacionHospital.getComponents(),color);
 		cita.add(ubicacionHospital);
 		pngHistorial.add(cita);
 		panel.add(pngHistorial , BorderLayout.CENTER);
-		//panel.add(btnVolver,BorderLayout.SOUTH);
+		
+		
+//		box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
+//		box.add(new JTextField("Aqui nombre del paciente"),BorderLayout.CENTER);
+//		box.add(new JTextField("Otros datos de paciente"),BorderLayout.CENTER);
+//		panel.add(box,BorderLayout.WEST);
+		
+		panel.add(btnVolver,BorderLayout.SOUTH);
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		/**
 		 * Cambiamos el tipo de letra en los botones
 		 * 
 		 **/
-		
+		btnVolver.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
 		btnCitas.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
-		btnPacientes.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
-		btnCamas.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
+		btnHistorial.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
+		btnHospitales.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
+		btnMedicos.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
+		btnContacto.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
+		btnParametros.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
+		btnUsuario.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
 		
 		
+		
+
+		 btnHistorial.addActionListener(e -> {
+			 Persona p = new Persona("title", "title", "title",1,"");
+			 ArrayList<Doctor> l = new ArrayList();
+			 if(usuario instanceof Paciente) {
+				 
+	            VentanaHistorial ventana = new VentanaHistorial(paciente, p);
+	            ventana.setVisible(true);
+			 }
+	        });
+		 btnMedicos.addActionListener(e -> {
+			
+			 if(paciente instanceof Paciente) {
+				 
+	            VentanaMedicos ventana = new VentanaMedicos(medicos,paciente );
+	            ventana.setVisible(true);
+			 }
+	        });
 		
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); 
+        setLocationRelativeTo(null);  
         
-        
-        btnPacientes .addActionListener(e -> {
-            VentanaPacientes ventana = new VentanaPacientes(pacientes , usuario);
-            ventana.setVisible(true);
-            this.dispose(); 
-        });
-        btnUsuario.addActionListener(e -> {
-            VentanaVisualizarUsuario ventana = new VentanaVisualizarUsuario(usuario);
-            ventana.setVisible(true);
-            this.dispose(); 
-        });
-        btnSesion.addActionListener(e -> {
-            VentanaSeleccion ventana = new VentanaSeleccion();
-            ventana.setVisible(true);
-            this.dispose(); 
-        });
-        
-        btnCamas.addActionListener((e) -> {
-        	VentanaCamas ventana = new VentanaCamas(camas, usuario);
-            ventana.setVisible(true);
-            this.dispose();
-        });
-        
-        
-        
-        
-  	
+		
+		
+		
 	}
 	
-
 	private void anadirColores(Component[] components ,Color color) {
 		for(Component component :components) {
 			if(component instanceof JButton) {
 		
 			component.setBackground(color);
 			component.setForeground(Color.white);
-			component.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
 			component.addMouseListener(new MouseAdapter() {
 				 
 		            @Override
@@ -199,5 +204,10 @@ public class MenuTrabajador extends JFrame{
 			}
 		}
 	}
+	
 }
-
+//FUENTE-EXTERNA
+//URL: (url de la fuente externa)
+//SIN-CAMBIOS ó ADAPTADO (explicar modificación realizada)
+//IAG (herramienta: ChatGPT)
+//SIN CAMBIOS ó ADAPTADO (He usado chatgpt para soluciona dudas y saber porque me salen errores  )

@@ -1,4 +1,4 @@
-package clases;
+package domain;
 
 public class Persona {
 	protected String contrasena;

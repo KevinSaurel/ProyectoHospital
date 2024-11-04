@@ -1,4 +1,4 @@
-package ventanas;
+package gui;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
-import clases.Cama;
+import domain.Cama;
 
 public class CamaTableModel extends DefaultTableModel{
 	private final List<Cama> camaList;

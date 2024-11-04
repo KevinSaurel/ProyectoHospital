@@ -1,11 +1,12 @@
-package ventanas;
+package gui;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import clases.Doctor;
-import clases.Historial;
-import clases.Persona;
+
+import domain.Doctor;
+import domain.Historial;
+import domain.Persona;
 
 public class HistorialTableModel extends DefaultTableModel {
     private static final long serialVersionUID = 1L;

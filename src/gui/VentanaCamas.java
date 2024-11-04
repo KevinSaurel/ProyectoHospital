@@ -1,4 +1,4 @@
-package ventanas;
+package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -19,11 +19,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import clases.Cama;
-import clases.Context;
-import clases.Historial;
-import clases.Paciente;
-import clases.Persona;
+import domain.Cama;
+import domain.Context;
+import domain.Historial;
+import domain.Paciente;
+import domain.Persona;
 
 public class VentanaCamas extends JFrame{
 	private JButton btnAsignarCama, btnVaciarCama, btnBack, btnAñadirCama;

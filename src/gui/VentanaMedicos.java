@@ -1,4 +1,4 @@
-package ventanas;
+package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -25,9 +25,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-import clases.Doctor;
-import clases.Paciente;
-import clases.Persona;
+import domain.Doctor;
+import domain.Paciente;
+import domain.Persona;
 
 public class VentanaMedicos extends JFrame {
 

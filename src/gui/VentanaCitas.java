@@ -1,4 +1,4 @@
-package ventanas;
+package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -14,9 +14,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import clases.Cita;
-import clases.Context;
-import clases.Persona;
+import domain.Cita;
+import domain.Context;
+import domain.Persona;
 
 public class VentanaCitas extends JFrame{
 
