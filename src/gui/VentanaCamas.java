@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
@@ -40,9 +42,7 @@ public class VentanaCamas extends JFrame{
 	public VentanaCamas(List<Cama> camas, Persona usuarioP) {
 		Context context = Context.getInstance();  
 		this.p = context.getPaciente();
-		this.camas = context.getCamas()
-				
-				;
+		this.camas = context.getCamas();
 		this.usuario = usuarioP;
 		Color color =  new Color(6,99,133);
 		
@@ -53,7 +53,7 @@ public class VentanaCamas extends JFrame{
 		pOeste = new JPanel();
 		pCentro = new JPanel(new GridLayout(2, 1));
 		pNorte = new JPanel();
-		pSur = new JPanel();
+		pSur = new JPanel(new GridLayout(3, 1));
 		
 		getContentPane().add(pEste, BorderLayout.EAST);
 		getContentPane().add(pOeste, BorderLayout.WEST);
@@ -65,6 +65,21 @@ public class VentanaCamas extends JFrame{
         tableCama = new JTable(tableModel);
         scrollTabla = new JScrollPane(tableCama);
         
+        //tableCama.setSelectionModel(ListSelectionModel.SINGLE_SELECTION);
+        
+        tableCama.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int filaSeleccionada = tableCama.getSelectedRow();
+				if (filaSeleccionada >= 0) {
+					String nCama = tableModel.getValueAt(filaSeleccionada, 0).toString();
+                    String tipoCama = tableModel.getValueAt(filaSeleccionada, 2).toString();
+				}
+				
+			}
+		});
+        
         btnAsignarCama = new JButton("Asignar");
 		btnVaciarCama = new JButton("Vaciar");
 		btnAñadirCama = new JButton("Añadir");
@@ -73,10 +88,10 @@ public class VentanaCamas extends JFrame{
         pSur.add(btnVaciarCama);
         pSur.add(btnAñadirCama);
         
-//        tableCama.getColumnModel().getColumn(0).setPreferredWidth(100); 
-//        tableCama.getColumnModel().getColumn(1).setPreferredWidth(100); 
-//        tableCama.getColumnModel().getColumn(2).setPreferredWidth(100); 
-//        tableCama.getColumnModel().getColumn(3).setPreferredWidth(100);
+        tableCama.getColumnModel().getColumn(0).setPreferredWidth(100); 
+        tableCama.getColumnModel().getColumn(1).setPreferredWidth(100); 
+        tableCama.getColumnModel().getColumn(2).setPreferredWidth(100); 
+        
         
         
         for (Cama cama : camas) {
