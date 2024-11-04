@@ -18,6 +18,7 @@ public class Context {
     private ArrayList<Paciente> pacientes = new ArrayList<>();
     private List<Enfermero> enfermeros = new ArrayList<>();
     private ArrayList<Administrador> administradores = new ArrayList<>();
+    private Paciente paciente;
 
    
     private Context() {
@@ -212,6 +213,12 @@ public class Context {
 
     public List<Enfermero> getEnfermeros() {
         return enfermeros;
+    }
+    public void setPaciente(Paciente paciente) {
+         this.paciente= paciente;
+    }
+    public Paciente getPaciente() {
+    	return paciente;
     }
 }
 

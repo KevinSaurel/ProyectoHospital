@@ -26,6 +26,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 import clases.Administrador;
+import clases.Context;
 import clases.Doctor;
 import clases.Historial;
 import clases.Paciente;
@@ -37,9 +38,16 @@ public class VentanaHistorial extends JFrame{
 	private HistorialTableModel tableModel;	
 	private Color color;
 	private JButton btnVolver;
+	private Paciente u;
+	private List<Paciente>listaPacientes;
+	private Persona usuario;
 	
 	//JLabel jlabel;
 	public VentanaHistorial(Paciente paciente , Persona usuario) {
+		Context context = Context.getInstance();  
+    	this.u = context.getPaciente();
+    	this.listaPacientes = context.getPacientes();
+    	this.usuario = usuario;
 		 btnAnadir = new JButton("Anadir");
 		
 		 btnVolver = new JButton("Volver");
@@ -260,7 +268,19 @@ private JPanel crearPanelN() {
 	grid.add(btnParametros);
 	grid.add(btnUsuario);
 	anadirColores(grid.getComponents(),color);
-	
+	 btnVolver.addActionListener(e ->{
+		  if(u instanceof Paciente) {
+			MenuPaciente ventana = new MenuPaciente(u);
+			ventana.setVisible(true);
+			this.dispose();
+		  
+		  }else {
+			  VentanaPacientes ventana = new VentanaPacientes(listaPacientes,usuario);
+			  ventana.setVisible(true);
+				this.dispose();
+
+		  }
+       });
 	
 	return grid;
 }

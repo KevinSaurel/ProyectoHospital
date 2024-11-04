@@ -40,11 +40,13 @@ public class MenuPaciente extends JFrame{
 	private JButton btnParametros;
 	private JButton btnUsuario;
 	private ArrayList<Doctor>medicos;
+	private Paciente paciente;
 	public MenuPaciente(Persona usuario) {
-		Paciente paciente = (Paciente) usuario; 
+		 paciente = (Paciente) usuario; 
 		   medicos = new ArrayList<>();
 		  Context context = Context.getInstance();  
 	    	this.medicos = context.getMedicos();
+	    	context.setPaciente(paciente);
 //		vActual = this;
 		 //this.vAnterior = vAnterior;
 		  
@@ -159,7 +161,6 @@ public class MenuPaciente extends JFrame{
 				 
 	            VentanaHistorial ventana = new VentanaHistorial(paciente, p);
 	            ventana.setVisible(true);
-	            this.dispose(); 
 			 }
 	        });
 		 btnMedicos.addActionListener(e -> {
@@ -168,7 +169,6 @@ public class MenuPaciente extends JFrame{
 				 
 	            VentanaMedicos ventana = new VentanaMedicos(medicos,paciente );
 	            ventana.setVisible(true);
-	            this.dispose(); 
 			 }
 	        });
 		
@@ -204,6 +204,7 @@ public class MenuPaciente extends JFrame{
 			}
 		}
 	}
+	
 }
 //FUENTE-EXTERNA
 //URL: (url de la fuente externa)
