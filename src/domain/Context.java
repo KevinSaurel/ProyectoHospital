@@ -19,7 +19,7 @@ public class Context {
     private List<Enfermero> enfermeros = new ArrayList<>();
     private ArrayList<Administrador> administradores = new ArrayList<>();
     private Paciente paciente;
-
+    private ArrayList<Cama> camas = new ArrayList<>();
    
     private Context() {
         cargarMedicos();
@@ -161,7 +161,7 @@ public class Context {
     		linea.append(cama.getNumCama()).append(",");
     		linea.append(cama.isOcupada()).append(",");
     		linea.append(cama.getTipoCama()).append(",");
-    		linea.append(cama.getPaciente()).append(",");
+    		//linea.append(cama.getPaciente()).append(",");
     		
     		
     		 StringBuilder historial = new StringBuilder();
@@ -243,6 +243,10 @@ public class Context {
     }
     public Paciente getPaciente() {
     	return paciente;
+    }
+    
+    public ArrayList<Cama> getCamas() {
+        return camas;
     }
 }
 

@@ -12,7 +12,7 @@ import domain.Cama;
 
 public class CamaTableModel extends DefaultTableModel{
 	private final List<Cama> camaList;
-	private final List<String> lTitulos = Arrays.asList("Numero Cama", "Ocupada", "Tipo", "Paciente");
+	private final List<String> lTitulos = Arrays.asList("Numero Cama", "Ocupada", "Tipo");
 	
 	public CamaTableModel(List<Cama> camaList) {
 		this.camaList = camaList;
@@ -52,8 +52,8 @@ public class CamaTableModel extends DefaultTableModel{
 				return c.isOcupada();
 			case 2: 
 				return c.getTipoCama();
-			case 3:
-				return c.getPaciente();
+//			case 3:
+//				return c.getPaciente();
 			default: 
 				return null;
 		}

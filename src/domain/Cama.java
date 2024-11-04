@@ -6,7 +6,7 @@ public class Cama {
 	private int numCama;
 	private boolean ocupada;
 	private String tipoCama;
-	private Paciente paciente;
+	//private Paciente paciente;
 	
 	
 	public Cama() {
@@ -14,12 +14,12 @@ public class Cama {
 	}
 
 
-	public Cama(int numCama, boolean ocupada, String tipoCama, Paciente paciente) {
+	public Cama(int numCama, boolean ocupada, String tipoCama) {
 		super();
 		this.numCama = numCama;
 		this.ocupada = ocupada;
 		this.tipoCama = tipoCama;
-		this.paciente = paciente;
+		//this.paciente = paciente;
 	}
 
 
@@ -58,22 +58,24 @@ public class Cama {
 	}
 
 
-
-	public Paciente getPaciente() {
-		return paciente;
-	}
-
-
-	public void setPaciente(Paciente paciente) {
-		this.paciente = paciente;
-	}
-
-
 	@Override
 	public String toString() {
-		return "Cama [numCama=" + numCama + ", ocupada=" + ocupada + ", tipoCama=" + tipoCama + ", paciente=" + paciente
-				+ "]";
+		return "Cama [numCama=" + numCama + ", ocupada=" + ocupada + ", tipoCama=" + tipoCama + "]";
 	}
+
+
+
+//	public Paciente getPaciente() {
+//		return paciente;
+//	}
+
+
+//	public void setPaciente(Paciente paciente) {
+//		this.paciente = paciente;
+//	}
+
+
+	
 
 
 	
