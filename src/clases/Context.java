@@ -131,7 +131,7 @@ public class Context {
         }
     }
     public void guardarPaciente(Paciente paciente) {
-    	try(BufferedWriter bw = new BufferedWriter(new FileWriter("src/recursos/pacientes.csv"))){
+    	try(BufferedWriter bw = new BufferedWriter(new FileWriter("src/recursos/pacientes.csv",true))){
     		StringBuilder linea = new StringBuilder();
 
     		linea.append(paciente.getContrasena()).append(",");
