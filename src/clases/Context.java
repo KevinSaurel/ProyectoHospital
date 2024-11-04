@@ -161,9 +161,8 @@ public class Context {
     		linea.append(cama.getNumCama()).append(",");
     		linea.append(cama.isOcupada()).append(",");
     		linea.append(cama.getTipoCama()).append(",");
-    		linea.append(paciente.getEdad()).append(",");
-    		linea.append(paciente.getUbicacion()).append(",");
-    		linea.append(paciente.getCodigoPaciente()).append(",");
+    		linea.append(cama.getPaciente()).append(",");
+    		
     		
     		 StringBuilder historial = new StringBuilder();
     		 List<Historial> lista = new ArrayList<>();
