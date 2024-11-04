@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 
 import domain.Administrador;
 import domain.Cama;
+import domain.Cita;
 import domain.Context;
 import domain.Doctor;
 import domain.Paciente;
@@ -33,6 +34,7 @@ public class MenuTrabajador extends JFrame{
 //	private JFrame vActual, vAnterior;
 //	
 	private List<Cama> camas;
+	private List<Cita> citas;
 	private List<Paciente> pacientes;
 	private JButton btnVolver;
 	private JButton btnCitas;
@@ -168,7 +170,11 @@ public class MenuTrabajador extends JFrame{
             this.dispose();
         });
         
-        
+        btnCitas.addActionListener((e) -> {
+        	VentanaCitas ventana = new VentanaCitas(citas, usuario);
+            ventana.setVisible(true);
+            this.dispose();
+        });
         
         
   	

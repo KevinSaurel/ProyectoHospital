@@ -3,6 +3,8 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -39,17 +41,17 @@ public class VentanaCitas extends JFrame{
 	    	ImageIcon i = new ImageIcon("src/db/hospital.png");
 			setIconImage(i.getImage());
 	    
-	    // Se crea el panel base
+	    // Se crea el panel base para la ventana
 			
 	    	 JPanel panelBase = new JPanel(new BorderLayout());
 	         panelBase.setBackground(MainColor);
 	         
-	    // Se añade el Scroll
+	    // Se añade el ScrollPane
 	         
 	         scrollPaneCitas = new JScrollPane();
 	         panelBase.add(scrollPaneCitas, BorderLayout.EAST);
 	         
-	    // Se añade el filtro al panel base
+	    // Se añade el cuadro de texto para el filtro al panel base
 	         
 	         txtFiltro = new JTextField(20);
 	         panelBase.add(txtFiltro, BorderLayout.NORTH);
@@ -58,14 +60,41 @@ public class VentanaCitas extends JFrame{
 	         
 	         // Añadir
 	         AddCita = new JButton("Añadir Cita");
+	         AddCita.setBackground(MainColor);
+	         AddCita.setForeground(Color.white);
+	         AddCita.addMouseListener(new MouseAdapter() {
+	             @Override
+	             public void mouseEntered(MouseEvent e) {
+	            	 AddCita.setBackground(Color.white);
+	            	 AddCita.setForeground(MainColor);
+	             }
+	         });
 	         panelBase.add(AddCita, BorderLayout.SOUTH);
 	         
 	         // Modificar
 	         ModCita = new JButton("Modificar Cita");
+	         ModCita.setBackground(MainColor);
+	         ModCita.setForeground(Color.white);
+	         ModCita.addMouseListener(new MouseAdapter() {
+	             @Override
+	             public void mouseEntered(MouseEvent e) {
+	            	 ModCita.setBackground(Color.white);
+	            	 ModCita.setForeground(MainColor);
+	             }
+	         });
 	         panelBase.add(ModCita, BorderLayout.SOUTH);
 	         
 	         // Borrar
 	         BorrCita = new JButton("Eliminar Cita");
+	         BorrCita.setBackground(MainColor);
+	         BorrCita.setForeground(Color.white);
+	         BorrCita.addMouseListener(new MouseAdapter() {
+	             @Override
+	             public void mouseEntered(MouseEvent e) {
+	            	 BorrCita.setBackground(Color.white);
+	            	 BorrCita.setForeground(MainColor);
+	             }
+	         });
 	         panelBase.add(BorrCita, BorderLayout.SOUTH);
 	         
 	         // Se añade el botón que te lleva atrás
@@ -85,5 +114,26 @@ public class VentanaCitas extends JFrame{
 	         tablaCitas = new JTable(modeloDatosCitas);
 	         tablaCitas.setGridColor(Color.black);
 	         
+	    // Ultimos toques para que salga todo en pantalla
+	         
+	         this.setVisible(true);
 	    }
+	    
+	    // Funcionalidad 
+	    
+	    	// Renderer de la tabla de citas
+	    
+	    private void initTables() {
+	    	
+	    }
+	    	// Funcion para añadir al filtro
+	    private void filtrarCitas() {
+	    	
+	    }
+	    	// Listeners para los botones
+	    
+	    
+	    
+	    
+	    
 }  
