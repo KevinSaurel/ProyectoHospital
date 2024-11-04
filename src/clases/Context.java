@@ -96,7 +96,7 @@ public class Context {
                 try {
                     fecha = dateFormat.parse(parts[1]);
                 } catch (ParseException e) {
-                    System.out.println("Fecha inválida en historial: " + parts[1]);
+                    System.out.println("Fecha invï¿½lida en historial: " + parts[1]);
                     continue;
                 }
                 Historial historial = new Historial();
@@ -184,9 +184,9 @@ public class Context {
                 
                 linea.append(historialSerializado);
 
-                // Escribir la línea completa para este paciente
+                // Escribir la lï¿½nea completa para este paciente
                 bw.write(linea.toString());
-                bw.newLine();  // Mover a la siguiente línea para el próximo paciente
+                bw.newLine();  // Mover a la siguiente lï¿½nea para el prï¿½ximo paciente
             }
 
             System.out.println("Archivo pacientes.csv reescrito correctamente.");
@@ -214,3 +214,10 @@ public class Context {
         return enfermeros;
     }
 }
+
+	//FUENTE-EXTERNA
+	//URL: (https://stackoverflow.com/questions/65033185/how-to-capture-the-field-values-in-the-csv-file-using-bufferedreader)
+	//SIN-CAMBIOS Ã³ ADAPTADO (he usado el buffered reader y parser del stack overflow  )
+	//IAG (herramienta:chatgpt )
+	//SIN CAMBIOS Ã³ ADAPTADO (me he ayudado con chatgpt para solucionar errores y dudas)
+	//

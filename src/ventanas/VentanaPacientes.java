@@ -388,3 +388,9 @@ class ButtonEditor extends AbstractCellEditor implements TableCellEditor, Action
 }
 
 }
+//FUENTE-EXTERNA
+//URL: (https://alud.deusto.es/mod/resource/view.php?id=800467)
+//SIN-CAMBIOS ó ADAPTADO (he usado el cell editor para meter la imagen de la practica swing para meter los botones del historial )
+//IAG (herramienta:chatgpt )
+//SIN CAMBIOS ó ADAPTADO (me he ayudado con chatgpt para solucionar errores y dudas)
+//

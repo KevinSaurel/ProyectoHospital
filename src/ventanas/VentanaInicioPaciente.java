@@ -128,5 +128,9 @@ import java.util.ArrayList;
 	  
 	    }
 	}
-
+	//FUENTE-EXTERNA
+	//URL: ()
+	//SIN-CAMBIOS ó ADAPTADO ()
+	//IAG (herramienta: chatgpt)
+	//SIN CAMBIOS ó ADAPTADO (he usado chagpt para resolver duda de la comprobacion de datos )
 

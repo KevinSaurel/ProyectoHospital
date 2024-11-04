@@ -44,7 +44,7 @@ public class HistorialTableModel extends DefaultTableModel {
         
         switch (columnIndex) {
             case 0:
-                return historialEntry.getCausa(); // Reason for the appointment
+                return historialEntry.getCausa(); 
             case 1:
                 return (doctor != null) ? doctor.getNombre() : "No asignado"; // Doctor's name
             case 2:
@@ -55,3 +55,8 @@ public class HistorialTableModel extends DefaultTableModel {
         }
     }
 }
+//FUENTE-EXTERNA
+//URL: (https://alud.deusto.es/course/view.php?id=27577)
+//SIN-CAMBIOS ó ADAPTADO (Me he basado en la practica swing4v2 , del flight table model)
+//IAG (herramienta: )
+//SIN CAMBIOS ó ADAPTADO ()

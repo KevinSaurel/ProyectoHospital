@@ -147,27 +147,7 @@ public class MenuPaciente extends JFrame{
 		
 		
 		
-//		
-//		
-//		btnVolver.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				/*Aqui escribimos el codigo a ejecutar cuando se clicke el boton
-//				 * */
-//				vActual.dispose();
-//				
-//				//Volvemos a visualizar la ventana anterior
-//				vAnterior.setVisible(true);
-//				
-//			}
-//		});
-//		 btnMedicos.addActionListener(e -> {
-//	            // Assuming you have a MenuPaciente window to go back to
-//	            VentanaMedicos ventana = new VentanaMedicos(medicos);
-//	            ventana.setVisible(true);
-//	            this.dispose(); // Close the current window
-//	        });
+
 		 btnHistorial.addActionListener(e -> {
 			 Persona p = new Persona("title", "title", "title",1,"");
 			 ArrayList<Doctor> l = new ArrayList();
@@ -212,3 +192,8 @@ public class MenuPaciente extends JFrame{
 		}
 	}
 }
+//FUENTE-EXTERNA
+//URL: (url de la fuente externa)
+//SIN-CAMBIOS ó ADAPTADO (explicar modificación realizada)
+//IAG (herramienta: ChatGPT)
+//SIN CAMBIOS ó ADAPTADO (He usado chatgpt para soluciona dudas y saber porque me salen errores  )

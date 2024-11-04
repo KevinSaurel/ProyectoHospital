@@ -281,6 +281,10 @@ public class VentanaMedicos extends JFrame {
         }
     }
 }
-// he usado chatgpt y stack overflow  para resolver errores y dudas . 
-//https://stackoverflow.com/questions/14563799/jtable-cellrenderer-changes-backgroundcolor-of-cells-while-running
+//FUENTE-EXTERNA
+//URL: (//https://stackoverflow.com/questions/14563799/jtable-cellrenderer-changes-backgroundcolor-of-cells-while-running,https://alud.deusto.es/mod/resource/view.php?id=800467)
+//SIN-CAMBIOS ó ADAPTADO (Me he inspirado de eso para la ventana, el filtrar medicos he usado el filtrar comics de la practica de swing  )
+//IAG (herramienta:chatgpt )
+//SIN CAMBIOS ó ADAPTADO (me he ayudado con chatgpt para solucionar errores y dudas)
+//
 
