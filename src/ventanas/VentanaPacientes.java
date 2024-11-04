@@ -47,6 +47,7 @@ public class VentanaPacientes extends JFrame{
     private JTextField txtFiltro;
     private DefaultTableModel modeloDatosPacientes;
     private JButton btnAnadirP;
+    private JButton btnBorrarP;
     private Persona usuario;
 
     public VentanaPacientes(List<Paciente> pacientes , Persona usuarioP) {
@@ -147,6 +148,22 @@ public class VentanaPacientes extends JFrame{
                 btnAnadirP.setForeground(Color.white);
             }
         });
+        btnBorrarP = new JButton("Borrar Paciente");
+        btnBorrarP.setBackground(color);
+        btnBorrarP.setForeground(Color.white);
+        btnBorrarP.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            	btnBorrarP.setBackground(Color.white);
+            	btnBorrarP.setForeground(color);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            	btnBorrarP.setBackground(color);
+            	btnBorrarP.setForeground(Color.white);
+            }
+        });
 
         
         btnAnadirP.addActionListener(e -> {
@@ -239,11 +256,15 @@ public class VentanaPacientes extends JFrame{
             frameNuevoPaciente.setLocationRelativeTo(null);
             frameNuevoPaciente.setVisible(true);
         });
-
+        JPanel panelbtn = new JPanel(new BorderLayout());
        
         JPanel panelArriba = new JPanel(new BorderLayout());
-        panelArriba.add(txtFiltro, BorderLayout.CENTER);
+        panelbtn.add(txtFiltro,BorderLayout.CENTER);
+        panelbtn.add(btnBorrarP,BorderLayout.EAST);
+        panelArriba.add(panelbtn, BorderLayout.CENTER);
+        
         panelArriba.add(btnAnadirP, BorderLayout.EAST);
+        
         panelArriba.add(btnBack, BorderLayout.WEST);
 
         
