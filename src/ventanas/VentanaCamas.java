@@ -35,11 +35,7 @@ public class VentanaCamas extends JFrame{
 	private Persona usuario;
 	
 	public VentanaCamas(List<Cama> camas, Persona usuarioP) {
-		
-		btnAsignarCama = new JButton("Asignar");
-		btnVaciarCama = new JButton("Vaciar");
-		
-		
+	
 		
 		usuario = usuarioP;
 		Color color =  new Color(6,99,133);
@@ -62,6 +58,11 @@ public class VentanaCamas extends JFrame{
         tableModel = new CamaTableModel(null);
         tableCama = new JTable(tableModel);
         scrollTabla = new JScrollPane(tableCama);
+        
+        
+        btnAsignarCama = new JButton("Asignar");
+		btnVaciarCama = new JButton("Vaciar");
+        
         pCentro.add(scrollTabla);
         pSur.add(btnAsignarCama);
         pSur.add(btnVaciarCama);
@@ -190,13 +191,13 @@ public class VentanaCamas extends JFrame{
 //
 //                tableCama.addRow(new Object[]{nombre, apellido, edad, codigoP});
 
-                frameAsignarCama.dispose(); 
+//                frameAsignarCama.dispose(); 
             });
         });
         
         
         btnAñadirCama.addActionListener((e) -> {
-        	JFrame frameAñadirCama  = new JFrame("Asignar cama a paciente");
+        	JFrame frameAñadirCama  = new JFrame("Añadir una nueva cama");
         	frameAñadirCama.setSize(400, 300);
         	frameAñadirCama.setLayout(new GridLayout(8, 2)); 
         	frameAñadirCama.getContentPane().setBackground(color);
@@ -245,6 +246,8 @@ public class VentanaCamas extends JFrame{
             btnAñadir.addActionListener(e2 -> {
                 int numCama = Integer.parseInt(txtNumCama.getText());
                 String respuesta = txtOcupada.getText().toLowerCase();
+                
+                //IAG (Claude) Inicio
                 boolean ocupada;
 
                 if (respuesta.equals("si")) {
@@ -255,17 +258,18 @@ public class VentanaCamas extends JFrame{
                     ocupada = false;  // Valor por defecto
                 }
                 
+                // IAG (Claude) Fin
+                
                 String tipo = txtTipo.getText();
                 
                 if (numCama < 0 || respuesta.isEmpty() || tipo.isEmpty()) {
                     JOptionPane.showMessageDialog(frameAñadirCama, "Por favor, rellena todos los campos.");
                     return;
                 }
-                Cama nuevaCama = new Cama(numCama, ocupada, respuesta);
-               
-                camas.add(nuevaCama);
+//                Cama nuevaCama = new Cama(numCama, ocupada, tipo);
+//               
+//                camas.add(nuevaCama);
 //                context.guardarPaciente(nuevoPaciente);
-
 //                tableCama.addRow(new Object[]{numCama, ocupada, tipo});
 
             	frameAñadirCama.dispose(); 

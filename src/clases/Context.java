@@ -154,6 +154,30 @@ public class Context {
         }
     			
     }
+    public void guardarCama(Cama cama) {
+    	try(BufferedWriter bw = new BufferedWriter(new FileWriter("src/recursos/camas.csv",true))){
+    		StringBuilder linea = new StringBuilder();
+
+    		linea.append(cama.getNumCama()).append(",");
+    		linea.append(cama.isOcupada()).append(",");
+    		linea.append(cama.getTipoCama()).append(",");
+    		linea.append(cama.getPaciente()).append(",");
+    		
+    		
+    		 StringBuilder historial = new StringBuilder();
+    		 List<Historial> lista = new ArrayList<>();
+    		    
+
+    		 
+    		 //linea.append(lista);
+    		 bw.write(linea.toString());
+    	        bw.newLine();  
+    	}catch (IOException e) {
+            System.out.println("Error al guardar paciente : " + e.getMessage());
+        }
+    			
+    }
+    
     public void guardarHistorial(Paciente paciente, Historial historial) {
         // Encontrar al paciente y agregarle el historial en memoria
         for (Paciente p : pacientes) {

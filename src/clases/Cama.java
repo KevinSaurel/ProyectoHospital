@@ -6,7 +6,6 @@ public class Cama {
 	private int numCama;
 	private boolean ocupada;
 	private String tipoCama;
-	protected LocalDate fecha;
 	private Paciente paciente;
 	
 	
@@ -15,12 +14,11 @@ public class Cama {
 	}
 
 
-	public Cama(int numCama, boolean ocupada, String tipoCama, LocalDate fecha, Paciente paciente) {
+	public Cama(int numCama, boolean ocupada, String tipoCama, Paciente paciente) {
 		super();
 		this.numCama = numCama;
 		this.ocupada = ocupada;
 		this.tipoCama = tipoCama;
-		this.fecha = fecha;
 		this.paciente = paciente;
 	}
 
@@ -73,8 +71,12 @@ public class Cama {
 
 	@Override
 	public String toString() {
-		return "Cama [numCama=" + numCama + ", ocupada=" + ocupada + ", tipoCama=" + tipoCama + "]";
+		return "Cama [numCama=" + numCama + ", ocupada=" + ocupada + ", tipoCama=" + tipoCama + ", paciente=" + paciente
+				+ "]";
 	}
+
+
+	
 	
 	
 	
