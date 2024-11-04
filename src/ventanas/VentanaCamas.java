@@ -197,7 +197,7 @@ public class VentanaCamas extends JFrame{
         
         
         btnAñadirCama.addActionListener((e) -> {
-        	JFrame frameAñadirCama  = new JFrame("Asignar cama a paciente");
+        	JFrame frameAñadirCama  = new JFrame("Añadir una nueva cama");
         	frameAñadirCama.setSize(400, 300);
         	frameAñadirCama.setLayout(new GridLayout(8, 2)); 
         	frameAñadirCama.getContentPane().setBackground(color);
@@ -246,6 +246,8 @@ public class VentanaCamas extends JFrame{
             btnAñadir.addActionListener(e2 -> {
                 int numCama = Integer.parseInt(txtNumCama.getText());
                 String respuesta = txtOcupada.getText().toLowerCase();
+                
+                //IAG (Claude) Inicio
                 boolean ocupada;
 
                 if (respuesta.equals("si")) {
@@ -255,6 +257,8 @@ public class VentanaCamas extends JFrame{
                 } else {
                     ocupada = false;  // Valor por defecto
                 }
+                
+                // IAG (Claude) Fin
                 
                 String tipo = txtTipo.getText();
                 
@@ -266,7 +270,6 @@ public class VentanaCamas extends JFrame{
 //               
 //                camas.add(nuevaCama);
 //                context.guardarPaciente(nuevoPaciente);
-
 //                tableCama.addRow(new Object[]{numCama, ocupada, tipo});
 
             	frameAñadirCama.dispose(); 
