@@ -5,12 +5,14 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -33,11 +35,16 @@ public class VentanaHistorial extends JFrame{
 	JButton btnAnadir ;
 	private JTable tableHistorial;
 	private HistorialTableModel tableModel;	
+	private Color color;
+	private JButton btnVolver;
 	
 	//JLabel jlabel;
 	public VentanaHistorial(Paciente paciente , Persona usuario) {
 		 btnAnadir = new JButton("Anadir");
-		Color color =  new Color(6,99,133);
+		
+		 btnVolver = new JButton("Volver");
+		 
+		 color =  new Color(6,99,133);
 		
 		ImageIcon im = new ImageIcon("src/recursos/hospital.png");
 		setIconImage(im.getImage());
@@ -53,10 +60,14 @@ public class VentanaHistorial extends JFrame{
 			JLabel l = new JLabel("");
 			panelUpper.add(l);
 			}
-		if(usuario instanceof Doctor || usuario instanceof Administrador) {
+		if(!(paciente instanceof Paciente)) {
 		panelUpper.add(btnAnadir);
 		}
-		panelN.add(panelUpper , BorderLayout.NORTH);
+		JPanel p2 = new JPanel(new BorderLayout());
+		JPanel pU = crearPanelN();
+		p2.add(pU,BorderLayout.NORTH);
+		p2.add(panelUpper,BorderLayout.CENTER);
+		panelN.add(p2 , BorderLayout.NORTH);
 		///panelN , center
 		GridLayout grid2 = new GridLayout(2,3);
 		JPanel panelCenter = new JPanel(grid2);
@@ -81,7 +92,7 @@ public class VentanaHistorial extends JFrame{
 		panelCenter.setBackground(color);
 		/////
 		//anadir panelupper and panelCenert
-		panelN.add(panelUpper , BorderLayout.NORTH);
+		
 		panelN.add(panelCenter , BorderLayout.CENTER);
 		/////
 		JPanel panelS = new JPanel(new BorderLayout());
@@ -180,9 +191,78 @@ private void anadirColores(Component[] components ,Color color) {
 		//component.setBackground(color);
 		label.setForeground(color.white);
 		
+		}else if (component instanceof JButton) {
+
+			
+			component.setBackground(color);
+			component.setForeground(Color.white);
+			component.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
+			component.addMouseListener(new MouseAdapter() {
+				 
+		            @Override
+		            public void mouseEntered(MouseEvent e) {
+		            	component.setBackground(Color.white); 
+		            	component.setForeground(color);
+		            }
+
+		            @Override
+		            public void mouseExited(MouseEvent e) {
+		            	component.setBackground(color); 
+		            	component.setForeground(Color.white);
+		            }
+		        });
 		}
 	}
 }
+private JPanel crearPanelN() {
+	JPanel grid = new JPanel();
+	grid.setLayout(new GridLayout(1,5,10,50));
+//aqui quiero meter el logo donde el primer hueco de grid 
+	JButton btnParametros = new JButton("Parametros");
+	JButton btnUsuario = new JButton("Usuario");
+	
+	ImageIcon iconoHospital = new ImageIcon(getClass().getResource("/recursos/hospital.png"));
 
+	
+	Image imagenEscalada = iconoHospital.getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
+	iconoHospital = new ImageIcon(imagenEscalada);
+	
+	JLabel labelConIcono = new JLabel(iconoHospital);
+
+	grid.add(labelConIcono);
+	
+	grid.add(btnVolver);
+	grid.add(btnParametros);
+	grid.add(btnUsuario);
+	anadirColores(grid.getComponents(),color);
+	
+	
+	grid.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+	grid.setBackground(Color.white);
+	JPanel p = new JPanel();
+	
+	p.setBackground(color.white);
+	anadirColores(p.getComponents(), color);
+	p.setLayout(new GridLayout(1,2));
+	JPanel t = new JPanel();
+	t.setBackground(color.white);
+	anadirColores(t.getComponents(), color);
+	t.setLayout(new GridLayout(1,2));
+	t.add(btnVolver);
+	t.add(labelConIcono);
+	p.add(t);
+	p.add(new JLabel(""));
+	
+	grid.add(p);
+	grid.add(new JLabel(""));
+	
+	//grid.add(btnVolver);
+	grid.add(btnParametros);
+	grid.add(btnUsuario);
+	anadirColores(grid.getComponents(),color);
+	
+	
+	return grid;
+}
 }
 

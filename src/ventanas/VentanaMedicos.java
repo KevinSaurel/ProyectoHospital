@@ -26,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import clases.Doctor;
+import clases.Paciente;
 import clases.Persona;
 
 public class VentanaMedicos extends JFrame {
@@ -224,7 +225,10 @@ public class VentanaMedicos extends JFrame {
 
         JPanel panelArriba = new JPanel(new BorderLayout());
         panelArriba.add(txtFiltro, BorderLayout.CENTER);
-        panelArriba.add(btnAnadirM, BorderLayout.EAST);
+        if(!(usuario instanceof Paciente)){
+        	panelArriba.add(btnAnadirM, BorderLayout.EAST);
+        }
+        
         panelArriba.add(btnBack, BorderLayout.WEST);
 
         // scroll pane crear y meter al panel 

@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import clases.Context;
 import clases.Doctor;
 import clases.Paciente;
 import clases.Persona;
@@ -38,9 +39,12 @@ public class MenuPaciente extends JFrame{
 	private JButton btnContacto;
 	private JButton btnParametros;
 	private JButton btnUsuario;
-	
+	private ArrayList<Doctor>medicos;
 	public MenuPaciente(Persona usuario) {
-		  ArrayList<Doctor> medicos = new ArrayList<>();
+		Paciente paciente = (Paciente) usuario; 
+		   medicos = new ArrayList<>();
+		  Context context = Context.getInstance();  
+	    	this.medicos = context.getMedicos();
 //		vActual = this;
 		 //this.vAnterior = vAnterior;
 		  
@@ -152,8 +156,17 @@ public class MenuPaciente extends JFrame{
 			 Persona p = new Persona("title", "title", "title",1,"");
 			 ArrayList<Doctor> l = new ArrayList();
 			 if(usuario instanceof Paciente) {
-				 Paciente paciente = (Paciente) usuario; 
+				 
 	            VentanaHistorial ventana = new VentanaHistorial(paciente, p);
+	            ventana.setVisible(true);
+	            this.dispose(); 
+			 }
+	        });
+		 btnMedicos.addActionListener(e -> {
+			
+			 if(paciente instanceof Paciente) {
+				 
+	            VentanaMedicos ventana = new VentanaMedicos(medicos,paciente );
 	            ventana.setVisible(true);
 	            this.dispose(); 
 			 }
