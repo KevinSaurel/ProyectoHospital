@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -14,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
 import domain.Cita;
@@ -41,11 +43,17 @@ public class VentanaCitas extends JFrame{
 	    	ImageIcon i = new ImageIcon("src/db/hospital.png");
 			setIconImage(i.getImage());
 	    
-	    // Se crea el panel base para la ventana
+	    // Se crean los paneles que le dan forma a la ventana
 			
 	    	 JPanel panelBase = new JPanel(new BorderLayout());
 	         panelBase.setBackground(MainColor);
 	         
+	         JPanel panelNorte = new JPanel(new GridLayout(1, 2));
+	         panelNorte.setBackground(MainColor);
+	         panelBase.add(panelNorte, BorderLayout.NORTH);
+	         
+	         JPanel panelSur = new JPanel(new GridLayout (1, 3));
+	         panelBase.add(panelSur, BorderLayout.SOUTH);
 	    // Se añade el ScrollPane
 	         
 	         scrollPaneCitas = new JScrollPane();
@@ -54,7 +62,7 @@ public class VentanaCitas extends JFrame{
 	    // Se añade el cuadro de texto para el filtro al panel base
 	         
 	         txtFiltro = new JTextField(20);
-	         panelBase.add(txtFiltro, BorderLayout.NORTH);
+	         panelNorte.add(txtFiltro);
 	         
 	    // Se añaden los botones
 	         
@@ -68,8 +76,12 @@ public class VentanaCitas extends JFrame{
 	            	 AddCita.setBackground(Color.white);
 	            	 AddCita.setForeground(MainColor);
 	             }
+	             public void mouseExited(MouseEvent e) {
+	            	 AddCita.setBackground(MainColor);
+	            	 AddCita.setForeground(Color.white);
+	             }
 	         });
-	         panelBase.add(AddCita, BorderLayout.SOUTH);
+	         panelSur.add(AddCita);
 	         
 	         // Modificar
 	         ModCita = new JButton("Modificar Cita");
@@ -81,8 +93,12 @@ public class VentanaCitas extends JFrame{
 	            	 ModCita.setBackground(Color.white);
 	            	 ModCita.setForeground(MainColor);
 	             }
+	             public void mouseExited(MouseEvent e) {
+	            	 ModCita.setBackground(MainColor);
+	            	 ModCita.setForeground(Color.white);
+	             }
 	         });
-	         panelBase.add(ModCita, BorderLayout.SOUTH);
+	         panelSur.add(ModCita);
 	         
 	         // Borrar
 	         BorrCita = new JButton("Eliminar Cita");
@@ -94,8 +110,12 @@ public class VentanaCitas extends JFrame{
 	            	 BorrCita.setBackground(Color.white);
 	            	 BorrCita.setForeground(MainColor);
 	             }
+	             public void mouseExited(MouseEvent e) {
+	            	 BorrCita.setBackground(MainColor);
+	            	 BorrCita.setForeground(Color.white);
+	             }
 	         });
-	         panelBase.add(BorrCita, BorderLayout.SOUTH);
+	         panelSur.add(BorrCita);
 	         
 	         // Se añade el botón que te lleva atrás
 	         
@@ -103,7 +123,13 @@ public class VentanaCitas extends JFrame{
 	         btnBack = new JButton(iconBack);
 	         btnBack.setBackground(MainColor);
 	         btnBack.setPreferredSize(new Dimension(80, 25));
-	         panelBase.add(btnBack, BorderLayout.NORTH);
+	         panelNorte.add(btnBack);
+	         
+	         btnBack.addActionListener((e) -> {
+	         	MenuTrabajador ventana = new MenuTrabajador(usuario);
+	             ventana.setVisible(true);
+	             this.dispose();
+	         });
 	         
 	    // Se añade la tabla de la info de citas     
 	         
@@ -118,6 +144,10 @@ public class VentanaCitas extends JFrame{
 	         
 	         this.setVisible(true);
 	         this.add(panelBase);
+	         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		     setExtendedState(JFrame.MAXIMIZED_BOTH);
+		     setLocationRelativeTo(null);
+	         
 	    }
 	    
 	    // Funcionalidad 
