@@ -36,6 +36,7 @@ public class MenuTrabajador extends JFrame{
 	private List<Cama> camas;
 	private List<Cita> citas;
 	private List<Paciente> pacientes;
+	private List<Doctor>medicos;
 	private JButton btnVolver;
 	private JButton btnCitas;
 	private JButton btnPacientes;
@@ -46,10 +47,11 @@ public class MenuTrabajador extends JFrame{
 	
 	
 	public  MenuTrabajador(Persona usuario) {
-		ArrayList<Doctor> medicos = new ArrayList<>();
+		
 		  
 		Context context = Context.getInstance();  
     	this.pacientes = context.getPacientes();
+    	this.medicos = context.getMedicos();
 		  
     	ImageIcon i = new ImageIcon("src/db/hospital.png");
 		setIconImage(i.getImage());
@@ -150,6 +152,11 @@ public class MenuTrabajador extends JFrame{
         
         btnPacientes .addActionListener(e -> {
             VentanaPacientes ventana = new VentanaPacientes(pacientes , usuario);
+            ventana.setVisible(true);
+            this.dispose(); 
+        });
+        btnMedicos .addActionListener(e -> {
+            VentanaMedicos ventana = new VentanaMedicos(medicos , usuario);
             ventana.setVisible(true);
             this.dispose(); 
         });

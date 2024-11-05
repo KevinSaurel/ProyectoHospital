@@ -81,7 +81,7 @@ public class VentanaMedicos extends JFrame {
         }
         
        
-
+  
         // voy a usar icono en recursos para icono8 atras 
         ImageIcon iconBack = new ImageIcon(getClass().getResource("/db/icons8-back-25.png"));
 
