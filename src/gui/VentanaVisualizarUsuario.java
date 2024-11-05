@@ -1,209 +1,180 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
-
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
 import domain.Persona;
 
-public class VentanaVisualizarUsuario extends JFrame{
-	
-	private JButton btnVolver;
-	private Persona usuario;
-	private Color color;
-	private Color color2;
-	
-	public  VentanaVisualizarUsuario(Persona usuario) {
-		this.usuario = usuario;
-		 this.color = new Color(6,99,133);
-		Color color2 = new Color(7,120,163);
-		
-//		ImageIcon i = new ImageIcon("src/recursos/hospital.png");
-//		setIconImage(i.getImage());
-		
-		
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-		panel.setBackground(color2);
-		add(panel);
-		
-		JPanel panelN = new JPanel();
-		panelN.setLayout(new BorderLayout());
-		
-		//
-		this.btnVolver = new JButton();
-		crearBtnVolver(btnVolver);
-		panelN.add(btnVolver,BorderLayout.WEST);
-		///
-		JPanel grid = crearPanelN();
-		//grid.setBackground(color2);
-		panel.add(grid,BorderLayout.NORTH);
-		
-		JPanel panelCentro = new JPanel();
-		panelCentro.setLayout(new GridLayout(5,2,10,100));
-		
-		crearCentro(panelCentro);
-		anadirColores(panelCentro.getComponents(), color);
-		panel.add(panelCentro,BorderLayout.CENTER);
-		
-		 setTitle("Visualizar tu usuario");
-	        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-	        setExtendedState(JFrame.MAXIMIZED_BOTH);
-	        setLocationRelativeTo(null);
-	        
-	        setVisible(true);
-	}
-
-private Component crearCentro(JPanel panel) {
-	JLabel lNombre = new JLabel("Nombre : "+usuario.getNombre());
-	
-	JLabel lApellido = new JLabel("Apellido : "+usuario.getApellido());
-	JLabel lEdad = new JLabel("Edad : "+usuario.getEdad());
-	JLabel lContrasena = new JLabel("Contrasena : "+usuario.getContrasena());
-	JLabel lUbicacion= new JLabel("Ubicacion : "+usuario.getUbicacion());
-	
-	JButton btnNombre = new JButton();
-	btnNombre.setText("Cambiar Nombre");
-	JButton btnApellido = new JButton();
-	btnApellido.setText("Cambiar Apellido");
-	JButton btnEdad = new JButton();
-	btnEdad.setText("Cambiar Edad");
-	JButton btnContrasena = new JButton();
-	btnContrasena.setText("Cambiar Contrasena");
-	JButton btnUbicacion = new JButton();
-	btnUbicacion.setText("Cambiar Ubicacion");
-	
-	btnNombre.addActionListener(e -> {
-//        MenuTrabajador ventana = new MenuTrabajador(usuario);
-//        ventana.setVisible(true);
-//        
-    });
-	panel.add(lNombre);
-	panel.add(btnNombre);
-	panel.add(lApellido);
-	panel.add(btnApellido);
-	panel.add(lEdad);
-	panel.add(btnEdad);
-	panel.add(lContrasena);
-	panel.add(btnContrasena);
-	panel.add(lUbicacion);
-	panel.add(btnUbicacion);
-	//panel.setBackground(color2);
-	return panel;
-	
-}
-
-private Component crearBtnVolver(JButton btnBack) {
-	ImageIcon iconBack = new ImageIcon("src/db/icons8-back-25.png");
-	 if (iconBack.getImageLoadStatus() == java.awt.MediaTracker.ERRORED) {
-	        System.out.println("Error loading icon.");
-	    }
-	 btnBack.setIcon(iconBack);
-	Color color = new Color(6,99,133);
-    btnBack.setBackground(color);
-    btnBack.setPreferredSize(new Dimension(80, 25));
-    btnBack.addActionListener(e -> {
-        MenuTrabajador ventana = new MenuTrabajador(usuario);
-        ventana.setVisible(true);
-        ((JFrame) btnBack.getTopLevelAncestor()).dispose(); 
-    });
-    return btnBack;
-}
-private void anadirColores(Component[] components ,Color color) {
-	for(Component component :components) {
-		if(component instanceof JButton) {
-	
-		component.setBackground(color);
-		component.setForeground(Color.white);
-		component.addMouseListener(new MouseAdapter() {
-			 
-	            @Override
-	            public void mouseEntered(MouseEvent e) {
-	            	component.setBackground(Color.white); 
-	            	component.setForeground(color);
-	            }
-
-	            @Override
-	            public void mouseExited(MouseEvent e) {
-	            	component.setBackground(color); 
-	            	component.setForeground(Color.white);
-	            }
-	        });
-		}else if(component instanceof JLabel) {
-			Font font = new Font(Font.SANS_SERIF, Font.BOLD, 18);
-			((JLabel) component).setHorizontalAlignment(SwingConstants.CENTER);
-			component.setBackground(color);
-			component.setForeground(color);
-			component.setFont(font);
-			
-		}
-	}
-}
-private JPanel crearPanelN() {
-	JPanel grid = new JPanel();
-	grid.setLayout(new GridLayout(1,5,10,50));
-//aqui quiero meter el logo donde el primer hueco de grid 
-	JButton btnParametros = new JButton("Parametros");
-	JButton btnUsuario = new JButton("Usuario");
-	
-	ImageIcon iconoHospital = new ImageIcon(getClass().getResource("/db/hospital.png"));
-
-	
-	Image imagenEscalada = iconoHospital.getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
-	iconoHospital = new ImageIcon(imagenEscalada);
-	
-	JLabel labelConIcono = new JLabel(iconoHospital);
-
-	grid.add(labelConIcono);
-	
-	grid.add(btnVolver);
-	grid.add(btnParametros);
-	grid.add(btnUsuario);
-	anadirColores(grid.getComponents(),color);
-	
-	
-	grid.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-	grid.setBackground(Color.white);
-	JPanel p = new JPanel();
-	p.setBackground(color.white);
-	anadirColores(p.getComponents(), color);
-	p.setLayout(new GridLayout(1,2));
-	JPanel t = new JPanel();
-	t.setBackground(color.white);
-	anadirColores(t.getComponents(), color);
-	t.setLayout(new GridLayout(1,2));
-	t.add(btnVolver);
-	t.add(labelConIcono);
-	p.add(t);
-	p.add(new JLabel(""));
-	
-	grid.add(p);
-	grid.add(new JLabel(""));
-	
-	//grid.add(btnVolver);
-	grid.add(btnParametros);
-	grid.add(btnUsuario);
-	anadirColores(grid.getComponents(),color);
-	
-	
-	return grid;
-}
-
+public class VentanaVisualizarUsuario extends JFrame {
+    
+    private static final Color PRIMARY_COLOR = new Color(6, 99, 133);
+    private static final Color SECONDARY_COLOR = new Color(7, 120, 163);
+    private static final Color BACKGROUND_COLOR = Color.WHITE;
+    private static final Font HEADER_FONT = new Font("Segoe UI", Font.BOLD, 24);
+    private static final Font LABEL_FONT = new Font("Segoe UI", Font.BOLD, 16);
+    private static final Font BUTTON_FONT = new Font("Segoe UI", Font.PLAIN, 14);
+    private static final int SPACING = 20;
+    
+    private final JButton btnVolver;
+    private final Persona usuario;
+    
+    public VentanaVisualizarUsuario(Persona usuario) {
+        this.usuario = usuario;
+        this.btnVolver = new JButton();
+        
+        setupMainFrame();
+        JPanel mainPanel = createMainPanel();
+        add(mainPanel);
+        
+        setVisible(true);
+    }
+    
+    private void setupMainFrame() {
+        setTitle("Mi Perfil de Usuario");
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setLocationRelativeTo(null);
+        setMinimumSize(new Dimension(800, 600));
+    }
+    
+    private JPanel createMainPanel() {
+        JPanel mainPanel = new JPanel(new BorderLayout(SPACING, SPACING));
+        mainPanel.setBackground(BACKGROUND_COLOR);
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(SPACING, SPACING, SPACING, SPACING));
+        
+        mainPanel.add(createHeaderPanel(), BorderLayout.NORTH);
+        mainPanel.add(createUserInfoPanel(), BorderLayout.CENTER);
+        
+        return mainPanel;
+    }
+    
+    private JPanel createHeaderPanel() {
+        JPanel headerPanel = new JPanel(new BorderLayout(SPACING, 0));
+        headerPanel.setBackground(BACKGROUND_COLOR);
+        
+        // Logo and back button section
+        JPanel leftSection = new JPanel(new FlowLayout(FlowLayout.LEFT, SPACING, 0));
+        leftSection.setBackground(BACKGROUND_COLOR);
+        
+        setupBackButton();
+        leftSection.add(btnVolver);
+        
+        // Add hospital logo
+        ImageIcon hospitalIcon = new ImageIcon(getClass().getResource("/db/hospital.png"));
+        Image scaledImage = hospitalIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+        JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
+        leftSection.add(logoLabel);
+        
+        // Navigation buttons
+        JPanel rightSection = new JPanel(new FlowLayout(FlowLayout.RIGHT, SPACING, 0));
+        rightSection.setBackground(BACKGROUND_COLOR);
+        
+        JButton btnParametros = createStyledButton("Parámetros");
+        JButton btnUsuario = createStyledButton("Usuario");
+        
+        rightSection.add(btnParametros);
+        rightSection.add(btnUsuario);
+        
+        headerPanel.add(leftSection, BorderLayout.WEST);
+        headerPanel.add(rightSection, BorderLayout.EAST);
+        
+        return headerPanel;
+    }
+    
+    private JPanel createUserInfoPanel() {
+        JPanel userInfoPanel = new JPanel();
+        userInfoPanel.setLayout(new BoxLayout(userInfoPanel, BoxLayout.Y_AXIS));
+        userInfoPanel.setBackground(BACKGROUND_COLOR);
+        userInfoPanel.setBorder(BorderFactory.createEmptyBorder(SPACING * 2, SPACING * 4, SPACING * 2, SPACING * 4));
+        
+        String[][] userFields = {
+            {"Nombre", usuario.getNombre()},
+            {"Apellido", usuario.getApellido()},
+            {"Edad", String.valueOf(usuario.getEdad())},
+            {"Contraseña", usuario.getContrasena()},
+            {"Ubicación", usuario.getUbicacion()}
+        };
+        
+        for (String[] field : userFields) {
+            userInfoPanel.add(createFieldPanel(field[0], field[1]));
+            userInfoPanel.add(Box.createVerticalStrut(SPACING));
+        }
+        
+        return userInfoPanel;
+    }
+    
+    private JPanel createFieldPanel(String labelText, String value) {
+        JPanel fieldPanel = new JPanel(new BorderLayout(SPACING, 0));
+        fieldPanel.setBackground(BACKGROUND_COLOR);
+        
+        // Create card-like panel with shadow effect
+        fieldPanel.setBorder(BorderFactory.createCompoundBorder(
+            new SoftBevelBorder(BevelBorder.RAISED),
+            BorderFactory.createEmptyBorder(SPACING, SPACING, SPACING, SPACING)
+        ));
+        
+        // Label and value
+        JPanel textPanel = new JPanel(new GridLayout(2, 1, 0, 5));
+        textPanel.setBackground(BACKGROUND_COLOR);
+        
+        JLabel label = new JLabel(labelText + ":");
+        label.setFont(LABEL_FONT);
+        label.setForeground(PRIMARY_COLOR);
+        
+        JLabel valueLabel = new JLabel(value);
+        valueLabel.setFont(BUTTON_FONT);
+        
+        textPanel.add(label);
+        textPanel.add(valueLabel);
+        
+        // Edit button
+        JButton editButton = createStyledButton("Editar");
+        editButton.setPreferredSize(new Dimension(100, 35));
+        
+        fieldPanel.add(textPanel, BorderLayout.CENTER);
+        fieldPanel.add(editButton, BorderLayout.EAST);
+        
+        return fieldPanel;
+    }
+    
+    private void setupBackButton() {
+        ImageIcon iconBack = new ImageIcon("src/db/icons8-back-25.png");
+        btnVolver.setIcon(iconBack);
+        styleButton(btnVolver);
+        btnVolver.setPreferredSize(new Dimension(80, 35));
+        
+        btnVolver.addActionListener(e -> {
+            MenuTrabajador ventana = new MenuTrabajador(usuario);
+            ventana.setVisible(true);
+            dispose();
+        });
+    }
+    
+    private JButton createStyledButton(String text) {
+        JButton button = new JButton(text);
+        styleButton(button);
+        return button;
+    }
+    
+    private void styleButton(JButton button) {
+        button.setFont(BUTTON_FONT);
+        button.setBackground(PRIMARY_COLOR);
+        button.setForeground(Color.WHITE);
+        button.setBorderPainted(false);
+        button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(SECONDARY_COLOR);
+            }
+            
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(PRIMARY_COLOR);
+            }
+        });
+    }
 }

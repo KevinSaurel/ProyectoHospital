@@ -1,413 +1,367 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.List;
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.event.*;
+import javax.swing.table.*;
+import domain.*;
 
-import javax.swing.AbstractCellEditor;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
+public class VentanaPacientes extends JFrame {
+    private static final Color PRIMARY_COLOR = new Color(6, 99, 133);
+    private static final Color SECONDARY_COLOR = new Color(7, 120, 163);
+    private static final Color BACKGROUND_COLOR = Color.WHITE;
+    private static final Font HEADER_FONT = new Font("Segoe UI", Font.BOLD, 24);
+    private static final Font LABEL_FONT = new Font("Segoe UI", Font.BOLD, 16);
+    private static final Font BUTTON_FONT = new Font("Segoe UI", Font.PLAIN, 14);
+    private static final int SPACING = 20;
 
-import domain.Administrador;
-import domain.Context;
-import domain.Doctor;
-import domain.Historial;
-import domain.Paciente;
-import domain.Persona;
+    private  List<Paciente> pacientes;
+    private  JTable tablaPacientes;
+    private  JScrollPane scrollPanePacientes;
+    private  JTextField txtFiltro;
+    private  DefaultTableModel modeloDatosPacientes;
+    private  JButton btnAnadirP;
+    private  JButton btnBorrarP;
+    private  Persona usuario;
 
-public class VentanaPacientes extends JFrame{
+    public VentanaPacientes(List<Paciente> pacientes, Persona usuarioP) {
+        this.pacientes = pacientes;
+        this.usuario = usuarioP;
 
-    private List<Paciente> pacientes;
-    private JTable tablaPacientes;
-    private JScrollPane scrollPanePacientes;
-    private JTextField txtFiltro;
-    private DefaultTableModel modeloDatosPacientes;
-    private JButton btnAnadirP;
-    private JButton btnBorrarP;
-    private Persona usuario;
-
-    public VentanaPacientes(List<Paciente> pacientes , Persona usuarioP) {
-    	
-    	Context context = Context.getInstance();  
-    	this.pacientes = context.getPacientes(); 
-        
-        usuario = usuarioP;
-        Color color = new Color(6,99,133);
-        
-        ImageIcon i = new ImageIcon("src/db/hospital.png");
-		setIconImage(i.getImage());
-        
-        // llamada para que filtre por nombre
-        txtFiltro = new JTextField(20);
-        txtFiltro.getDocument().addDocumentListener(new DocumentListener() {
-            public void changedUpdate(DocumentEvent arg0) {
-                filtrarPacientes();
-            }
-
-            public void insertUpdate(DocumentEvent arg0) {
-                filtrarPacientes();
-            }
-
-            public void removeUpdate(DocumentEvent arg0) {
-                filtrarPacientes();
-            }
-        });
-
-        // Panel principal y configuraci�n general
-        JPanel panelPrincipal = new JPanel(new BorderLayout());
-        panelPrincipal.setBackground(color);
-
-        String[] nombreColumnas = { "Nombre", "Apellido", "Edad", "C�digo Paciente", "Historial" };
-        modeloDatosPacientes = new DefaultTableModel(nombreColumnas, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-               
-                return column == 4;
-            }
-        };
-        tablaPacientes = new JTable(modeloDatosPacientes);
-        tablaPacientes.setGridColor(Color.black);
-        tablaPacientes.getColumn("Historial").setCellRenderer(new ButtonRenderer());
-        tablaPacientes.getColumn("Historial").setCellEditor(new ButtonEditor(new JButton("Historial")));
-        initTables();
-        //JButton btnHistorial = new JButton();
-        tablaPacientes.getColumnModel().getColumn(0).setPreferredWidth(150); 
-        tablaPacientes.getColumnModel().getColumn(1).setPreferredWidth(150); 
-        tablaPacientes.getColumnModel().getColumn(2).setPreferredWidth(100); 
-        tablaPacientes.getColumnModel().getColumn(3).setPreferredWidth(150); 
-        tablaPacientes.getColumnModel().getColumn(4).setPreferredWidth(100); 
-        
-        for (Paciente paciente : pacientes) {
-            Object[] fila = {paciente.getNombre(), paciente.getApellido(), paciente.getEdad(),
-                    paciente.getCodigoPaciente(), "Historial" };
-            modeloDatosPacientes.addRow(fila);
-        }
-
-     
-        ImageIcon iconBack = new ImageIcon(getClass().getResource("/db/icons8-back-25.png"));
-        JButton btnBack = new JButton(iconBack);
-        btnBack.setBackground(color);
-        btnBack.setPreferredSize(new Dimension(80, 25));
-        btnBack.addActionListener(e -> {
-            MenuTrabajador ventana = new MenuTrabajador(usuario);
-            ventana.setVisible(true);
-            ((JFrame) btnBack.getTopLevelAncestor()).dispose(); 
-        });
-        btnBack.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                btnBack.setBackground(Color.white);
-                btnBack.setForeground(color);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                btnBack.setBackground(color);
-                btnBack.setForeground(Color.white);
-            }
-        });
-
-       
-        btnAnadirP = new JButton("A�adir Paciente");
-        btnAnadirP.setBackground(color);
-        btnAnadirP.setForeground(Color.white);
-        btnAnadirP.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                btnAnadirP.setBackground(Color.white);
-                btnAnadirP.setForeground(color);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                btnAnadirP.setBackground(color);
-                btnAnadirP.setForeground(Color.white);
-            }
-        });
-        btnBorrarP = new JButton("Borrar Paciente");
-        btnBorrarP.setBackground(color);
-        btnBorrarP.setForeground(Color.white);
-        btnBorrarP.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-            	btnBorrarP.setBackground(Color.white);
-            	btnBorrarP.setForeground(color);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-            	btnBorrarP.setBackground(color);
-            	btnBorrarP.setForeground(Color.white);
-            }
-        });
-
-        
-        btnAnadirP.addActionListener(e -> {
-            JFrame frameNuevoPaciente = new JFrame("A�adir Nuevo Paciente");
-            frameNuevoPaciente.setSize(400, 300);
-            frameNuevoPaciente.setLayout(new GridLayout(8, 2)); 
-            frameNuevoPaciente.getContentPane().setBackground(color);
-
-            JLabel lblContrasena = new JLabel("Contrase�a:");
-            JTextField txtContrasena = new JTextField();
-            JLabel lblNombre = new JLabel("Nombre:");
-            JTextField txtNombre = new JTextField();
-            JLabel lblApellido = new JLabel("Apellido:");
-            JTextField txtApellido = new JTextField();
-            JLabel lblEdad = new JLabel("Edad:");
-            JTextField txtEdad = new JTextField();
-            JLabel lblUbicacion = new JLabel("Ubicaci�n:");
-            JTextField txtUbicacion = new JTextField();
-            JLabel lblCodigoPaciente = new JLabel("C�digo Paciente:");
-            JTextField txtCodigoPaciente = new JTextField();
-
-            JButton btnAnadir = new JButton("A�adir Paciente");
-            btnAnadir.setBackground(color);
-            btnAnadir.setForeground(Color.white);
-            btnAnadir.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    btnAnadir.setBackground(Color.white);
-                    btnAnadir.setForeground(color);
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    btnAnadir.setBackground(color);
-                    btnAnadir.setForeground(Color.white);
-                }
-            });
-
-            frameNuevoPaciente.add(lblContrasena);
-            lblContrasena.setForeground(Color.WHITE);
-            frameNuevoPaciente.add(txtContrasena);
-            frameNuevoPaciente.add(lblNombre);
-            lblNombre.setForeground(Color.WHITE);
-            frameNuevoPaciente.add(txtNombre);
-            frameNuevoPaciente.add(lblApellido);
-            lblApellido.setForeground(Color.WHITE);
-            frameNuevoPaciente.add(txtApellido);
-            frameNuevoPaciente.add(lblEdad);
-            lblEdad.setForeground(Color.WHITE);
-            frameNuevoPaciente.add(txtEdad);
-            frameNuevoPaciente.add(lblUbicacion);
-            lblUbicacion.setForeground(Color.WHITE);
-            frameNuevoPaciente.add(txtUbicacion);
-            frameNuevoPaciente.add(lblCodigoPaciente);
-            lblCodigoPaciente.setForeground(Color.WHITE);
-            frameNuevoPaciente.add(txtCodigoPaciente);
-            frameNuevoPaciente.add(new JLabel()); // Label vac�o para llenar �ltimo grid
-            frameNuevoPaciente.add(btnAnadir);
-
-            btnAnadir.addActionListener(e2 -> {
-                String contrasena = txtContrasena.getText();
-                String nombre = txtNombre.getText();
-                String apellido = txtApellido.getText();
-                String ubicacion = txtUbicacion.getText();
-                int codigoP = Integer.parseInt(txtCodigoPaciente.getText());
-                List<Historial> historial = new ArrayList<>();
-                int edad;
-
-                try {
-                    edad = Integer.parseInt(txtEdad.getText());
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(frameNuevoPaciente, "Edad debe ser un n�mero v�lido.");
-                    return;
-                }
-
-                
-                if (nombre.isEmpty() || apellido.isEmpty() || ubicacion.isEmpty() || edad < 0) {
-                    JOptionPane.showMessageDialog(frameNuevoPaciente, "Por favor, rellena todos los campos.");
-                    return;
-                }
-                Paciente nuevoPaciente = new Paciente(contrasena, nombre, apellido, edad, ubicacion, codigoP, historial);
-                pacientes.add(nuevoPaciente);
-                context.guardarPaciente(nuevoPaciente);
-
-                modeloDatosPacientes.addRow(new Object[]{nombre, apellido, edad, codigoP});
-
-                frameNuevoPaciente.dispose(); 
-            });
-
-            frameNuevoPaciente.setLocationRelativeTo(null);
-            frameNuevoPaciente.setVisible(true);
-        });
-        JPanel panelbtn = new JPanel(new BorderLayout());
-       
-        JPanel panelArriba = new JPanel(new BorderLayout());
-        panelbtn.add(txtFiltro,BorderLayout.CENTER);
-        panelbtn.add(btnBorrarP,BorderLayout.EAST);
-        panelArriba.add(panelbtn, BorderLayout.CENTER);
-        
-        panelArriba.add(btnAnadirP, BorderLayout.EAST);
-        
-        panelArriba.add(btnBack, BorderLayout.WEST);
-
-        
-        scrollPanePacientes = new JScrollPane(tablaPacientes);
-        panelPrincipal.add(scrollPanePacientes, BorderLayout.CENTER);
-        panelPrincipal.add(panelArriba, BorderLayout.NORTH);
-
-      
-        	
-        
-        
-        
         setTitle("Lista de Pacientes");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
-        add(panelPrincipal);
+        setIconImage(new ImageIcon("src/db/hospital.png").getImage());
+
+        JPanel mainPanel = createMainPanel();
+        add(mainPanel);
+
         setVisible(true);
     }
 
-    private void initTables() {
-        TableCellRenderer cellRenderer = (table, value, isSelected, hasFocus, row, column) -> {
+    private JPanel createMainPanel() {
+        JPanel mainPanel = new JPanel(new BorderLayout(SPACING, SPACING));
+        mainPanel.setBackground(BACKGROUND_COLOR);
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(SPACING, SPACING, SPACING, SPACING));
+
+        mainPanel.add(createHeaderPanel(), BorderLayout.NORTH);
+        mainPanel.add(createTablePanel(), BorderLayout.CENTER);
+
+        return mainPanel;
+    }
+
+    private JPanel createHeaderPanel() {
+        JPanel headerPanel = new JPanel(new BorderLayout(SPACING, 0));
+        headerPanel.setBackground(BACKGROUND_COLOR);
+
+        JPanel leftSection = new JPanel(new FlowLayout(FlowLayout.LEFT, SPACING, 0));
+        leftSection.setBackground(BACKGROUND_COLOR);
+        leftSection.add(createBackButton());
+
+        JPanel rightSection = new JPanel(new FlowLayout(FlowLayout.RIGHT, SPACING, 0));
+        rightSection.setBackground(BACKGROUND_COLOR);
+        rightSection.add(createFilterField());
+        rightSection.add(createAddButton());
+        rightSection.add(createDeleteButton());
+
+        headerPanel.add(leftSection, BorderLayout.WEST);
+        headerPanel.add(rightSection, BorderLayout.EAST);
+
+        return headerPanel;
+    }
+
+    private JPanel createTablePanel() {
+        JPanel tablePanel = new JPanel(new BorderLayout());
+        tablePanel.setBackground(BACKGROUND_COLOR);
+
+        String[] columnNames = {"Nombre", "Apellido", "Edad", "Código Paciente", "Historial"};
+        modeloDatosPacientes = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 4;
+            }
+        };
+        tablaPacientes = new JTable(modeloDatosPacientes);
+        tablaPacientes.setGridColor(Color.BLACK);
+        tablaPacientes.getColumn("Historial").setCellRenderer(new ButtonRenderer());
+        tablaPacientes.getColumn("Historial").setCellEditor(new ButtonEditor(new JButton("Historial")));
+        initTableStyle();
+        addPatientData();
+
+        scrollPanePacientes = new JScrollPane(tablaPacientes);
+        tablePanel.add(scrollPanePacientes, BorderLayout.CENTER);
+
+        return tablePanel;
+    }
+
+    private void initTableStyle() {
+        tablaPacientes.setDefaultRenderer(Object.class, (table, value, isSelected, hasFocus, row, column) -> {
             JLabel result = new JLabel(value != null ? value.toString() : "");
             result.setHorizontalAlignment(JLabel.CENTER);
             return result;
-        };
-
-        tablaPacientes.setDefaultRenderer(Object.class, cellRenderer);
+        });
         tablaPacientes.setRowHeight(40);
         tablaPacientes.getTableHeader().setReorderingAllowed(false);
         tablaPacientes.getTableHeader().setResizingAllowed(false);
         tablaPacientes.setAutoCreateRowSorter(true);
         tablaPacientes.getColumnModel().getColumn(2).setPreferredWidth(400);
 
-        
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-        headerRenderer.setBackground(new Color(6, 99, 133));
-        headerRenderer.setForeground(Color.WHITE); 
+        headerRenderer.setBackground(PRIMARY_COLOR);
+        headerRenderer.setForeground(Color.WHITE);
         headerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        headerRenderer.setFont(tablaPacientes.getFont().deriveFont(java.awt.Font.BOLD));
+        headerRenderer.setFont(tablaPacientes.getFont().deriveFont(Font.BOLD));
 
         for (int i = 0; i < tablaPacientes.getColumnModel().getColumnCount(); i++) {
             tablaPacientes.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
         }
     }
 
-    private void filtrarPacientes() {
-        
-        modeloDatosPacientes.setRowCount(0);
-
-        String filtro = txtFiltro.getText().toLowerCase();
+    private void addPatientData() {
         for (Paciente paciente : pacientes) {
-            if (paciente.getNombre().toLowerCase().contains(filtro) ||
-                paciente.getApellido().toLowerCase().contains(filtro) ||
-                String.valueOf(paciente.getEdad()).contains(filtro) ||
-                String.valueOf(paciente.getCodigoPaciente()).contains(filtro)) {
-                modeloDatosPacientes.addRow(new Object[]{paciente.getNombre(), paciente.getApellido(), paciente.getEdad(), paciente.getCodigoPaciente(), "Ver Historial"});
-            }
+            Object[] row = {paciente.getNombre(), paciente.getApellido(), paciente.getEdad(), paciente.getCodigoPaciente(), "Ver Historial"};
+            modeloDatosPacientes.addRow(row);
         }
     }
 
-     
+    private JTextField createFilterField() {
+        txtFiltro = new JTextField(20);
+        txtFiltro.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent arg0) {
+                filterPatients();
+            }
 
+            public void insertUpdate(DocumentEvent arg0) {
+                filterPatients();
+            }
 
-
-
-class ButtonRenderer extends JButton implements TableCellRenderer {
-
-    public ButtonRenderer() {
-    	setBackground(new Color(6, 99, 133));
-    	setForeground(Color.white);
-
-        setOpaque(true);
+            public void removeUpdate(DocumentEvent arg0) {
+                filterPatients();
+            }
+        });
+        return txtFiltro;
     }
 
-    @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-            boolean hasFocus, int row, int column) {
-        setText((value != null) ? value.toString() : "Ver Historial");
-        return this;
-    }
-}
-
-class ButtonEditor extends AbstractCellEditor implements TableCellEditor, ActionListener {
-
-    private JButton button;
-    private String label;
-    private boolean isPushed;
-
-    public ButtonEditor(JButton button) {
-        this.button = button;
-        this.button.addActionListener(this);
+    private JButton createBackButton() {
+        ImageIcon backIcon = new ImageIcon(getClass().getResource("/db/icons8-back-25.png"));
+        JButton btnBack = new JButton(backIcon);
+        styleButton(btnBack);
+        btnBack.setPreferredSize(new Dimension(80, 35));
+        btnBack.addActionListener(e -> {
+            MenuTrabajador window = new MenuTrabajador(usuario);
+            window.setVisible(true);
+            dispose();
+        });
+        return btnBack;
     }
 
-    @Override
-    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
-            int column) {
-        label = (value != null) ? value.toString() : "Ver Historial";
-        button.setText(label);
-        isPushed = true;
+    private JButton createAddButton() {
+        btnAnadirP = createStyledButton("Añadir Paciente");
+        btnAnadirP.addActionListener(e -> showAddPatientDialog());
+        return btnAnadirP;
+    }
+
+    private JButton createDeleteButton() {
+        btnBorrarP = createStyledButton("Borrar Paciente");
+        // Add delete functionality here
+        return btnBorrarP;
+    }
+
+    private JButton createStyledButton(String text) {
+        JButton button = new JButton(text);
+        styleButton(button);
         return button;
     }
 
-    @Override
-    public Object getCellEditorValue() {
-        if (isPushed) {
-            
-            //System.out.pintln("Historial button clicked on row " + tablaPacientes.getSelectedRow());
-            int row = tablaPacientes.getSelectedRow();
-           
-            int codigoP = (int) modeloDatosPacientes.getValueAt(row, 3);
-            for(Paciente p :pacientes) {
-            	if(p.getCodigoPaciente()==codigoP) {
-            	String	contrasena=p.getContrasena();
-            	String nombre=p.getNombre();
-            	String	apellido = p.getApellido();
-            	int	edad=p.getEdad();
-            	String	ubicacion=p.getUbicacion();
-            		codigoP = p.getCodigoPaciente();
-            		List<Historial> lista = p.getHistorialPaciente();
-            		Paciente pac = new Paciente(contrasena,nombre,apellido,
-            									edad,ubicacion,codigoP,lista);
-            		//System.out.println(pac);
-            		if(usuario instanceof Doctor) {
-            		VentanaHistorial ventanaHistorial = new VentanaHistorial(pac , usuario);
-            		ventanaHistorial.setVisible(true);
-            		//this.dispose();
-            		}else if (usuario instanceof Administrador){
-            			JOptionPane.showMessageDialog(null, "Solo un medico puede acceder al historial de un paciente", "Acceso rechazado", JOptionPane.ERROR_MESSAGE);
-            		}
-            	}
+    private void styleButton(JButton button) {
+        button.setFont(BUTTON_FONT);
+        button.setBackground(PRIMARY_COLOR);
+        button.setForeground(Color.WHITE);
+        button.setBorderPainted(false);
+        button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(SECONDARY_COLOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(PRIMARY_COLOR);
+            }
+        });
+    }
+
+    private void filterPatients() {
+        modeloDatosPacientes.setRowCount(0);
+
+        String filter = txtFiltro.getText().toLowerCase();
+        for (Paciente paciente : pacientes) {
+            if (paciente.getNombre().toLowerCase().contains(filter) ||
+                paciente.getApellido().toLowerCase().contains(filter) ||
+                String.valueOf(paciente.getEdad()).contains(filter) ||
+                String.valueOf(paciente.getCodigoPaciente()).contains(filter)) {
+                Object[] row = {paciente.getNombre(), paciente.getApellido(), paciente.getEdad(), paciente.getCodigoPaciente(), "Ver Historial"};
+                modeloDatosPacientes.addRow(row);
             }
         }
-        isPushed = false;
+    }
+
+    private void showAddPatientDialog() {
+        JDialog newPatientDialog = new JDialog(this, "Añadir Nuevo Paciente", true);
+        newPatientDialog.setSize(400, 300);
+        newPatientDialog.setLayout(new GridLayout(8, 2, SPACING, SPACING));
+        newPatientDialog.getContentPane().setBackground(PRIMARY_COLOR);
+
+        JLabel lblContrasena = createLabel("Contraseña:");
+        JTextField txtContrasena = new JTextField();
+        JLabel lblNombre = createLabel("Nombre:");
+        JTextField txtNombre = new JTextField();
+        JLabel lblApellido = createLabel("Apellido:");
+        JTextField txtApellido = new JTextField();
+        JLabel lblEdad = createLabel("Edad:");
+        JTextField txtEdad = new JTextField();
+        JLabel lblUbicacion = createLabel("Ubicación:");
+        JTextField txtUbicacion = new JTextField();
+        JLabel lblCodigoPaciente = createLabel("Código Paciente:");
+        JTextField txtCodigoPaciente = new JTextField();
+
+        JButton btnAdd = createStyledButton("Añadir Paciente");
+        btnAdd.addActionListener(e -> {
+            if (validatePatientData(txtNombre, txtApellido, txtEdad, txtUbicacion, txtCodigoPaciente)) {
+                String password = txtContrasena.getText();
+                String name = txtNombre.getText();
+                String surname = txtApellido.getText();
+                String location = txtUbicacion.getText();
+                int patientCode = Integer.parseInt(txtCodigoPaciente.getText());
+                List<Historial> history = null;
+                int age = Integer.parseInt(txtEdad.getText());
+
+                Paciente newPatient = new Paciente(password, name, surname, age, location, patientCode, history);
+                pacientes.add(newPatient);
+                Context.getInstance().guardarPaciente(newPatient);
+                modeloDatosPacientes.addRow(new Object[]{name, surname, age, patientCode, "Ver Historial"});
+                newPatientDialog.dispose();
+            }
+        });
+
+        newPatientDialog.add(lblContrasena);
+        newPatientDialog.add(txtContrasena);
+        newPatientDialog.add(lblNombre);
+        newPatientDialog.add(txtNombre);
+        newPatientDialog.add(lblApellido);
+        newPatientDialog.add(txtApellido);
+        newPatientDialog.add(lblEdad);
+        newPatientDialog.add(txtEdad);
+        newPatientDialog.add(lblUbicacion);
+        newPatientDialog.add(txtUbicacion);
+        newPatientDialog.add(lblCodigoPaciente);
+        newPatientDialog.add(txtCodigoPaciente);
+        newPatientDialog.add(new JLabel()); // Empty label to fill last grid cell
+        newPatientDialog.add(btnAdd);
+
+        newPatientDialog.setLocationRelativeTo(this);
+        newPatientDialog.setVisible(true);
+    }
+
+    private JLabel createLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setForeground(Color.WHITE);
         return label;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        fireEditingStopped(); 
-    }
-}
+    private boolean validatePatientData(JTextField txtNombre, JTextField txtApellido, JTextField txtEdad, JTextField txtUbicacion, JTextField txtCodigoPaciente) {
+        String name = txtNombre.getText();
+        String surname = txtApellido.getText();
+        String location = txtUbicacion.getText();
 
+        try {
+            int age = Integer.parseInt(txtEdad.getText());
+            int patientCode = Integer.parseInt(txtCodigoPaciente.getText());
+
+            if (name.isEmpty() || surname.isEmpty() || location.isEmpty() || age < 0) {
+                JOptionPane.showMessageDialog(this, "Please fill in all fields.");
+                return false;
+            }
+
+            return true;
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Age and Patient Code must be valid numbers.");
+            return false;
+        }
+    }
+
+    private class ButtonRenderer extends JButton implements TableCellRenderer {
+        public ButtonRenderer() {
+            setBackground(PRIMARY_COLOR);
+            setForeground(Color.WHITE);
+            setOpaque(true);
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            setText((value != null) ? value.toString() : "Ver Historial");
+            return this;
+        }
+    }
+
+    private class ButtonEditor extends AbstractCellEditor implements TableCellEditor, ActionListener {
+        private final JButton button;
+        private String label;
+        private boolean isPushed;
+
+        public ButtonEditor(JButton button) {
+            this.button = button;
+            this.button.addActionListener(this);
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            label = (value != null) ? value.toString() : "Ver Historial";
+            button.setText(label);
+            isPushed = true;
+            return button;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            if (isPushed) {
+                int row = tablaPacientes.getSelectedRow();
+                int patientCode = (int) modeloDatosPacientes.getValueAt(row, 3);
+                for (Paciente p : pacientes) {
+                    if (p.getCodigoPaciente() == patientCode) {
+                        String password = p.getContrasena();
+                        String name = p.getNombre();
+                        String surname = p.getApellido();
+                        int age = p.getEdad();
+                        String location = p.getUbicacion();
+                        patientCode = p.getCodigoPaciente();
+                        List<Historial> history = p.getHistorialPaciente();
+                        Paciente patient = new Paciente(password, name, surname, age, location, patientCode, history);
+                        if (usuario instanceof Doctor) {
+                            VentanaHistorial historyWindow = new VentanaHistorial(patient, usuario);
+                            historyWindow.setVisible(true);
+                        } else if (usuario instanceof Administrador) {
+                            JOptionPane.showMessageDialog(this.button, "Solo un medico puede acceder al historial de un paciente", "Acceso rechazado", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+            }
+            isPushed = false;
+            return label;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            fireEditingStopped();
+        }
+    }
 }
 //FUENTE-EXTERNA
 //URL: (https://alud.deusto.es/mod/resource/view.php?id=800467)
