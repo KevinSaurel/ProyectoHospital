@@ -20,6 +20,7 @@ public class VentanaSeleccion extends JFrame {
     protected JPanel pAbajo, pCentro;
     protected JTextField textoIdentificacion;
     protected JLabel lblIdentificacion, lblImagenTrabajador, lblImagenCliente;
+    protected Icon ImageIcon;
 
     private ArrayList<Doctor> listaMedicos;
     private ArrayList<Administrador> listaAdmin;
@@ -27,7 +28,9 @@ public class VentanaSeleccion extends JFrame {
     private Persona usuario;
 
     public VentanaSeleccion() {
-        ImageIcon i = new ImageIcon("src/db/hospital.png");
+        ImageIcon i = new ImageIcon("src/db/hospital.png");ImageIcon icon = new ImageIcon("src/db/hospital.png");
+    	Image scaledImage = i.getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+    	this.ImageIcon  = new ImageIcon(scaledImage);
         setIconImage(i.getImage());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(300, 200, 600, 400);
@@ -58,8 +61,8 @@ public class VentanaSeleccion extends JFrame {
 
         botonTrabajador.addActionListener((e) -> {
             // Inicio de sesión del trabajador
-            String usuarioN = JOptionPane.showInputDialog(this, "Usuario:");
-            String contrasena = JOptionPane.showInputDialog(this, "Contraseña:");
+        	String usuarioN =(String)JOptionPane.showInputDialog(this, "Usuario:", "Input Dialog", JOptionPane.PLAIN_MESSAGE, ImageIcon, null, null);
+            String contrasena = (String)JOptionPane.showInputDialog(this, "Contraseña:", "Input Dialog", JOptionPane.PLAIN_MESSAGE, ImageIcon, null, null);
 
             if (listaGetNombre(usuarioN, contrasena)) {
                 JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso!", "Bienvenido: " + usuarioN, JOptionPane.INFORMATION_MESSAGE);
@@ -72,8 +75,11 @@ public class VentanaSeleccion extends JFrame {
         });
 
         botonPaciente.addActionListener(e -> {
-        	String usuarioN = JOptionPane.showInputDialog(this, "Usuario:");
-            String contrasena = JOptionPane.showInputDialog(this, "Contraseña:");
+        	
+
+        	// Show the input dialog with the custom icon
+        	String usuarioN = (String)JOptionPane.showInputDialog(this, "Usuario:", "Input Dialog", JOptionPane.PLAIN_MESSAGE, ImageIcon, null, null);
+        	String contrasena = (String)JOptionPane.showInputDialog(this, "Contraseña:", "Input Dialog", JOptionPane.PLAIN_MESSAGE, ImageIcon, null, null);
 
             if (listaGetNombre(usuarioN, contrasena)) {
                 JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso!", "Bienvenido: " + usuarioN, JOptionPane.INFORMATION_MESSAGE);
