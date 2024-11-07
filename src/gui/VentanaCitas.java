@@ -59,11 +59,6 @@ public class VentanaCitas extends JFrame{
 	         scrollPaneCitas = new JScrollPane();
 	         panelBase.add(scrollPaneCitas, BorderLayout.EAST);
 	         
-	    // Se añade el cuadro de texto para el filtro al panel base
-	         
-	         txtFiltro = new JTextField(20);
-	         panelNorte.add(txtFiltro);
-	         
 	    // Se añaden los botones
 	         
 	         // Añadir
@@ -130,6 +125,12 @@ public class VentanaCitas extends JFrame{
 	             ventana.setVisible(true);
 	             this.dispose();
 	         });
+	         
+	    // Se añade el cuadro de texto para el filtro al panel base
+	         
+	         txtFiltro = new JTextField(20);
+	         panelNorte.add(txtFiltro);
+	         
 	         
 	    // Se añade la tabla de la info de citas     
 	         
