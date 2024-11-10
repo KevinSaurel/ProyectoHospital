@@ -7,6 +7,7 @@ public class Paciente extends Persona{
 	private int codigoPaciente;
 	private List<Historial> historialPaciente = new ArrayList() ;
 	
+	
 	public Paciente(String contrasena, String nombre, String apellido, int edad, String ubicacion, int codigoPaciente,
 			List<Historial> historialEntries) {
 		super(contrasena, nombre, apellido, edad, ubicacion);

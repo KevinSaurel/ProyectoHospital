@@ -172,7 +172,7 @@ public class MenuTrabajador extends JFrame{
         });
         
         btnCamas.addActionListener((e) -> {
-        	VentanaCamas ventana = new VentanaCamas(camas, usuario);
+        	VentanaCamas ventana = new VentanaCamas(usuario);
             ventana.setVisible(true);
             this.dispose();
         });
