@@ -226,20 +226,67 @@ public class VentanaPacientes extends JFrame {
         });
     }
 
-    private void filterPatients() {
-        modeloDatosPacientes.setRowCount(0);
+   
 
-        String filter = txtFiltro.getText().toLowerCase();
-        for (Paciente paciente : pacientes) {
-            if (paciente.getNombre().toLowerCase().contains(filter) ||
-                paciente.getApellido().toLowerCase().contains(filter) ||
-                String.valueOf(paciente.getEdad()).contains(filter) ||
-                String.valueOf(paciente.getCodigoPaciente()).contains(filter)) {
-                Object[] row = {paciente.getNombre(), paciente.getApellido(), paciente.getEdad(), paciente.getCodigoPaciente(), "Ver Historial"};
-                modeloDatosPacientes.addRow(row);
+        private void filterPatients() {
+            modeloDatosPacientes.setRowCount(0); 
+
+            String filter = txtFiltro.getText().toLowerCase(); 
+            if (filter.isEmpty()) {
+                // If filter is empty, show all patients
+                addPatientData();
+                return;
+            }
+
+            for (Paciente paciente : pacientes) {
+                String nombre = paciente.getNombre();
+                String apellido = paciente.getApellido();
+                String edad = String.valueOf(paciente.getEdad());
+                String codigoPaciente = String.valueOf(paciente.getCodigoPaciente());
+
+                boolean matches = nombre.toLowerCase().contains(filter) || 
+                                  apellido.toLowerCase().contains(filter) || 
+                                  edad.contains(filter) || 
+                                  codigoPaciente.contains(filter);
+
+                if (matches) {
+                    String highlightedNombre = highlightText(nombre, filter);
+                    String highlightedApellido = highlightText(apellido, filter);
+                    String highlightedEdad = highlightText(edad, filter);
+                    String highlightedCodigoPaciente = highlightText(codigoPaciente, filter);
+
+                    // Add the row with the highlighted text to the table model
+                    Object[] row = {
+                        highlightedNombre, 
+                        highlightedApellido, 
+                        highlightedEdad, 
+                        highlightedCodigoPaciente, 
+                        "Ver Historial"
+                    };
+                    modeloDatosPacientes.addRow(row);
+                }
             }
         }
-    }
+
+        private String highlightText(String text, String filter) {
+            if (text.toLowerCase().contains(filter)) {
+                int startIndex = text.toLowerCase().indexOf(filter);
+                int endIndex = startIndex + filter.length();
+                
+                String beforeMatch = text.substring(0, startIndex);
+                String match = text.substring(startIndex, endIndex);
+                String afterMatch = text.substring(endIndex);
+
+                // Create the HTML formatted string to highlight the filter match
+                return "<html>" + 
+                       beforeMatch + 
+                       "<strong style='background-color:yellow; color:blue;'>" + match + "</strong>" + 
+                       afterMatch + 
+                       "</html>";
+            }
+            return text; // If no match, return the text as is
+        }
+
 
     private void showAddPatientDialog() {
         JDialog newPatientDialog = new JDialog(this, "Añadir Nuevo Paciente", true);
