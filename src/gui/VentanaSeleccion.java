@@ -105,21 +105,21 @@ public class VentanaSeleccion extends JFrame {
         for (Doctor medico : listaMedicos) {
             if (medico.getNombre().equals(nombre) && medico.getContrasena().equals(contrasena)) {
                 usuario = medico;
-                System.out.println(usuario);
+                //System.out.println(usuario);
                 return true;
             }
         }
         for (Administrador admin : listaAdmin) {
             if (admin.getNombre().equals(nombre) && admin.getContrasena().equals(contrasena)) {
                 usuario = admin;
-                System.out.println(usuario);
+                //System.out.println(usuario);
                 return true;
             }
         }
         for (Paciente p : listaPacientes) {
             if (p.getNombre().equals(nombre) && p.getContrasena().equals(contrasena)) {
                 usuario = p;
-                System.out.println(usuario);
+               // System.out.println(usuario);
                 return true;
             }
         }
