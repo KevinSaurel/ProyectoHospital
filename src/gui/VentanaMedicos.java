@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -247,7 +248,7 @@ public class VentanaMedicos extends JFrame {
     private void initTables() {
         TableCellRenderer cellRenderer = (table, value, isSelected, hasFocus, row, column) -> {
             JLabel result = new JLabel(value != null ? value.toString() : "");
-            result.setHorizontalAlignment(JLabel.CENTER);
+            result.setHorizontalAlignment(JLabel.LEFT);
             return result;
         };
 
@@ -263,10 +264,11 @@ public class VentanaMedicos extends JFrame {
         headerRenderer.setForeground(Color.WHITE);  // Texto color cabecera
         headerRenderer.setHorizontalAlignment(JLabel.CENTER);  
         headerRenderer.setFont(tablaMedicos.getFont().deriveFont(java.awt.Font.BOLD));  
-
-       
+        headerRenderer.setHorizontalAlignment(SwingConstants.LEFT);
+        
         for (int i = 0; i < tablaMedicos.getColumnModel().getColumnCount(); i++) {
             tablaMedicos.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+           // tablaMedicos.getColumnModel().getColumn(i).setCellRenderer(headerRenderer); 
         }
     }
 
