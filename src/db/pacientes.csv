@@ -1,5 +1,10 @@
-password123,John,Doe,30,New York,101,"Causa1|2023-01-01;Causa2|2023-02-01"
-secure456,Jane,Smith,28,Los Angeles,102,"Causa3|2023-03-01"
-safe789,Emily,Clark,35,Chicago,103,"Causa4|2023-04-01;Causa5|2023-05-01;Causa6|2023-06-01"
-lock999,Michael,Johnson,40,Houston,104,"Causa7|2023-07-01"
-shield111,Lisa,White,25,Phoenix,105,"Causa8|2023-08-01;Causa9|2023-09-01"
+paciente,fran,Lopez,30,Sala 101,1,Gripe|2024-01-01;Fiebre|2024-02-01;
+paciente,kevin,Gomez,25,Sala 102,2,Resfriado|2024-03-15;Dolor de cabeza|2024-04-10;
+paciente,mikel,Ramirez,40,Sala 103,3,Fractura|2024-05-20;Faringitis|2024-06-15;
+paciente,gorka,Fernandez,35,Sala 104,4,Neumonía|2024-07-05;Dolor muscular|2024-08-15;
+paciente,Roberto,Carballedo Morillo,28,Sala 105,5,Asma|2024-09-10;Infección urinaria|2024-10-05;
+password6,Elena,Diaz,60,Sala 106,6,Catarro|2024-11-01;Artritis|2024-12-10;
+password7,Pedro,Sanchez,50,Sala 107,7,Diabetes|2024-01-10;Hipertensión|2024-02-15;
+password8,Laura,Alvarez,32,Sala 108,8,Alergia|2024-03-20;Migraña|2024-04-01;
+password9,Jorge,Castro,45,Sala 109,9,Colesterol alto|2024-06-10;Problema digestivo|2024-07-15;
+password10,Isabel,Martinez,38,Sala 110,10,Insomnio|2024-08-01;Dolor en el pecho|2024-09-05;

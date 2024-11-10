@@ -1,5 +1,10 @@
-1234,kevin,Pérez,35,Madrid,Cirujano,08:00-16:00
-1234,mikel,García,40,Barcelona,Pediatra,09:00-17:00
-1234,fran,López,50,Valencia,CARDIOLOGO,10:00-18:00
-1234,gorka,Rodríguez,30,Sevilla,Ginecólogo,08:30-16:30
-pass202,Carlos,Martínez,45,Málaga,Traumatólogo,11:00-19:00
+medico,kevin,Lopez,45,Sala 201,Cardiología,09:00-17:00
+medico,fran,Fernandez,38,Sala 202,Pediatría,10:00-18:00
+medico,mikel,Ramirez,50,Sala 203,Neurología,08:00-16:00
+medico,Roberto,Carballedo,40,Sala 204,Ortopedia,09:00-17:00
+medico,goka,Martinez,55,Sala 205,Oncología,10:00-18:00
+doctor6,Dr. Elena,Diaz,60,Sala 206,Endocrinología,08:00-16:00
+doctor7,Dr. Pedro,Hernandez,47,Sala 207,Reumatología,09:00-17:00
+doctor8,Dr. Laura,Alvarez,32,Sala 208,Medicina General,10:00-18:00
+doctor9,Dr. Jorge,Castro,42,Sala 209,Urología,08:00-16:00
+doctor10,Dr. Isabel,Sanchez,34,Sala 210,Odontología,09:00-17:00

@@ -97,6 +97,8 @@ public class VentanaMedicos extends JFrame {
             this.dispose(); 
         });
         btnBack.addMouseListener(new MouseAdapter() {
+        	
+        	
             @Override
             public void mouseEntered(MouseEvent e) {
                 btnBack.setBackground(Color.white); 
@@ -109,7 +111,12 @@ public class VentanaMedicos extends JFrame {
                 btnBack.setForeground(Color.white);
             }
         });
-        
+        btnBack.addActionListener(e ->{
+  		  
+  			MenuTrabajador ventana = new MenuTrabajador(usuario);
+  			ventana.setVisible(true);
+  			this.dispose();
+        });
         
         btnAnadirM = new JButton("Añadir Médico");
         btnAnadirM.setBackground(color);
