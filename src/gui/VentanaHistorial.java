@@ -24,6 +24,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import domain.Administrador;
 import domain.Context;
@@ -111,6 +113,7 @@ public class VentanaHistorial extends JFrame{
 		// panelHistorial = new JPanel(new GridLayout(0, 1));
 		 tableModel = new HistorialTableModel(paciente.getHistorialPaciente());
 	        tableHistorial = new JTable(tableModel);
+	        initTableStyle();
 	        tableHistorial.setFillsViewportHeight(true);
 	        
 		JScrollPane pane = new JScrollPane(tableHistorial);
@@ -126,6 +129,7 @@ public class VentanaHistorial extends JFrame{
 		setContentPane(panelPrincipal); 
         panelPrincipal.setVisible(true);
         
+        
 		
 		  btnAnadir.addActionListener(e ->{
 			  if(usuario instanceof Doctor) {
@@ -133,14 +137,40 @@ public class VentanaHistorial extends JFrame{
 			  anadirHistorial(paciente , usuario);
 			  }
 	        });
+		  
+		  
 
 	        setTitle("Historial del Paciente");
 	        setExtendedState(JFrame.MAXIMIZED_BOTH);
 	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        setLocationRelativeTo(null);
 	        setVisible(true);
-	       
+	      
+	        
 	}
+	
+	   private void initTableStyle() {
+		   tableHistorial.setDefaultRenderer(Object.class, (table, value, isSelected, hasFocus, row, column) -> {
+	            JLabel result = new JLabel(value != null ? value.toString() : "");
+	            result.setHorizontalAlignment(JLabel.CENTER);
+	            return result;
+	        });
+		   tableHistorial.setRowHeight(40);
+		   tableHistorial.getTableHeader().setReorderingAllowed(false);
+	        tableHistorial.getTableHeader().setResizingAllowed(false);
+	        tableHistorial.setAutoCreateRowSorter(true);
+	        tableHistorial.getColumnModel().getColumn(2).setPreferredWidth(400);
+
+	        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+	        headerRenderer.setBackground(color);
+	        headerRenderer.setForeground(Color.WHITE);
+	        headerRenderer.setHorizontalAlignment(JLabel.CENTER);
+	        headerRenderer.setFont(tableHistorial.getFont().deriveFont(Font.BOLD));
+
+	        for (int i = 0; i < tableHistorial.getColumnModel().getColumnCount(); i++) {
+	        	tableHistorial.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+	        }
+	    }
 
 
  
