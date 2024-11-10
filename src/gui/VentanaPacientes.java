@@ -36,6 +36,7 @@ public class VentanaPacientes extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setIconImage(new ImageIcon("src/db/hospital.png").getImage());
+        addKeyboardShortcut();
 
         JPanel mainPanel = createMainPanel();
         add(mainPanel);
@@ -108,14 +109,27 @@ public class VentanaPacientes extends JFrame {
         tablaPacientes.getTableHeader().setReorderingAllowed(false);
         tablaPacientes.getTableHeader().setResizingAllowed(false);
         tablaPacientes.setAutoCreateRowSorter(true);
-        tablaPacientes.getColumnModel().getColumn(2).setPreferredWidth(400);
+        tablaPacientes.getColumnModel().getColumn(2).setPreferredWidth(50);
+        tablaPacientes.getColumnModel().getColumn(1).setPreferredWidth(200);
+        tablaPacientes.getColumnModel().getColumn(0).setPreferredWidth(200);
+        tablaPacientes.getColumnModel().getColumn(3).setPreferredWidth(100);
+        
+        DefaultTableCellRenderer leftAlignRenderer = new DefaultTableCellRenderer();
 
+        leftAlignRenderer.setHorizontalAlignment(SwingConstants.LEFT);
+        leftAlignRenderer.setFont(new Font("Arial", Font.BOLD, 12));
+      
+        // Set the left alignment renderer for "Nombre" and "Apellido" columns
+        tablaPacientes.getColumnModel().getColumn(0).setCellRenderer(leftAlignRenderer); 
+        tablaPacientes.getColumnModel().getColumn(1).setCellRenderer(leftAlignRenderer); 
+        
+        
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
         headerRenderer.setBackground(PRIMARY_COLOR);
         headerRenderer.setForeground(Color.WHITE);
         headerRenderer.setHorizontalAlignment(JLabel.CENTER);
         headerRenderer.setFont(tablaPacientes.getFont().deriveFont(Font.BOLD));
-
+        //headerRenderer.setFont(new Font("Arial", Font.BOLD, 12));
         for (int i = 0; i < tablaPacientes.getColumnModel().getColumnCount(); i++) {
             tablaPacientes.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
         }
@@ -144,6 +158,20 @@ public class VentanaPacientes extends JFrame {
             }
         });
         return txtFiltro;
+    }
+    private void addKeyboardShortcut() {
+        // Define an Action that opens the "Añadir Paciente" dialog
+        Action addPatientAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showAddPatientDialog(); // Call method to open dialog
+            }
+        };
+
+        // Set up the key binding on the root pane of the frame
+        String key = "addPatient";
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control P"), key);
+        getRootPane().getActionMap().put(key, addPatientAction);
     }
 
     private JButton createBackButton() {
