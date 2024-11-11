@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import domain.Administrador;
 import domain.Cama;
@@ -45,6 +46,9 @@ public class MenuTrabajador extends JFrame{
 	private JButton btnUsuario;
 	private JButton btnMedicos;
 	
+	private JPanel panelHilo; 
+	private JLabel labelMedicos;
+	
 	
 	public  MenuTrabajador(Persona usuario) {
 		
@@ -56,6 +60,7 @@ public class MenuTrabajador extends JFrame{
     	ImageIcon i = new ImageIcon("src/db/hospital.png");
 		setIconImage(i.getImage());
     	
+		
 		
 		btnVolver = new JButton("Salir");
 		
@@ -104,16 +109,20 @@ public class MenuTrabajador extends JFrame{
 		panel.add(grid,BorderLayout.NORTH);
 		
 		
-		JPanel pngHistorial = new JPanel();
-		pngHistorial.setLayout(new GridLayout(1 , 2 , 10 , 10 ));
+		 JPanel pngHistorial = new JPanel();
+		  pngHistorial.setLayout(new GridLayout(1 , 2 , 10 , 10 ));
 		
 		ImageIcon imagenMedicos = new ImageIcon(getClass().getResource("/db/MedicosFelices.png"));
 
 		
 		Image imagenmodi = imagenMedicos.getImage().getScaledInstance(800, 500, java.awt.Image.SCALE_SMOOTH);
+		panelHilo = new JPanel(new BorderLayout());
 		imagenMedicos = new ImageIcon(imagenmodi);
-		JLabel labelMedicos = new JLabel(imagenMedicos);
-		pngHistorial.add(labelMedicos);
+		
+		HiloImagen hilo = new HiloImagen();
+		hilo.start();
+		 //this.imagenMedicos = new JLabel(imagenMedicos);
+		pngHistorial.add(panelHilo);
 		pngHistorial.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
 		JPanel cita = new JPanel();
@@ -211,6 +220,43 @@ public class MenuTrabajador extends JFrame{
 		        });
 			}
 		}
+	}
+	private class HiloImagen extends Thread {
+	    public void run() {
+	        // Load and scale images once at the start
+	        ImageIcon imagenMedicos = new ImageIcon(getClass().getResource("/db/MedicosFelices.png"));
+	        Image imagenMedicosEscalada = imagenMedicos.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH);
+	        ImageIcon imagenMedicosIcon = new ImageIcon(imagenMedicosEscalada);
+
+	        ImageIcon imagenSala = new ImageIcon(getClass().getResource("/db/imagenSala.png"));
+	        Image imagenSalaEscalada = imagenSala.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH);
+	        ImageIcon imagenSalaIcon = new ImageIcon(imagenSalaEscalada);
+
+	        try {
+	            while (true) {
+	                // Alternate between the two images
+	                SwingUtilities.invokeLater(() -> {
+	                    panelHilo.removeAll(); // Clear the panel before adding a new image
+	                    labelMedicos = new JLabel(imagenMedicosIcon); // Display "MedicosFelices" image
+	                    panelHilo.add(labelMedicos, BorderLayout.CENTER);
+	                    panelHilo.revalidate();
+	                    panelHilo.repaint();
+	                });
+	                Thread.sleep(5000);
+
+	                SwingUtilities.invokeLater(() -> {
+	                    panelHilo.removeAll(); // Clear the panel before adding a new image
+	                    labelMedicos = new JLabel(imagenSalaIcon); // Display "imagenSala" image
+	                    panelHilo.add(labelMedicos, BorderLayout.CENTER);
+	                    panelHilo.revalidate();
+	                    panelHilo.repaint();
+	                });
+	                Thread.sleep(5000);
+	            }
+	        } catch (InterruptedException e) {
+	            System.out.println("Countdown interrupted!");
+	        }
+	    }
 	}
 }
 

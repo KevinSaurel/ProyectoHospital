@@ -66,9 +66,14 @@ public class VentanaSeleccion extends JFrame {
 
             if (listaGetNombre(usuarioN, contrasena)) {
                 JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso!", "Bienvenido: " + usuarioN, JOptionPane.INFORMATION_MESSAGE);
-                MenuTrabajador ventana = new MenuTrabajador(usuario);
-                ventana.setVisible(true);
-                this.dispose();
+//                MenuTrabajador ventana = new MenuTrabajador(usuario);
+//                ventana.setVisible(true);
+                SwingUtilities.invokeLater(() -> {
+                    MenuTrabajador ventanaHistorial = new MenuTrabajador(usuario);
+                    ventanaHistorial.setVisible(true);
+                    this.dispose();
+                  
+                });                
             } else {
                 JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
             }
