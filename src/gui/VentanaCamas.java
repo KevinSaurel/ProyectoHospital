@@ -59,8 +59,9 @@ public class VentanaCamas extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 700);
         setLayout(new BorderLayout());
-        setIconImage(new ImageIcon("src/db/hospital.png").getImage());
-        
+        ImageIcon i = new ImageIcon("src/db/hospital.png");
+		setIconImage(i.getImage());
+		
         initializeData();
         createCamasPanel();
         createPacientePanel();
@@ -100,6 +101,7 @@ public class VentanaCamas extends JFrame {
                     return false;
                 }
             });
+
     }
 
     
@@ -167,15 +169,15 @@ public class VentanaCamas extends JFrame {
     }
     
     private JButton createBackButton() {
-        ImageIcon backIcon = new ImageIcon(getClass().getResource("src/db/icons8-back-25.png"));
+        ImageIcon backIcon = new ImageIcon(getClass().getResource("/db/icons8-back-25.png"));
         JButton btnBack = new JButton(backIcon);
         styleButton(btnBack);
         btnBack.setPreferredSize(new Dimension(80, 35));
-//        btnBack.addActionListener(e -> {
-//            MenuTrabajador window = new MenuTrabajador();
-//            window.setVisible(true);
-//            dispose();
-//        });
+        btnBack.addActionListener(e -> {
+            MenuTrabajador window = new MenuTrabajador(null);
+            window.setVisible(true);
+            dispose();
+        });
         return btnBack;
     }
 
@@ -207,8 +209,8 @@ public class VentanaCamas extends JFrame {
         // Cargar y redimensionar las imágenes
         //IAG modificado
         try {
-            ImageIcon normalIcon = new ImageIcon(getClass().getResource("src/db/health-check_5809279.png"));
-            ImageIcon uciIcon = new ImageIcon(getClass().getResource("src/db/emergency_9587034.png"));
+            ImageIcon normalIcon = new ImageIcon(getClass().getResource("/db/health-check_5809279.png"));
+            ImageIcon uciIcon = new ImageIcon(getClass().getResource("/db/emergency_9587034.png"));
             
             // Redimensionar las imágenes
             Image normalImg = normalIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
@@ -384,9 +386,9 @@ public class VentanaCamas extends JFrame {
         try {
             ImageIcon icon;
             if (cama.isOcupada()) {
-                icon = new ImageIcon(getClass().getResource("src/db/CamaRoja.png"));
+                icon = new ImageIcon(getClass().getResource("/db/CamaRoja.png"));
             } else {
-                icon = new ImageIcon(getClass().getResource("src/db/CamaVerde.png"));
+                icon = new ImageIcon(getClass().getResource("/db/CamaVerde.png"));
             }
             
             // Redimensionar la imagen
