@@ -9,6 +9,7 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -222,7 +223,12 @@ public class MenuTrabajador extends JFrame{
 		}
 	}
 	private class HiloImagen extends Thread {
+		private int currentIndex = 0;
 	    public void run() {
+	    	ImageIcon imagenMenu = new ImageIcon(getClass().getResource("/db/Menuimage.png"));
+	    	
+	        Image imagenMenuEscalada = imagenMenu.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH);
+	        ImageIcon imagenMenuIcon = new ImageIcon(imagenMenuEscalada);
 	        // Load and scale images once at the start
 	        ImageIcon imagenMedicos = new ImageIcon(getClass().getResource("/db/MedicosFelices.png"));
 	        Image imagenMedicosEscalada = imagenMedicos.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH);
@@ -231,32 +237,49 @@ public class MenuTrabajador extends JFrame{
 	        ImageIcon imagenSala = new ImageIcon(getClass().getResource("/db/imagenSala.png"));
 	        Image imagenSalaEscalada = imagenSala.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH);
 	        ImageIcon imagenSalaIcon = new ImageIcon(imagenSalaEscalada);
-
+	        this.currentIndex = 0;
 	        try {
 	            while (true) {
-	                // Alternate between the two images
-	                SwingUtilities.invokeLater(() -> {
-	                    panelHilo.removeAll(); // Clear the panel before adding a new image
-	                    labelMedicos = new JLabel(imagenMedicosIcon); // Display "MedicosFelices" image
-	                    panelHilo.add(labelMedicos, BorderLayout.CENTER);
-	                    panelHilo.revalidate();
-	                    panelHilo.repaint();
-	                });
-	                Thread.sleep(5000);
-
-	                SwingUtilities.invokeLater(() -> {
-	                    panelHilo.removeAll(); // Clear the panel before adding a new image
-	                    labelMedicos = new JLabel(imagenSalaIcon); // Display "imagenSala" image
-	                    panelHilo.add(labelMedicos, BorderLayout.CENTER);
-	                    panelHilo.revalidate();
-	                    panelHilo.repaint();
-	                });
+	            	cambiarImagen();
 	                Thread.sleep(5000);
 	            }
 	        } catch (InterruptedException e) {
 	            System.out.println("Countdown interrupted!");
 	        }
+	       
 	    }
+	    private void cambiarImagen() {
+ImageIcon imagenMenu = new ImageIcon(getClass().getResource("/db/Menuimage.png"));
+	    	
+	        Image imagenMenuEscalada = imagenMenu.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH);
+	        ImageIcon imagenMenuIcon = new ImageIcon(imagenMenuEscalada);
+	        // Load and scale images once at the start
+	        ImageIcon imagenMedicos = new ImageIcon(getClass().getResource("/db/MedicosFelices.png"));
+	        Image imagenMedicosEscalada = imagenMedicos.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH);
+	        ImageIcon imagenMedicosIcon = new ImageIcon(imagenMedicosEscalada);
+
+	        ImageIcon imagenSala = new ImageIcon(getClass().getResource("/db/imagenSala.png"));
+	        Image imagenSalaEscalada = imagenSala.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH);
+	        ImageIcon imagenSalaIcon = new ImageIcon(imagenSalaEscalada);
+	        List<ImageIcon>list = new ArrayList();
+	        list.add(imagenMenuIcon);
+	        list.add(imagenMedicosIcon);
+	        list.add(imagenSalaIcon);
+	        
+	        SwingUtilities.invokeLater(() -> {
+	        	
+	        		 panelHilo.removeAll(); // Clear the panel before adding a new image
+	                 labelMedicos = new JLabel(list.get(currentIndex)); // Display "imagenSala" image
+	                 panelHilo.add(labelMedicos, BorderLayout.CENTER);
+	                 panelHilo.revalidate();
+	                 panelHilo.repaint();
+	                 this.currentIndex++;
+	                 if(currentIndex==list.size()) {
+	                	 this.currentIndex=0;
+	                 }
+               
+            });
+        }
 	}
 }
 
