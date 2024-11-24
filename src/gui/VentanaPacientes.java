@@ -92,6 +92,10 @@ public class VentanaPacientes extends JFrame {
         tablaPacientes.getColumn("Historial").setCellEditor(new ButtonEditor(new JButton("Historial")));
         initTableStyle();
         addPatientData();
+        tablaPacientes.getSelectionModel().addListSelectionListener(e -> {
+            boolean isRowSelected = tablaPacientes.getSelectedRow() != -1;
+            btnBorrarP.setEnabled(isRowSelected); // Enable button if a row is selected
+        });
 
         scrollPanePacientes = new JScrollPane(tablaPacientes);
         tablePanel.add(scrollPanePacientes, BorderLayout.CENTER);
@@ -196,8 +200,38 @@ public class VentanaPacientes extends JFrame {
     private JButton createDeleteButton() {
         btnBorrarP = createStyledButton("Borrar Paciente");
         // Add delete functionality here
+        btnBorrarP.addActionListener(e -> borrarP());
         return btnBorrarP;
     }
+    private void borrarP() {
+    	 int selectedRow = tablaPacientes.getSelectedRow();
+    	 
+    	 if (selectedRow != -1) {
+    	 int confirm = JOptionPane.showConfirmDialog(this, 
+    	            "¿Estás seguro de que quieres borrar este paciente?", 
+    	            "Confirmar eliminación", 
+    	            JOptionPane.YES_NO_OPTION);
+
+    	        if (confirm == JOptionPane.YES_OPTION) {
+    	            // Get the patient's code from the selected row
+    	            int patientCode = (int) modeloDatosPacientes.getValueAt(selectedRow, 3);
+
+    	            // Remove from the pacientes list
+    	            pacientes.removeIf(p -> p.getCodigoPaciente() == patientCode);
+
+    	            // Remove from the table model
+    	            modeloDatosPacientes.removeRow(selectedRow);
+
+    	            JOptionPane.showMessageDialog(this, "Paciente eliminado con éxito.", 
+    	                "Eliminación completa", JOptionPane.INFORMATION_MESSAGE);
+    	        }
+    	    } else {
+    	        JOptionPane.showMessageDialog(this, "Selecciona un paciente para borrar.", 
+    	            "Error", JOptionPane.ERROR_MESSAGE);
+    	    }
+    }
+
+    
 
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
