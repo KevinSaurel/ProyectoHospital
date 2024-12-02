@@ -9,5 +9,13 @@ public Administrador(String contrasena, String nombre, String apellido, int edad
 	this.turno = turno;
 }
 
+public String getTurno() {
+	return turno;
+}
+
+public void setTurno(String turno) {
+	this.turno = turno;
+}
+
 
 }
