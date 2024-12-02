@@ -69,11 +69,9 @@ public class VentanaSeleccion extends JFrame {
 //                MenuTrabajador ventana = new MenuTrabajador(usuario);
 //                ventana.setVisible(true);
                 SwingUtilities.invokeLater(() -> {
-                    MenuTrabajador ventanaHistorial = new MenuTrabajador(usuario);
-                    ventanaHistorial.setVisible(true);
-                    this.dispose();
-                  
-                });                
+                    ProgressBar progressBar = new ProgressBar(usuario , false);
+                    progressBar.setVisible(true);
+                });              
             } else {
                 JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -88,9 +86,10 @@ public class VentanaSeleccion extends JFrame {
 
             if (listaGetNombre(usuarioN, contrasena)) {
                 JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso!", "Bienvenido: " + usuarioN, JOptionPane.INFORMATION_MESSAGE);
-                MenuPaciente ventana = new MenuPaciente(usuario);
-                ventana.setVisible(true);
-                this.dispose();
+                SwingUtilities.invokeLater(() -> {
+                    ProgressBar progressBar = new ProgressBar(usuario , true);
+                    progressBar.setVisible(true);
+                });         
             } else {
                 JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
             }

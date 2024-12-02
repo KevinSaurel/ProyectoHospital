@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -21,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import domain.Cita;
 import domain.Context;
 import domain.Doctor;
 import domain.Paciente;
@@ -40,12 +42,14 @@ public class MenuPaciente extends JFrame{
 	private JButton btnParametros;
 	private JButton btnUsuario;
 	private ArrayList<Doctor>medicos;
+	private List<Cita> citas;
 	private Paciente paciente;
 	public MenuPaciente(Persona usuario) {
 		 paciente = (Paciente) usuario; 
 		   medicos = new ArrayList<>();
 		  Context context = Context.getInstance();  
 	    	this.medicos = context.getMedicos();
+	    	//this.citas = context.get
 	    	context.setPaciente(paciente);
 //		vActual = this;
 		 //this.vAnterior = vAnterior;
@@ -171,7 +175,19 @@ public class MenuPaciente extends JFrame{
 	            ventana.setVisible(true);
 			 }
 	        });
-		
+		 btnCitas.addActionListener(e -> {
+				
+			List<Cita>l = new ArrayList<>();
+			for(Cita c : citas) {
+				if((c.getPaciente().getCodigoPaciente())==(paciente.getCodigoPaciente())) {
+					l.add(c);
+				}
+			}
+				 
+	            VentanaCitas ventana = new VentanaCitas(l, usuario);
+	            ventana.setVisible(true);
+			 
+	        });
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);  
