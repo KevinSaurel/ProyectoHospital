@@ -85,7 +85,7 @@ public class MenuPaciente extends JFrame{
 		grid.add(btnContacto);
 		grid.add(btnParametros);
 		grid.add(btnUsuario);
-		anadirColores(grid.getComponents(),color);
+		//anadirColores(grid.getComponents(),color);
 		
 		
 		grid.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -129,7 +129,7 @@ public class MenuPaciente extends JFrame{
 //		panel.add(box,BorderLayout.WEST);
 		
 		panel.add(btnVolver,BorderLayout.SOUTH);
-		
+		anadirColores(panel.getComponents(),color);
 		
 		
 		
@@ -201,6 +201,10 @@ public class MenuPaciente extends JFrame{
 		            	component.setForeground(Color.white);
 		            }
 		        });
+			}else if(component instanceof JPanel) {
+				JPanel componentN = (JPanel)component;
+				anadirColores(componentN.getComponents(), color);
+				
 			}
 		}
 	}

@@ -100,7 +100,6 @@ public class MenuTrabajador extends JFrame{
 			grid.add(btnMedicos);
 		}
 		
-		anadirColores(grid.getComponents(),color);
 		
 		
 		
@@ -138,7 +137,6 @@ public class MenuTrabajador extends JFrame{
 		ubicacionHospital.add(btnCitas);
 		ubicacionHospital.add(btnCamas);
 		ubicacionHospital.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-		anadirColores(ubicacionHospital.getComponents(),color);
 		cita.add(ubicacionHospital);
 		pngHistorial.add(cita);
 		panel.add(pngHistorial , BorderLayout.CENTER);
@@ -149,10 +147,8 @@ public class MenuTrabajador extends JFrame{
 		 * 
 		 **/
 		
-		btnCitas.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
-		btnPacientes.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
-		btnCamas.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
-		
+		anadirColores(panel.getComponents(),color);
+
 		
 		
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -219,6 +215,10 @@ public class MenuTrabajador extends JFrame{
 		            	component.setForeground(Color.white);
 		            }
 		        });
+			}else if(component instanceof JPanel) {
+				JPanel componentN = (JPanel)component;
+				anadirColores(componentN.getComponents(), color);
+				
 			}
 		}
 	}
