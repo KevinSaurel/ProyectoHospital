@@ -82,6 +82,9 @@ public class VentanaCamas extends JFrame {
         mainPanel.add(splitPane, BorderLayout.CENTER);
         
         add(mainPanel);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
         
         // Agregar un KeyListener global para todos los componentes
         KeyboardFocusManager.getCurrentKeyboardFocusManager()
