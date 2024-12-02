@@ -178,7 +178,7 @@ public class MenuPaciente extends JFrame{
         
 		
 		
-		
+		 
 	}
 	
 	private void anadirColores(Component[] components ,Color color) {

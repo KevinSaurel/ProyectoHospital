@@ -148,6 +148,7 @@ public class MenuTrabajador extends JFrame{
 		 **/
 		
 		anadirColores(panel.getComponents(),color);
+		
 
 		
 		
