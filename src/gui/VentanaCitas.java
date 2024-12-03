@@ -15,6 +15,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,7 +23,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
+import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -113,7 +116,13 @@ public class VentanaCitas extends JFrame {
 
         // Configuración de la tabla de citas
         String[] columnas = {"Código Paciente", "Nombre Paciente", "Apellido Paciente", "Doctor", "Fecha"};
-        modeloDatosCitas = new DefaultTableModel(columnas, 0);
+        modeloDatosCitas = new DefaultTableModel(columnas, 0) {
+        	 @Override
+        public boolean isCellEditable(int row, int column) {
+            return false; // Deshabilitar edición de celdas
+        }
+        };
+       
         tablaCitas = new JTable(modeloDatosCitas);
         tablaCitas.setGridColor(Color.BLACK);
         scrollPaneCitas.setViewportView(tablaCitas);
@@ -164,11 +173,48 @@ public class VentanaCitas extends JFrame {
             });
         }
 
-        // Configurar el sorter para la tabla
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modeloDatosCitas);
-        tablaCitas.setRowSorter(sorter);
+        // Estilo de la tabla
+        tablaCitas.setDefaultRenderer(Object.class, (table, value, isSelected, hasFocus, row, column) -> {
+            JLabel result = new JLabel(value != null ? value.toString() : "");
+            result.setHorizontalAlignment(JLabel.CENTER);
+            return result;
+        });
+
+        tablaCitas.setRowHeight(40);
+        tablaCitas.getTableHeader().setReorderingAllowed(false);
+        tablaCitas.getTableHeader().setResizingAllowed(false);
+        tablaCitas.setAutoCreateRowSorter(true);
+
+        // Configurar ancho preferido de las columnas
+        tablaCitas.getColumnModel().getColumn(0).setPreferredWidth(100); // Código del paciente
+        tablaCitas.getColumnModel().getColumn(1).setPreferredWidth(150); // Nombre del paciente
+        tablaCitas.getColumnModel().getColumn(2).setPreferredWidth(150); // Apellido del paciente
+        tablaCitas.getColumnModel().getColumn(3).setPreferredWidth(200); // Nombre del doctor
+        tablaCitas.getColumnModel().getColumn(4).setPreferredWidth(150); // Fecha
+
+        // Alineación personalizada para ciertas columnas
+        DefaultTableCellRenderer leftAlignRenderer = new DefaultTableCellRenderer();
+        leftAlignRenderer.setHorizontalAlignment(SwingConstants.LEFT);
+        leftAlignRenderer.setFont(new Font("Arial", Font.BOLD, 12));
+
+        // Aplicar alineación a las columnas "Nombre" y "Apellido"
+        tablaCitas.getColumnModel().getColumn(1).setCellRenderer(leftAlignRenderer); 
+        tablaCitas.getColumnModel().getColumn(2).setCellRenderer(leftAlignRenderer); 
+
+        // Estilo del encabezado
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setBackground(PRIMARY_COLOR);
+        headerRenderer.setForeground(Color.WHITE);
+        headerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        headerRenderer.setFont(tablaCitas.getFont().deriveFont(Font.BOLD));
+
+        // Aplicar estilo a los encabezados de todas las columnas
+        for (int i = 0; i < tablaCitas.getColumnModel().getColumnCount(); i++) {
+            tablaCitas.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
+        }
     }
 }
+    
 //FUENTE-EXTERNA
 //URL: ()
 //ADAPTADO (He tenido que ir modificando porque habia errores con el seguimiento de los datos)
