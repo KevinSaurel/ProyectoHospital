@@ -9,6 +9,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +34,8 @@ import javax.swing.table.TableRowSorter;
 
 import domain.Cita;
 import domain.Context;
+import domain.Doctor;
+import domain.Paciente;
 import domain.Persona;
 
 public class VentanaCitas extends JFrame {
@@ -68,6 +73,9 @@ public class VentanaCitas extends JFrame {
 
         initComponents(); // Inicializar componentes
         llenarTablaCitas(); // Llenar la tabla con los datos de citas
+        
+        agregarDatosPrueba(); // comentar cuando no se esté usando, esto es solo para probar
+        
         setVisible(true);
     }
 
@@ -159,11 +167,12 @@ public class VentanaCitas extends JFrame {
     private void llenarTablaCitas() {
         modeloDatosCitas.setRowCount(0); // Limpiar la tabla
 
-        if (citas == null || citas.isEmpty()) {
-            return; // Evitar errores si la lista está vacía o nula
-        }
-
         for (Cita cita : citas) {
+        	
+        	// Formatear la fecha a String para evitar problemas de tipo
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            String formattedDate = dateFormat.format(cita.getFechaHora());
+        	
             modeloDatosCitas.addRow(new Object[]{
                 cita.getPaciente().getCodigoPaciente(),             // Código del paciente
                 cita.getPaciente().getNombre(),                     // Nombre del paciente
@@ -212,11 +221,57 @@ public class VentanaCitas extends JFrame {
         for (int i = 0; i < tablaCitas.getColumnModel().getColumnCount(); i++) {
             tablaCitas.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
         }
+        // Forzar la actualización visual de la tabla
+        tablaCitas.revalidate();
+        tablaCitas.repaint();
     }
+    
+    private void agregarDatosPrueba() {
+        // Crear pacientes de prueba
+        Paciente paciente1 = new Paciente("1234", "Juan", "Pérez", 30, "Ciudad A", 1, new ArrayList<>());
+        Paciente paciente2 = new Paciente("5678", "Ana", "Gómez", 25, "Ciudad B", 2, new ArrayList<>());
+        Paciente paciente3 = new Paciente("91011", "Luis", "Martínez", 50, "Ciudad C", 3, new ArrayList<>());
+        Paciente paciente4 = new Paciente("1213", "María", "López", 45, "Ciudad D", 4, new ArrayList<>());
+
+        // Crear doctores de prueba
+        Doctor doctor1 = new Doctor("abcd", "Carlos", "Lopez", 40, "Hospital Central", "Cardiología", "9:00 - 17:00");
+        Doctor doctor2 = new Doctor("efgh", "Marta", "Sánchez", 35, "Clínica Norte", "Neurología", "10:00 - 18:00");
+        Doctor doctor3 = new Doctor("ijkl", "Pedro", "García", 50, "Hospital Sur", "Dermatología", "8:00 - 16:00");
+
+        // Crear fechas de ejemplo
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date fecha1 = null;
+        Date fecha2 = null;
+        Date fecha3 = null;
+        Date fecha4 = null;
+
+        try {
+            fecha1 = (Date) dateFormat.parse("10/12/2024 09:30");
+            fecha2 = (Date) dateFormat.parse("11/12/2024 14:00");
+            fecha3 = (Date) dateFormat.parse("12/12/2024 11:15");
+            fecha4 = (Date) dateFormat.parse("13/12/2024 16:45");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        // Crear citas de prueba
+        List<Cita> citasPrueba = new ArrayList<>();
+        citasPrueba.add(new Cita(paciente1, doctor1, fecha1));
+        citasPrueba.add(new Cita(paciente2, doctor2, fecha2));
+        citasPrueba.add(new Cita(paciente3, doctor3, fecha3));
+        citasPrueba.add(new Cita(paciente4, doctor1, fecha4));
+
+        // Asignar las citas generadas a la lista de la ventana
+        this.citas = citasPrueba;
+
+        // Llenar la tabla con los datos de prueba
+        llenarTablaCitas();
+    }
+    
 }
     
 //FUENTE-EXTERNA
-//URL: ()
+//URL: (https://chatgpt.com/c/674f39f7-75f0-8001-aa1b-d846d3f769cc)
 //ADAPTADO (He tenido que ir modificando porque habia errores con el seguimiento de los datos)
 //IAG (herramienta:chatgpt )
 //
