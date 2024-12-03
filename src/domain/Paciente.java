@@ -42,10 +42,4 @@ public class Paciente extends Persona{
 				+ ", ubicacion=" + ubicacion + "]";
 	}
 
-	
-	
-	
-	
-	
-
 }

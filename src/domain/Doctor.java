@@ -35,5 +35,4 @@ public class Doctor extends Persona{
 				+ ", nombre=" + nombre + ", apellido=" + apellido + ", edad=" + edad + ", ubicacion=" + ubicacion + "]";
 	}
 	
-
 }
