@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -21,6 +23,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import domain.Administrador;
+import domain.Cita;
 import domain.Doctor;
 import domain.Historial;
 import domain.Paciente;
@@ -140,6 +143,39 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
 			}
 		}
 	}
+	public void borrarBBDD() {
+		if (properties.get("deleteBBDD").equals("true")) {	
+			String sql1 = "DROP TABLE IF EXISTS persona;";
+			String sql2 = "DROP TABLE IF EXISTS paciente;";
+			String sql3 = "DROP TABLE IF EXISTS doctor;";
+			String sql4 = "DROP TABLE IF EXISTS historial";
+			String sql5 = "DROP TABLE IF EXISTS cita;";
+			
+	        //Se abre la conexión y se crea un PreparedStatement para borrar cada tabla
+			try (Connection con = DriverManager.getConnection(connectionString);
+			     PreparedStatement pStmt1 = con.prepareStatement(sql1);
+				 PreparedStatement pStmt2 = con.prepareStatement(sql2);
+				 PreparedStatement pStmt3 = con.prepareStatement(sql3);
+				 PreparedStatement pStmt4 = con.prepareStatement(sql4);
+				 PreparedStatement pStmt5 = con.prepareStatement(sql5)) {
+				
+				//Se ejecutan las sentencias de borrado de las tablas
+		        if (!pStmt1.execute() && !pStmt2.execute() && !pStmt3.execute()&& !pStmt4.execute()&& !pStmt5.execute()) {
+		        	logger.info("Se han borrado las tablas");
+		        }
+			} catch (Exception ex) {
+				logger.warning(String.format("Error al borrar las tablas: %s", ex.getMessage()));
+			}
+			
+			try {
+				//Se borra físicamente el fichero de la BBDD
+				Files.delete(Paths.get(databaseFile));
+				logger.info("Se ha borrado el fichero de la BBDD");
+			} catch (Exception ex) {
+				logger.warning(String.format("Error al borrar el fichero de la BBDD: %s", ex.getMessage()));
+			}
+		}
+	}
 	 public void insertarDoctores(List<Doctor> doctores) {
 	        String sql = "INSERT INTO doctor (especialidad, horario, persona_id) VALUES (?, ?, ?)";
 	        try (Connection con = DriverManager.getConnection(connectionString);
@@ -216,6 +252,20 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
 	            }
 
 	            logger.info("Patient histories inserted successfully");
+	        }
+	    }
+	    private void insertarCita(List<Cita> citas) throws  SQLException{
+	    	String sql="INSERT INTO cita(id,paciente_id,doctor_id,fecha_hora) VALUES(?,?,?)";
+	        try (Connection con = DriverManager.getConnection(connectionString);
+		             PreparedStatement pstmt = con.prepareStatement(sql)) {
+	        	 for (Cita cita : citas) {
+		                pstmt.setInt(1, cita.getPaciente().getCodigoPaciente() );
+		                pstmt.setInt(2, insertarPersona(cita.getDoctor()) );
+		                pstmt.setDate(3, new java.sql.Date(cita.getFechaHora().getTime()));
+		                pstmt.executeUpdate();
+	        }
+	        	 logger.info("Patient cita inserted successfully");
+	   
 	        }
 	    }
 
@@ -336,4 +386,5 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
 	        }
 	        return pacientes;
 	    }
+	    
 }
