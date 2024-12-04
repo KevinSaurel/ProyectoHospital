@@ -63,14 +63,14 @@ public class MenuTrabajador extends JFrame{
     	
 		
 		
-		btnVolver = new JButton("Salir");
+		btnVolver = new JButton("SALIR");
 		
 		btnCitas = new JButton("CITAS");
-		btnCamas = new JButton("Camas");
-		btnPacientes = new JButton("Pacientes");
-		btnSesion = new JButton("cerrar sesion");
-		btnUsuario = new JButton("Usuario");
-		btnMedicos = new JButton("Medicos");
+		btnCamas = new JButton("CAMAS");
+		btnPacientes = new JButton("PACIENTES");
+		btnSesion = new JButton("CERRAR SESION");
+		btnUsuario = new JButton("USUARIO");
+		btnMedicos = new JButton("MEDICOS");
 		Color color = new Color(6,99,133);
 		
 		
