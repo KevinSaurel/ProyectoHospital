@@ -133,10 +133,10 @@ public class MenuTrabajador extends JFrame{
 		cita.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
 		JPanel ubicacionHospital = new JPanel();
-		ubicacionHospital.setLayout(new GridLayout(1,2,10,10));
+		ubicacionHospital.setLayout(new GridLayout(1,2,10,0));
 		ubicacionHospital.add(btnCitas);
 		ubicacionHospital.add(btnCamas);
-		ubicacionHospital.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+		//ubicacionHospital.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		cita.add(ubicacionHospital);
 		pngHistorial.add(cita);
 		panel.add(pngHistorial , BorderLayout.CENTER);
