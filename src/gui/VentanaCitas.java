@@ -246,10 +246,10 @@ public class VentanaCitas extends JFrame {
         Date fecha4 = null;
 
         try {
-            fecha1 = (Date) dateFormat.parse("10/12/2024 09:30");
-            fecha2 = (Date) dateFormat.parse("11/12/2024 14:00");
-            fecha3 = (Date) dateFormat.parse("12/12/2024 11:15");
-            fecha4 = (Date) dateFormat.parse("13/12/2024 16:45");
+            fecha1 = new java.sql.Date(dateFormat.parse("10/12/2024 09:30").getTime());
+            fecha2 = new java.sql.Date(dateFormat.parse("11/12/2024 14:00").getTime());
+            fecha3 = new java.sql.Date(dateFormat.parse("12/12/2024 11:15").getTime());
+            fecha4 = new java.sql.Date(dateFormat.parse("13/12/2024 16:45").getTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -267,6 +267,7 @@ public class VentanaCitas extends JFrame {
         // Llenar la tabla con los datos de prueba
         llenarTablaCitas();
     }
+
     
 }
     
