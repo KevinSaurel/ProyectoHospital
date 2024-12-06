@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,8 +30,9 @@ import domain.Historial;
 import domain.Paciente;
 import domain.Persona;
 
+
 public class GestorBD {
-	private final String PROPERTIES_FILE = "bd/app.properties";
+	private final String PROPERTIES_FILE = "resources/config/app.properties";
 	private final String CSV_DOCOTORES = "bd/doctores.csv";
 	private final String CSV_PACIENTES = "bd/pacientes.csv";
 	private final String CSV_CAMAS = "bd/camas.csv";
@@ -43,6 +45,8 @@ public class GestorBD {
 	private String driverName;
 	private String databaseFile;
 	private String connectionString;
+	public ArrayList<Cita>citas;
+
 
 	private static Logger logger = Logger.getLogger(GestorBD.class.getName());
 
@@ -195,6 +199,60 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
 	            logger.warning("Error inserting doctors: " + e.getMessage());
 	        }
 	    }
+	 public List<Cita> getCitas() {
+	        List<Cita> citas = new ArrayList<>();
+	        String sql = "SELECT c.id, c.paciente_id, c.doctor_id, c.fecha_hora, " +
+	                     "p.contrasena AS paciente_contrasena, p.nombre AS paciente_nombre, " +
+	                     "p.apellido AS paciente_apellido, p.edad AS paciente_edad, p.ubicacion AS paciente_ubicacion, " +
+	                     "d.contrasena AS doctor_contrasena, d.nombre AS doctor_nombre, " +
+	                     "d.apellido AS doctor_apellido, d.edad AS doctor_edad, d.ubicacion AS doctor_ubicacion, " +
+	                     "d.especialidad AS doctor_especialidad, d.horario AS doctor_horario " +
+	                     "FROM cita c " +
+	                     "JOIN paciente p ON c.paciente_id = p.id " +
+	                     "JOIN doctor d ON c.doctor_id = d.id";
+
+	        try (Connection con = DriverManager.getConnection(connectionString);
+	             PreparedStatement pStmt = con.prepareStatement(sql)) {
+
+	            // Execute the query and get the result set
+	            ResultSet rs = pStmt.executeQuery();
+	            while (rs.next()) {
+	                // Get the patient and doctor details
+	                Paciente paciente = new Paciente(
+	                        rs.getString("paciente_contrasena"),
+	                        rs.getString("paciente_nombre"),
+	                        rs.getString("paciente_apellido"),
+	                        rs.getInt("paciente_edad"),
+	                        rs.getString("paciente_ubicacion"),
+	                        rs.getInt("paciente_id"),
+	                        null // Historial entries can be fetched if needed
+	                );
+
+	                Doctor doctor = new Doctor(
+	                        rs.getString("doctor_contrasena"),
+	                        rs.getString("doctor_nombre"),
+	                        rs.getString("doctor_apellido"),
+	                        rs.getInt("doctor_edad"),
+	                        rs.getString("doctor_ubicacion"),
+	                        rs.getString("doctor_especialidad"),
+	                        rs.getString("doctor_horario")
+	                );
+
+	                // Convert the appointment date from the result set
+	                Date fecha = rs.getDate("fecha_hora");
+
+	                // Create a Cita object and add it to the list
+	                Cita cita = new Cita(paciente, doctor, fecha);
+	                citas.add(cita);
+	            }
+
+	            logger.info(String.format("Se han recuperado %d citas", citas.size()));
+	        } catch (SQLException e) {
+	            logger.warning(String.format("Error al recuperar las citas: %s", e.getMessage()));
+	        }
+
+	        return citas;
+	    }
 
 	    public void insertarPacientes(List<Paciente> pacientes) {
 	        String sql = "INSERT INTO paciente (codigo_paciente, persona_id) VALUES (?, ?)";
@@ -254,7 +312,8 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
 	            logger.info("Patient histories inserted successfully");
 	        }
 	    }
-	    private void insertarCita(List<Cita> citas) throws  SQLException{
+	    public void insertarCita() throws  SQLException{
+	    	citas = (ArrayList<Cita>) cargarCitas();
 	    	String sql="INSERT INTO cita(id,paciente_id,doctor_id,fecha_hora) VALUES(?,?,?)";
 	        try (Connection con = DriverManager.getConnection(connectionString);
 		             PreparedStatement pstmt = con.prepareStatement(sql)) {
@@ -386,5 +445,96 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
 	        }
 	        return pacientes;
 	    }
-	    
+	    private static List<Historial> cargarHistorialCsv2(String serializedHistorial, SimpleDateFormat dateFormat) {
+	        List<Historial> historial = new ArrayList<>();
+	        if (serializedHistorial.endsWith(";")) {
+	            serializedHistorial = serializedHistorial.substring(0, serializedHistorial.length() - 1);
+	        }
+	        String[] entries = serializedHistorial.split(":");
+	        for (String entry : entries) {
+	            String[] parts = entry.split("\\|");
+	            if (parts.length == 2) {
+	                try {
+	                    String description = parts[0];
+	                    java.util.Date utilDate = dateFormat.parse(parts[1]);
+	                    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+	                    historial.add(new Historial(description, sqlDate));
+	                } catch (ParseException e) {
+	                    System.err.println("Error parsing date: " + parts[1]);
+	                    e.printStackTrace();
+	                }
+	            }
+	        }
+	        return historial;
+	    }
+	    public List<Cita> cargarCitas() {
+	         citas = new ArrayList<>();
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+	        try (BufferedReader br = new BufferedReader(new FileReader("resources/data/citas.csv"))) {
+	            String linea;
+	            while ((linea = br.readLine()) != null) {
+	                String[] parts = linea.split(",");
+
+	                // Validate that the parts array is correctly structured before parsing
+	                if (parts.length < 14) {
+	                    System.err.println("Invalid line format: " + linea);
+	                    continue;  // Skip this line if it's invalid
+	                }
+
+	                // Parse the patient details
+	                String contrasena = parts[0];
+	                String nombre = parts[1];
+	                String apellido = parts[2];
+	                int edad = parseInt(parts[3], "Edad");
+	                String ubicacion = parts[4];
+	                int codigoPaciente = parseInt(parts[5], "Codigo Paciente");
+
+	                // Handle medical history
+	                String historialEntriesSerialized = parts[6];
+	                List<Historial> historialEntries = cargarHistorialCsv2(historialEntriesSerialized, dateFormat);
+	                Paciente nuevoPaciente = new Paciente(contrasena, nombre, apellido, edad, ubicacion, codigoPaciente, historialEntries);
+
+	                // Parse the doctor details
+	                String contrasenaM = parts[7];
+	                String nombreM = parts[8];
+	                String apellidoM = parts[9];
+	                int edadM = parseInt(parts[10], "Edad Medico");
+	                String ubicacionM = parts[11];
+	                String especialidad = parts[12];
+	                String horario = parts[13];
+	                Doctor nuevoMedico = new Doctor(contrasenaM, nombreM, apellidoM, edadM, ubicacionM, especialidad, horario);
+
+	                // **Correctly parse the appointment date from the last column** (assuming it's parts[13] for the appointment date)
+	                Date fecha = null;
+	                try {
+	                    // Parse the date as java.util.Date first
+	                    java.util.Date utilDate = dateFormat.parse(parts[13]);
+	                    
+	                    // Convert to java.sql.Date
+	                    fecha = new java.sql.Date(utilDate.getTime());
+	                } catch (ParseException e) {
+	                    System.out.println("Fecha invalida en historial: " + parts[13]);
+	                    continue;  // Skip this line if the date is invalid
+	                }
+
+	                // Create the appointment
+	                Cita cita = new Cita(nuevoPaciente, nuevoMedico, fecha);
+	                citas.add(cita);
+	            }
+	        } catch (IOException e) {
+	            System.out.println("Error al cargar los pacientes: " + e.getMessage());
+	        }
+	        return citas;
+	    }
+	 // Helper method to parse integer values with error handling
+	    private int parseInt(String value, String fieldName) {
+	        try {
+	            return Integer.parseInt(value);
+	        } catch (NumberFormatException e) {
+	            System.err.println("Error al convertir el campo '" + fieldName + "' a entero: " + value);
+	            return -1;  // Return a default value or handle the error
+	        }
+	    }
+
 }

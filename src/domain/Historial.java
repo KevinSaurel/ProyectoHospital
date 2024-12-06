@@ -8,6 +8,14 @@ public class Historial  {
 	protected Date fecha ;
 	protected Doctor medico ;
 	
+	public Historial() {
+		// TODO Auto-generated constructor stub
+	}
+	public Historial(String causa, Date fecha) {
+		super();
+		this.causa = causa;
+		this.fecha = fecha;
+	}
 	public String getCausa() {
 		return causa;
 	}
