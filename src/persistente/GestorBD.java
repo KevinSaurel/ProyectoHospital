@@ -24,6 +24,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import domain.Administrador;
+import domain.Cama;
 import domain.Cita;
 import domain.Doctor;
 import domain.Historial;
@@ -129,6 +130,15 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
                 + " FOREIGN KEY(doctor_id) REFERENCES doctor(id),\n"
                 + " UNIQUE(paciente_id, doctor_id, fecha_hora)\n"
                 + ");";
+String sql6="CREATE TABLE IF NOT EXISTS cama (\n"
+				+ " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+				+ " num_cama INTEGER NOT NULL,\n"
+				+ " ocupada TEXT INTEGER NOT NULL,\n"
+				+ " tipo_cama TEXT NOT NULL,\n"
+				+ " FOREIGN KEY(paciente_id) REFERENCES paciente(id),\n"
+				+ " UNIQUE(paciente_id)\n"
+				+ ");";
+
         //Se abre la conexión y se crea un PreparedStatement para crer cada tabla
 		//Al abrir la conexión, si no existía el fichero por defecto, se crea.
 		try (Connection con = DriverManager.getConnection(connectionString);
@@ -136,8 +146,9 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
 			 PreparedStatement pStmt2 = con.prepareStatement(sql2);
 			 PreparedStatement pStmt3 = con.prepareStatement(sql3);
 			 PreparedStatement pStmt4 = con.prepareStatement(sql4);
-			 PreparedStatement pStmt5 = con.prepareStatement(sql5)){
-			
+			 PreparedStatement pStmt5 = con.prepareStatement(sql5);
+			 PreparedStatement pStmt6 = con.prepareStatement(sql6)){
+
 			//Se ejecutan las sentencias de creación de las tablas
 	        if (!pStmt1.execute() && !pStmt2.execute() && !pStmt3.execute()) {
 	        	logger.info("Se han creado las tablas");
@@ -154,6 +165,7 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
 			String sql3 = "DROP TABLE IF EXISTS doctor;";
 			String sql4 = "DROP TABLE IF EXISTS historial";
 			String sql5 = "DROP TABLE IF EXISTS cita;";
+			String sql6 = "DROP TABLE IF EXISTS camas;";
 			
 	        //Se abre la conexión y se crea un PreparedStatement para borrar cada tabla
 			try (Connection con = DriverManager.getConnection(connectionString);
@@ -161,10 +173,11 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
 				 PreparedStatement pStmt2 = con.prepareStatement(sql2);
 				 PreparedStatement pStmt3 = con.prepareStatement(sql3);
 				 PreparedStatement pStmt4 = con.prepareStatement(sql4);
-				 PreparedStatement pStmt5 = con.prepareStatement(sql5)) {
+				 PreparedStatement pStmt5 = con.prepareStatement(sql5);
+				 PreparedStatement pStmt6 = con.prepareStatement(sql6)) {
 				
 				//Se ejecutan las sentencias de borrado de las tablas
-		        if (!pStmt1.execute() && !pStmt2.execute() && !pStmt3.execute()&& !pStmt4.execute()&& !pStmt5.execute()) {
+		        if (!pStmt1.execute() && !pStmt2.execute() && !pStmt3.execute()&& !pStmt4.execute()&& !pStmt5.execute()&& !pStmt6.execute()) {
 		        	logger.info("Se han borrado las tablas");
 		        }
 			} catch (Exception ex) {
@@ -471,7 +484,7 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
 	         citas = new ArrayList<>();
 	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-	        try (BufferedReader br = new BufferedReader(new FileReader("resources/data/citas.csv"))) {
+	        try (BufferedReader br = new BufferedReader(new FileReader("src/db/citas.csv"))) {//"resources/data/citas.csv"
 	            String linea;
 	            while ((linea = br.readLine()) != null) {
 	                String[] parts = linea.split(",");
@@ -526,6 +539,79 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
 	            System.out.println("Error al cargar los pacientes: " + e.getMessage());
 	        }
 	        return citas;
+	    }
+	    public void insertarCamas() throws SQLException {
+	    	List<Cama> camas=new ArrayList<>();
+	        camas = (ArrayList<Cama>) cargarCamas(); // Assuming you have a method to load beds
+	        String sql = "INSERT INTO cama (num_cama, ocupada, tipo_cama, paciente_id) VALUES (?, ?, ?, ?)";
+	        
+	        try (Connection con = DriverManager.getConnection(connectionString);
+	             PreparedStatement pstmt = con.prepareStatement(sql)) {
+	            
+	            for (Cama cama : camas) {
+	                pstmt.setInt(1, cama.getNumCama());
+	                pstmt.setBoolean(2, cama.isOcupada());
+	                pstmt.setString(3, cama.getTipoCama());
+	                
+	                // Check if paciente is null before trying to get its ID
+	                if (cama.getPaciente() != null) {
+	                    pstmt.setInt(4, cama.getPaciente().getCodigoPaciente());
+	                } else {
+	                    pstmt.setNull(4, java.sql.Types.INTEGER);
+	                }
+	                
+	                pstmt.executeUpdate();
+	            }
+	            
+	            logger.info("Beds inserted successfully");
+	        } catch (SQLException e) {
+	            System.out.println("Error al cargar los camas: " + e.getMessage());
+	            throw e;
+	        }
+	    }
+	    public List<Cama> cargarCamas() {
+	    	List<Cama> camas=new ArrayList<>();
+
+	        try (BufferedReader br = new BufferedReader(new FileReader("resources/data/camas.csv"))) {
+	            String linea;
+	            while ((linea = br.readLine()) != null) {
+	                String[] parts = linea.split(",");
+
+	                // Validate that the parts array is correctly structured before parsing
+	                if (parts.length < 5) {
+	                    System.err.println("Invalid line format: " + linea);
+	                    continue; // Skip this line if it's invalid
+	                }
+
+	                // Parse the bed details
+	                int numCama = parseInt(parts[0], "Número de Cama");
+	                boolean ocupada = Boolean.parseBoolean(parts[1]);
+	                String tipoCama = parts[2];
+
+	                // Parse patient details (if the bed is occupied)
+	                Paciente paciente = null;
+	                if (ocupada) {
+	                    String contrasena = parts[3];
+	                    String nombre = parts[4];
+	                    String apellido = parts[5];
+	                    int edad = parseInt(parts[6], "Edad Paciente");
+	                    String ubicacion = parts[7];
+	                    int codigoPaciente = parseInt(parts[8], "Codigo Paciente");
+
+	                    // Create an empty historial for the patient
+	                    List<Historial> historialEntries = new ArrayList<>();
+
+	                    paciente = new Paciente(contrasena, nombre, apellido, edad, ubicacion, codigoPaciente, historialEntries);
+	                }
+
+	                // Create the bed
+	                Cama cama = new Cama(numCama, ocupada, tipoCama, paciente);
+	                camas.add(cama);
+	            }
+	        } catch (IOException e) {
+	            System.out.println("Error al cargar las camas: " + e.getMessage());
+	        }
+	        return camas;
 	    }
 	 // Helper method to parse integer values with error handling
 	    private int parseInt(String value, String fieldName) {
