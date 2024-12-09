@@ -359,7 +359,7 @@ public class GestorBD {
 	        }
 	    }
 
-	   private List<Doctor> cargarMedicosCsv() {
+	   public List<Doctor> cargarMedicosCsv() {
 		   List<Doctor>medicos = new ArrayList();
 	        try (BufferedReader br = new BufferedReader(new FileReader("resources/data/doctores.csv"))) {
 	            String linea;
@@ -405,7 +405,7 @@ public class GestorBD {
 	        
 	        return historiales;
 	    }
-	    private List<Administrador> cargarAdmins() {
+	    public List<Administrador> cargarAdmins() {
 	    	List<Administrador> admins = new ArrayList();
 	        try (BufferedReader br = new BufferedReader(new FileReader("resources/data/Administradores.csv"))) {
 	            String linea;
@@ -430,7 +430,7 @@ public class GestorBD {
 	        }
 	        return admins;
 	    }
-	    private List<Paciente> cargarPacientes() {
+	    public List<Paciente> cargarPacientes() {
 	    	List<Paciente> pacientes = new ArrayList();
 	    	
 	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

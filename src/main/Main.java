@@ -5,9 +5,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
+import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
@@ -17,10 +15,11 @@ import java.util.jar.JarFile;
 
 import javax.swing.SwingUtilities;
 
+import domain.Administrador;
+import domain.Cama;
+import domain.Cita;
 import domain.Doctor;
-import domain.Historial;
 import domain.Paciente;
-import gui.VentanaHistorial;
 import gui.VentanaSeleccion;
 import persistente.GestorBD;
 
@@ -37,9 +36,35 @@ public class Main {
 //	}
        System.out.println();
        
-    	GestorBD gestorbd = new GestorBD();
-    	gestorbd.crearBBDD();
-    	//gestorbd.borrarBBDD();
+       GestorBD gestorBD = new GestorBD();
+       gestorBD.crearBBDD();
+       
+       
+       try {
+           
+           List<Doctor> doctores = gestorBD.cargarMedicosCsv();
+           gestorBD.insertarDoctores(doctores);
+           
+           List<Paciente> pacientes = gestorBD.cargarPacientes();
+           gestorBD.insertarPacientes(pacientes);
+           
+           List<Administrador> administradores = gestorBD.cargarAdmins();
+           gestorBD.insertarAdministradores(administradores);
+           
+           List<Cita> citas = gestorBD.cargarCitas();
+           gestorBD.insertarCita();
+           
+           List<Cama> camas = gestorBD.cargarCamas();
+           gestorBD.insertarCamas();
+           
+           // Retrieve citas to verify
+           List<Cita> citasRecuperadas = gestorBD.getCitas();
+           System.out.println("Número de citas recuperadas: " + citasRecuperadas.size());
+           
+       } catch (SQLException e) {
+           System.err.println("Error al insertar datos: " + e.getMessage());
+           e.printStackTrace();
+       }
     	
     	
     	
