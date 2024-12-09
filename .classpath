@@ -6,7 +6,12 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+<<<<<<< HEAD
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-2.0.16.jar">
+=======
+	<classpathentry kind="src" path="resources"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-2.0.16.jar">
+>>>>>>> branch 'master' of https://github.com/KevinSaurel/ProyectoHospital.git
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
@@ -21,6 +26,9 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+<<<<<<< HEAD
 	<classpathentry exported="true" kind="lib" path="resources"/>
+=======
+>>>>>>> branch 'master' of https://github.com/KevinSaurel/ProyectoHospital.git
 	<classpathentry kind="output" path="bin"/>
 </classpath>
