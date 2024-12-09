@@ -70,7 +70,7 @@ public class VentanaCitas extends JFrame {
 
         // Configurar ventana
         setTitle("Gestión de Citas");
-        setIconImage(new ImageIcon("src/db/hospital.png").getImage());
+        setIconImage(new ImageIcon("resources/images/hospital.png").getImage());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
@@ -101,7 +101,7 @@ public class VentanaCitas extends JFrame {
         panelNorte.setBackground(PRIMARY_COLOR);
 
         // Botón "Atrás"
-        btnBack = new JButton(new ImageIcon(getClass().getResource("/db/icons8-back-25.png")));
+        btnBack = new JButton(new ImageIcon(getClass().getResource("resources/images/icons8-back-25.png")));
         btnBack.setBackground(PRIMARY_COLOR);
         btnBack.setPreferredSize(new Dimension(80, 25));
         btnBack.addActionListener(e -> {

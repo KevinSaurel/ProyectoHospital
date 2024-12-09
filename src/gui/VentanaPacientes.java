@@ -35,7 +35,7 @@ public class VentanaPacientes extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
-        setIconImage(new ImageIcon("src/db/hospital.png").getImage());
+        setIconImage(new ImageIcon("resources/images/hospital.png").getImage());
         addKeyboardShortcut();
 
         JPanel mainPanel = createMainPanel();
@@ -179,7 +179,7 @@ public class VentanaPacientes extends JFrame {
     }
 
     private JButton createBackButton() {
-        ImageIcon backIcon = new ImageIcon(getClass().getResource("/db/icons8-back-25.png"));
+        ImageIcon backIcon = new ImageIcon(getClass().getResource("resources/images/icons8-back-25.png"));
         JButton btnBack = new JButton(backIcon);
         styleButton(btnBack);
         btnBack.setPreferredSize(new Dimension(80, 35));

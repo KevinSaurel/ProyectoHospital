@@ -61,7 +61,7 @@ public class VentanaVisualizarUsuario extends JFrame {
         leftSection.add(btnVolver);
         
         // Add hospital logo
-        ImageIcon hospitalIcon = new ImageIcon(getClass().getResource("/db/hospital.png"));
+        ImageIcon hospitalIcon = new ImageIcon(getClass().getResource("resources/images/hospital.png"));
         Image scaledImage = hospitalIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
         leftSection.add(logoLabel);
@@ -139,7 +139,7 @@ public class VentanaVisualizarUsuario extends JFrame {
     }
     
     private void setupBackButton() {
-        ImageIcon iconBack = new ImageIcon("src/db/icons8-back-25.png");
+        ImageIcon iconBack = new ImageIcon("resources/images/icons8-back-25.png");
         btnVolver.setIcon(iconBack);
         styleButton(btnVolver);
         btnVolver.setPreferredSize(new Dimension(80, 35));

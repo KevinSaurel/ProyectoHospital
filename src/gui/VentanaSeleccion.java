@@ -28,7 +28,7 @@ public class VentanaSeleccion extends JFrame {
     private Persona usuario;
 
     public VentanaSeleccion() {
-        ImageIcon i = new ImageIcon("src/db/hospital.png");ImageIcon icon = new ImageIcon("src/db/hospital.png");
+        ImageIcon i = new ImageIcon("resources/images/hospital.png");ImageIcon icon = new ImageIcon("resources/images/hospital.png");
     	Image scaledImage = i.getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
     	this.ImageIcon  = new ImageIcon(scaledImage);
         setIconImage(i.getImage());
