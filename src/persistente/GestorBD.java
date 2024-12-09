@@ -96,14 +96,14 @@ public class GestorBD {
                 + " ubicacion TEXT NOT NULL\n"
                 + ");";
 
-String sql2 = "CREATE TABLE IF NOT EXISTS paciente (\n"
+		String sql2 = "CREATE TABLE IF NOT EXISTS paciente (\n"
                 + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
                 + " codigo_paciente INTEGER NOT NULL UNIQUE,\n"
                 + " persona_id INTEGER NOT NULL,\n"
                 + " FOREIGN KEY(persona_id) REFERENCES persona(id)\n"
                 + ");";
 
-String sql3 = "CREATE TABLE IF NOT EXISTS doctor (\n"
+		String sql3 = "CREATE TABLE IF NOT EXISTS doctor (\n"
                 + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
                 + " especialidad TEXT NOT NULL,\n"
                 + " horario TEXT NOT NULL,\n"
@@ -111,7 +111,7 @@ String sql3 = "CREATE TABLE IF NOT EXISTS doctor (\n"
                 + " FOREIGN KEY(persona_id) REFERENCES persona(id)\n"
                 + ");";
 
-String sql4 = "CREATE TABLE IF NOT EXISTS historial (\n"
+		String sql4 = "CREATE TABLE IF NOT EXISTS historial (\n"
                 + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
                 + " causa TEXT NOT NULL,\n"
                 + " fecha DATE NOT NULL,\n"
@@ -121,7 +121,7 @@ String sql4 = "CREATE TABLE IF NOT EXISTS historial (\n"
                 + " FOREIGN KEY(paciente_id) REFERENCES paciente(id)\n"
                 + ");";
 
-String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
+		String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
                 + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
                 + " paciente_id INTEGER NOT NULL,\n"
                 + " doctor_id INTEGER NOT NULL,\n"
@@ -130,14 +130,14 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
                 + " FOREIGN KEY(doctor_id) REFERENCES doctor(id),\n"
                 + " UNIQUE(paciente_id, doctor_id, fecha_hora)\n"
                 + ");";
-String sql6="CREATE TABLE IF NOT EXISTS cama (\n"
-				+ " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
-				+ " num_cama INTEGER NOT NULL,\n"
-				+ " ocupada TEXT INTEGER NOT NULL,\n"
-				+ " tipo_cama TEXT NOT NULL,\n"
-				+ " FOREIGN KEY(paciente_id) REFERENCES paciente(id),\n"
-				+ " UNIQUE(paciente_id)\n"
-				+ ");";
+		String sql6 = "CREATE TABLE IF NOT EXISTS cama (\n" +
+			    " id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+			    " num_cama INTEGER NOT NULL,\n" +
+			    " ocupada INTEGER NOT NULL,\n" +
+			    " tipo_cama TEXT NOT NULL,\n" +
+			    " paciente_id INTEGER,\n" +
+			    " FOREIGN KEY(paciente_id) REFERENCES paciente(id)\n" +
+			    ");";
 
         //Se abre la conexión y se crea un PreparedStatement para crer cada tabla
 		//Al abrir la conexión, si no existía el fichero por defecto, se crea.
@@ -408,7 +408,7 @@ String sql6="CREATE TABLE IF NOT EXISTS cama (\n"
 	    }
 	    private List<Administrador> cargarAdmins() {
 	    	List<Administrador> admins = new ArrayList();
-	        try (BufferedReader br = new BufferedReader(new FileReader("resources/data//Administradores.csv"))) {
+	        try (BufferedReader br = new BufferedReader(new FileReader("resources/data/Administradores.csv"))) {
 	            String linea;
 	            while ((linea = br.readLine()) != null) {
 	                String[] parts = linea.split(",");
