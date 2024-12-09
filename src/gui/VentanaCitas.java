@@ -114,6 +114,13 @@ public class VentanaCitas extends JFrame {
         // Cuadro de texto para filtro
         txtFiltro = new JTextField(20);
         panelNorte.add(txtFiltro);
+        
+        txtFiltro.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                filterCitas();
+            }
+        });
 
         // Panel inferior (sur)
         JPanel panelSur = new JPanel(new GridLayout(1, 3));
@@ -292,6 +299,41 @@ public class VentanaCitas extends JFrame {
   	    
   	
   }
+    
+    private void filterCitas() {
+        modeloDatosCitas.setRowCount(0); // Limpiar la tabla antes de aplicar el filtro
+
+        String filter = txtFiltro.getText().toLowerCase(); // Obtener el texto del filtro
+        if (filter.isEmpty()) {
+            // Si el filtro está vacío, mostrar todas las citas
+            llenarTablaCitas();
+            return;
+        }
+
+        for (Cita cita : citas) {
+            String codigoPaciente = String.valueOf(cita.getPaciente().getCodigoPaciente()); // Convertir a String
+            String nombrePaciente = cita.getPaciente().getNombre();
+            String apellidoPaciente = cita.getPaciente().getApellido();
+            String nombreDoctor = cita.getDoctor().getNombre() + " " + cita.getDoctor().getApellido();
+            String fechaHora = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(cita.getFechaHora());
+
+            boolean igual = codigoPaciente.contains(filter) ||
+                              nombrePaciente.toLowerCase().contains(filter) ||
+                              apellidoPaciente.toLowerCase().contains(filter) ||
+                              nombreDoctor.toLowerCase().contains(filter) ||
+                              fechaHora.toLowerCase().contains(filter);
+
+            if (igual) {
+                modeloDatosCitas.addRow(new Object[]{
+                    codigoPaciente,
+                    nombrePaciente,
+                    apellidoPaciente,
+                    nombreDoctor,
+                    fechaHora
+                });
+            }
+        }
+    }
 
     
 }
