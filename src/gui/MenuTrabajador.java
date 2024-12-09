@@ -58,8 +58,8 @@ public class MenuTrabajador extends JFrame{
     	this.pacientes = context.getPacientes();
     	this.medicos = context.getMedicos();
 		  
-    	ImageIcon i = new ImageIcon("resources/images/hospital.png");
-		setIconImage(i.getImage());
+    	ImageIcon i = new ImageIcon(getClass().getResource("/images/hospital.png"));
+    	setIconImage(i.getImage());
     	
 		
 		
@@ -250,7 +250,7 @@ public class MenuTrabajador extends JFrame{
 	       
 	    }
 	    private void cambiarImagen() {
-ImageIcon imagenMenu = new ImageIcon(getClass().getResource("resources/images/Menuimage.png"));
+	    	ImageIcon imagenMenu = new ImageIcon(getClass().getResource("resources/images/Menuimage.png"));
 	    	
 	        Image imagenMenuEscalada = imagenMenu.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH);
 	        ImageIcon imagenMenuIcon = new ImageIcon(imagenMenuEscalada);

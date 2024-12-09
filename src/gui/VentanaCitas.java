@@ -70,7 +70,8 @@ public class VentanaCitas extends JFrame {
 
         // Configurar ventana
         setTitle("Gestión de Citas");
-        setIconImage(new ImageIcon("resources/images/hospital.png").getImage());
+        ImageIcon i = new ImageIcon(getClass().getResource("resources/images/hospital.png"));
+        setIconImage(i.getImage());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);

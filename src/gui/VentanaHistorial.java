@@ -56,8 +56,8 @@ public class VentanaHistorial extends JFrame{
 		 
 		 color =  new Color(6,99,133);
 		
-		ImageIcon im = new ImageIcon("resources/images/hospital.png");
-		setIconImage(im.getImage());
+		 ImageIcon im = new ImageIcon(getClass().getResource("/images/hospital.png"));
+		 setIconImage(im.getImage());
 		 
 		 JPanel panelN = new JPanel(new BorderLayout());
 		GridLayout grid1 = new GridLayout(1,6);
