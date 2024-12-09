@@ -139,7 +139,7 @@ public class VentanaVisualizarUsuario extends JFrame {
     }
     
     private void setupBackButton() {
-        ImageIcon iconBack = new ImageIcon("resources/images/icons8-back-25.png");
+        ImageIcon iconBack = new ImageIcon(getClass().getResource("resources/images/icons8-back-25.png"));
         btnVolver.setIcon(iconBack);
         styleButton(btnVolver);
         btnVolver.setPreferredSize(new Dimension(80, 35));

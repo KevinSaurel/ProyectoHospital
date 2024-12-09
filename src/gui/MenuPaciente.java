@@ -49,8 +49,14 @@ public class MenuPaciente extends JFrame {
         this.medicos = context.getMedicos();
         context.setPaciente(paciente);
 
-        ImageIcon i = new ImageIcon("resources/images/hospital.png");
-        setIconImage(i.getImage());
+        try {
+            ImageIcon i = new ImageIcon("resources/images/hospital.png");
+            setIconImage(i.getImage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error al cargar la imagen: " + e.getMessage());
+        }
+
 
         btnVolver = new JButton("VOLVER");
         btnCitas = new JButton("CITAS");
@@ -69,12 +75,16 @@ public class MenuPaciente extends JFrame {
         JPanel grid = new JPanel();
         grid.setLayout(new GridLayout(1, 5, 10, 50));
 
-        ImageIcon iconoHospital = new ImageIcon(getClass().getResource("resources/images/hospital.png"));
-        Image imagenEscalada = iconoHospital.getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
-        iconoHospital = new ImageIcon(imagenEscalada);
-        JLabel labelConIcono = new JLabel(iconoHospital);
-
-        grid.add(labelConIcono);
+        try {
+            ImageIcon iconoHospital = new ImageIcon(getClass().getResource("resources/images/hospital.png"));
+            Image imagenEscalada = iconoHospital.getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
+            iconoHospital = new ImageIcon(imagenEscalada);
+            JLabel labelConIcono = new JLabel(iconoHospital);
+            grid.add(labelConIcono);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error al cargar la imagen: " + e.getMessage());
+        }
         grid.add(btnContacto);
         grid.add(btnParametros);
         grid.add(btnUsuario);
