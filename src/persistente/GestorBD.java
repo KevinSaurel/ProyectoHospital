@@ -34,11 +34,11 @@ import domain.Persona;
 
 public class GestorBD {
 	private final String PROPERTIES_FILE = "resources/config/app.properties";
-	private final String CSV_DOCOTORES = "bd/doctores.csv";
-	private final String CSV_PACIENTES = "bd/pacientes.csv";
-	private final String CSV_CAMAS = "bd/camas.csv";
-	private final String CSV_CITAS = "bd/citas.csv";
-	private final String CSV_ADMINISTRADORES = "bd/Administradores.csv";
+	private final String CSV_DOCOTORES = "resources/data/doctores.csv";
+	private final String CSV_PACIENTES = "resources/data/pacientes.csv";
+	private final String CSV_CAMAS = "resources/data/camas.csv";
+	private final String CSV_CITAS = "resources/data/citas.csv";
+	private final String CSV_ADMINISTRADORES = "resources/data/Administradores.csv";
 
 	private final String LOG_FOLDER = "resources/log";
 
@@ -362,7 +362,7 @@ String sql6="CREATE TABLE IF NOT EXISTS cama (\n"
 
 	   private List<Doctor> cargarMedicosCsv() {
 		   List<Doctor>medicos = new ArrayList();
-	        try (BufferedReader br = new BufferedReader(new FileReader("src/db/doctores.csv"))) {
+	        try (BufferedReader br = new BufferedReader(new FileReader("resources/data/doctores.csv"))) {
 	            String linea;
 	            while ((linea = br.readLine()) != null) {
 	                StringTokenizer st = new StringTokenizer(linea, ",");
@@ -408,7 +408,7 @@ String sql6="CREATE TABLE IF NOT EXISTS cama (\n"
 	    }
 	    private List<Administrador> cargarAdmins() {
 	    	List<Administrador> admins = new ArrayList();
-	        try (BufferedReader br = new BufferedReader(new FileReader("src/db/Administradores.csv"))) {
+	        try (BufferedReader br = new BufferedReader(new FileReader("resources/data//Administradores.csv"))) {
 	            String linea;
 	            while ((linea = br.readLine()) != null) {
 	                String[] parts = linea.split(",");
@@ -435,7 +435,7 @@ String sql6="CREATE TABLE IF NOT EXISTS cama (\n"
 	    	List<Paciente> pacientes = new ArrayList();
 	    	
 	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	        try (BufferedReader br = new BufferedReader(new FileReader("src/db/pacientes.csv"))) {
+	        try (BufferedReader br = new BufferedReader(new FileReader("resources/data/pacientes.csv"))) {
 	            String linea;
 	            while ((linea = br.readLine()) != null) {
 	                String[] parts = linea.split(",");
@@ -484,7 +484,7 @@ String sql6="CREATE TABLE IF NOT EXISTS cama (\n"
 	         citas = new ArrayList<>();
 	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-	        try (BufferedReader br = new BufferedReader(new FileReader("src/db/citas.csv"))) {//"resources/data/citas.csv"
+	        try (BufferedReader br = new BufferedReader(new FileReader("resources/data/citas.csv"))) {
 	            String linea;
 	            while ((linea = br.readLine()) != null) {
 	                String[] parts = linea.split(",");
