@@ -49,7 +49,7 @@ public class MenuPaciente extends JFrame {
         this.medicos = context.getMedicos();
         context.setPaciente(paciente);
 
-        ImageIcon i = new ImageIcon("src/db/hospital.png");
+        ImageIcon i = new ImageIcon("resources/images/hospital.png");
         setIconImage(i.getImage());
 
         btnVolver = new JButton("VOLVER");
@@ -69,7 +69,7 @@ public class MenuPaciente extends JFrame {
         JPanel grid = new JPanel();
         grid.setLayout(new GridLayout(1, 5, 10, 50));
 
-        ImageIcon iconoHospital = new ImageIcon(getClass().getResource("/db/hospital.png"));
+        ImageIcon iconoHospital = new ImageIcon(getClass().getResource("resources/images/hospital.png"));
         Image imagenEscalada = iconoHospital.getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
         iconoHospital = new ImageIcon(imagenEscalada);
         JLabel labelConIcono = new JLabel(iconoHospital);
