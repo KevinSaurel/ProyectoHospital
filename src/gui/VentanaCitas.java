@@ -78,17 +78,9 @@ public class VentanaCitas extends JFrame {
 
         initComponents(); // Inicializar componentes
         llenarTablaCitas(); // Llenar la tabla con los datos de citas
-        
-        //agregarDatosPrueba(); // comentar cuando no se esté usando, esto es solo para probar
       //agregarDatosPrueba(); // comentar cuando no se esté usando, esto es solo para probar
-        try {
-			agregarDatos();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        
+        agregarDatos();
+		
         setVisible(true);
     }
 
@@ -246,60 +238,63 @@ public class VentanaCitas extends JFrame {
         tablaCitas.repaint();
     }
     
-    private void agregarDatosPrueba() {
-        // Crear pacientes de prueba
-        Paciente paciente1 = new Paciente("1234", "Juan", "Pérez", 30, "Ciudad A", 1, new ArrayList<>());
-        Paciente paciente2 = new Paciente("5678", "Ana", "Gómez", 25, "Ciudad B", 2, new ArrayList<>());
-        Paciente paciente3 = new Paciente("91011", "Luis", "Martínez", 50, "Ciudad C", 3, new ArrayList<>());
-        Paciente paciente4 = new Paciente("1213", "María", "López", 45, "Ciudad D", 4, new ArrayList<>());
-
-        // Crear doctores de prueba
-        Doctor doctor1 = new Doctor("abcd", "Carlos", "Lopez", 40, "Hospital Central", "Cardiología", "9:00 - 17:00");
-        Doctor doctor2 = new Doctor("efgh", "Marta", "Sánchez", 35, "Clínica Norte", "Neurología", "10:00 - 18:00");
-        Doctor doctor3 = new Doctor("ijkl", "Pedro", "García", 50, "Hospital Sur", "Dermatología", "8:00 - 16:00");
-
-        // Crear fechas de ejemplo
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        Date fecha1 = null;
-        Date fecha2 = null;
-        Date fecha3 = null;
-        Date fecha4 = null;
-
+//    private void agregarDatosPrueba() {
+//        // Crear pacientes de prueba
+//        Paciente paciente1 = new Paciente("1234", "Juan", "Pérez", 30, "Ciudad A", 1, new ArrayList<>());
+//        Paciente paciente2 = new Paciente("5678", "Ana", "Gómez", 25, "Ciudad B", 2, new ArrayList<>());
+//        Paciente paciente3 = new Paciente("91011", "Luis", "Martínez", 50, "Ciudad C", 3, new ArrayList<>());
+//        Paciente paciente4 = new Paciente("1213", "María", "López", 45, "Ciudad D", 4, new ArrayList<>());
+//
+//        // Crear doctores de prueba
+//        Doctor doctor1 = new Doctor("abcd", "Carlos", "Lopez", 40, "Hospital Central", "Cardiología", "9:00 - 17:00");
+//        Doctor doctor2 = new Doctor("efgh", "Marta", "Sánchez", 35, "Clínica Norte", "Neurología", "10:00 - 18:00");
+//        Doctor doctor3 = new Doctor("ijkl", "Pedro", "García", 50, "Hospital Sur", "Dermatología", "8:00 - 16:00");
+//
+//        // Crear fechas de ejemplo
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+//        Date fecha1 = null;
+//        Date fecha2 = null;
+//        Date fecha3 = null;
+//        Date fecha4 = null;
+//
+//        try {
+//            fecha1 = new java.sql.Date(dateFormat.parse("10/12/2024 09:30").getTime());
+//            fecha2 = new java.sql.Date(dateFormat.parse("11/12/2024 14:00").getTime());
+//            fecha3 = new java.sql.Date(dateFormat.parse("12/12/2024 11:15").getTime());
+//            fecha4 = new java.sql.Date(dateFormat.parse("13/12/2024 16:45").getTime());
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//
+//        // Crear citas de prueba
+//        List<Cita> citasPrueba = new ArrayList<>();
+//        citasPrueba.add(new Cita(paciente1, doctor1, fecha1));
+//        citasPrueba.add(new Cita(paciente2, doctor2, fecha2));
+//        citasPrueba.add(new Cita(paciente3, doctor3, fecha3));
+//        citasPrueba.add(new Cita(paciente4, doctor1, fecha4));
+//
+//        // Asignar las citas generadas a la lista de la ventana
+//        this.citas = citasPrueba;
+//
+//        // Llenar la tabla con los datos de prueba
+//        llenarTablaCitas();
+//    }
+    
+    
+    
+    private void agregarDatos() {
         try {
-            fecha1 = new java.sql.Date(dateFormat.parse("10/12/2024 09:30").getTime());
-            fecha2 = new java.sql.Date(dateFormat.parse("11/12/2024 14:00").getTime());
-            fecha3 = new java.sql.Date(dateFormat.parse("12/12/2024 11:15").getTime());
-            fecha4 = new java.sql.Date(dateFormat.parse("13/12/2024 16:45").getTime());
-        } catch (ParseException e) {
+            gestorBD = new GestorBD();
+            gestorBD.crearBBDD();
+            gestorBD.insertarCita();
+            this.citas = gestorBD.getCitas();
+            llenarTablaCitas();
+        } catch (SQLException e) {
+            System.err.println("Error al agregar datos: " + e.getMessage());
             e.printStackTrace();
         }
-
-        // Crear citas de prueba
-        List<Cita> citasPrueba = new ArrayList<>();
-        citasPrueba.add(new Cita(paciente1, doctor1, fecha1));
-        citasPrueba.add(new Cita(paciente2, doctor2, fecha2));
-        citasPrueba.add(new Cita(paciente3, doctor3, fecha3));
-        citasPrueba.add(new Cita(paciente4, doctor1, fecha4));
-
-        // Asignar las citas generadas a la lista de la ventana
-        this.citas = citasPrueba;
-
-        // Llenar la tabla con los datos de prueba
-        llenarTablaCitas();
     }
-    private void agregarDatos() throws SQLException {
-  	  gestorBD = new GestorBD();
-  	  //gestorBD.conectar("citas.bd");
-  	  gestorBD.crearBBDD();
-  	  gestorBD.insertarCita();
-  	        // Use bdCitas to get the appointments from the database
-  	        this.citas = gestorBD.getCitas(); // This fetches the list of Cita objects from the database
-
-  	        // Populate the table with the data retrieved from the database
-  	        llenarTablaCitas();
-  	    
-  	
-  }
+    
     
     private void filterCitas() {
         modeloDatosCitas.setRowCount(0); // Limpiar la tabla antes de aplicar el filtro
@@ -336,6 +331,18 @@ public class VentanaCitas extends JFrame {
         }
     }
 
+//    private void addCitaData() {
+//        for (Cita cita : citas) {
+//            Object[] row = {
+//                String.valueOf(cita.getPaciente().getCodigoPaciente()), // Código del paciente convertido a String
+//                cita.getPaciente().getNombre(),                        // Nombre del paciente
+//                cita.getPaciente().getApellido(),                      // Apellido del paciente
+//                cita.getDoctor().getNombre() + " " + cita.getDoctor().getApellido(), // Nombre completo del doctor
+//                new SimpleDateFormat("dd/MM/yyyy HH:mm").format(cita.getFechaHora()) // Fecha y hora formateada
+//            };
+//            modeloDatosCitas.addRow(row); // Añadir la fila al modelo de la tabla
+//        }
+//    }
     
 }
     

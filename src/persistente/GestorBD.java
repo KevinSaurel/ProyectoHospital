@@ -121,14 +121,12 @@ public class GestorBD {
                 + " FOREIGN KEY(paciente_id) REFERENCES paciente(id)\n"
                 + ");";
 
-		String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
-                + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
-                + " paciente_id INTEGER NOT NULL,\n"
-                + " doctor_id INTEGER NOT NULL,\n"
-                + " fecha_hora DATETIME NOT NULL,\n"
-                + " FOREIGN KEY(paciente_id) REFERENCES paciente(id),\n"
-                + " FOREIGN KEY(doctor_id) REFERENCES doctor(id),\n"
-                + " UNIQUE(paciente_id, doctor_id, fecha_hora)\n"
+		String sql5 = "CREATE TABLE IF NOT EXISTS cita ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "codigoPaciente INTEGER NOT NULL, "
+                + "nombreDoctor TEXT NOT NULL, "
+                + "fechaHora TEXT NOT NULL, "
+                + "FOREIGN KEY(codigoPaciente) REFERENCES paciente(codigoPaciente)"
                 + ");";
 		String sql6 = "CREATE TABLE IF NOT EXISTS cama (\n" +
 			    " id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
