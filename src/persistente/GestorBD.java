@@ -334,6 +334,7 @@ public class GestorBD {
 		                pstmt.setDate(3, new java.sql.Date(cita.getFechaHora().getTime()));
 		                pstmt.executeUpdate();
 	        }
+	        	 
 	        	 logger.info("Patient cita inserted successfully");
 	   
 	        }
