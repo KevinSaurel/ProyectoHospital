@@ -43,7 +43,7 @@ public class VentanaMedicos extends JFrame {
         this.medicos = medicos;
         Color color = new Color(6,99,133);
         
-        ImageIcon i = new ImageIcon(getClass().getResource("/images/hospital.png"));
+        ImageIcon i = new ImageIcon("/images/hospital.png");
         setIconImage(i.getImage());
         
         // aqui pongo las llamadas para que filtra por nombre 
@@ -84,7 +84,7 @@ public class VentanaMedicos extends JFrame {
        
   
         // voy a usar icono en recursos para icono8 atras 
-        ImageIcon iconBack = new ImageIcon(getClass().getResource("resources/images/icons8-back-25.png"));
+        ImageIcon iconBack = new ImageIcon("resources/images/icons8-back-25.png");
 
         
         JButton btnBack = new JButton(iconBack);

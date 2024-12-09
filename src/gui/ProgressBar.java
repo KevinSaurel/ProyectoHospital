@@ -3,6 +3,7 @@ package gui;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 
 import javax.swing.*;
 
@@ -39,10 +40,15 @@ public class ProgressBar extends JFrame {
         
         // Initialize icon label
         iconLabel = new JLabel();
-        ImageIcon icon = new ImageIcon(getClass().getResource("resources/images/hospital.png")); // Replace with your icon path
-        Image scaledIcon = icon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH); // Scale the icon if needed
-        iconLabel.setIcon(new ImageIcon(scaledIcon));
         
+        //URL resource = "hospital.png";
+        
+
+        ImageIcon icon = new ImageIcon("resources/images/hospital.png");
+
+     // Scale the image if necessary
+     Image scaledIcon = icon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+     iconLabel.setIcon(new ImageIcon(scaledIcon));
         // Create an overlay panel to position the icon at the bar's tip
         JLayeredPane layeredPane = new JLayeredPane();
         bar.setBounds(50, 60, 400, 20); // Set progress bar bounds

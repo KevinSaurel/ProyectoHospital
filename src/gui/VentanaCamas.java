@@ -59,7 +59,7 @@ public class VentanaCamas extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 700);
         setLayout(new BorderLayout());
-        ImageIcon i = new ImageIcon(getClass().getResource("/images/hospital.png"));
+        ImageIcon i = new ImageIcon("/images/hospital.png");
 		setIconImage(i.getImage());
 		
         initializeData();
@@ -172,7 +172,7 @@ public class VentanaCamas extends JFrame {
     }
     
     private JButton createBackButton() {
-        ImageIcon backIcon = new ImageIcon(getClass().getResource("resources/images/icons8-back-25.png"));
+        ImageIcon backIcon = new ImageIcon("resources/images/icons8-back-25.png");
         JButton btnBack = new JButton(backIcon);
         styleButton(btnBack);
         btnBack.setPreferredSize(new Dimension(80, 35));
@@ -212,8 +212,8 @@ public class VentanaCamas extends JFrame {
         // Cargar y redimensionar las imágenes
         //IAG modificado
         try {
-            ImageIcon normalIcon = new ImageIcon(getClass().getResource("resources/images/health-check_5809279.png"));
-            ImageIcon uciIcon = new ImageIcon(getClass().getResource("resources/images/emergency_9587034.png"));
+            ImageIcon normalIcon = new ImageIcon("resources/images/health-check_5809279.png");
+            ImageIcon uciIcon = new ImageIcon("resources/images/emergency_9587034.png");
             
             // Redimensionar las imágenes
             Image normalImg = normalIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
@@ -376,15 +376,15 @@ public class VentanaCamas extends JFrame {
             ImageIcon icon;
             if (cama.getTipoCama().equals("UCI")) {
                 if (cama.isOcupada()) {
-                    icon = new ImageIcon(getClass().getResource("resources/images/CamaRojaUCI.png"));
+                    icon = new ImageIcon("resources/images/CamaRojaUCI.png");
                 } else {
-                    icon = new ImageIcon(getClass().getResource("resources/images/CamaVerdeUci.png"));
+                    icon = new ImageIcon("resources/images/CamaVerdeUci.png");
                 }
             } else {
                 if (cama.isOcupada()) {
-                    icon = new ImageIcon(getClass().getResource("resources/images/CamaRoja.png"));
+                    icon = new ImageIcon("resources/images/CamaRoja.png");
                 } else {
-                    icon = new ImageIcon(getClass().getResource("resources/images/CamaVerde.png"));
+                    icon = new ImageIcon("resources/images/CamaVerde.png");
                 }
             }
 

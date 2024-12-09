@@ -57,8 +57,9 @@ public class MenuTrabajador extends JFrame{
 		Context context = Context.getInstance();  
     	this.pacientes = context.getPacientes();
     	this.medicos = context.getMedicos();
-		  
-    	ImageIcon i = new ImageIcon(getClass().getResource("/images/hospital.png"));
+    	ImageIcon i = new ImageIcon("resources/images/hospital.png");
+
+    	//ImageIcon i = new ImageIcon("/resources/images/hospital.png");
     	setIconImage(i.getImage());
     	
 		
@@ -83,8 +84,9 @@ public class MenuTrabajador extends JFrame{
 // aqui quiero meter el logo donde el primer hueco de grid 
 		
 		
+		ImageIcon iconoHospital = new ImageIcon("resources/images/hospital.png");
 
-		ImageIcon iconoHospital = new ImageIcon(getClass().getResource("resources/images/hospital.png"));
+		//ImageIcon iconoHospital = new ImageIcon("resources/images/hospital.png");
 		setIconImage(iconoHospital.getImage());
 		
 		Image imagenEscalada = iconoHospital.getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
@@ -111,8 +113,9 @@ public class MenuTrabajador extends JFrame{
 		
 		 JPanel pngHistorial = new JPanel();
 		  pngHistorial.setLayout(new GridLayout(1 , 2 , 10 , 10 ));
-		
-		ImageIcon imagenMedicos = new ImageIcon(getClass().getResource("resources/images/MedicosFelices.png"));
+		  ImageIcon imagenMedicos = new ImageIcon("resources/images/MedicosFelices.png");
+
+		//ImageIcon imagenMedicos = new ImageIcon("resources/images/MedicosFelices.png");
 
 		
 		Image imagenmodi = imagenMedicos.getImage().getScaledInstance(800, 500, java.awt.Image.SCALE_SMOOTH);
@@ -226,16 +229,16 @@ public class MenuTrabajador extends JFrame{
 	private class HiloImagen extends Thread {
 		private int currentIndex = 0;
 	    public void run() {
-	    	ImageIcon imagenMenu = new ImageIcon(getClass().getResource("resources/images/Menuimage.png"));
+	    	ImageIcon imagenMenu = new ImageIcon("resources/images/Menuimage.png");
 	    	
 	        Image imagenMenuEscalada = imagenMenu.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH);
 	        ImageIcon imagenMenuIcon = new ImageIcon(imagenMenuEscalada);
 	        // Load and scale images once at the start
-	        ImageIcon imagenMedicos = new ImageIcon(getClass().getResource("resources/images/MedicosFelices.png"));
+	        ImageIcon imagenMedicos = new ImageIcon("resources/images/MedicosFelices.png");
 	        Image imagenMedicosEscalada = imagenMedicos.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH);
 	        ImageIcon imagenMedicosIcon = new ImageIcon(imagenMedicosEscalada);
 
-	        ImageIcon imagenSala = new ImageIcon(getClass().getResource("resources/images/imagenSala.png"));
+	        ImageIcon imagenSala = new ImageIcon("resources/images/imagenSala.png");
 	        Image imagenSalaEscalada = imagenSala.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH);
 	        ImageIcon imagenSalaIcon = new ImageIcon(imagenSalaEscalada);
 	        this.currentIndex = 0;
@@ -250,16 +253,16 @@ public class MenuTrabajador extends JFrame{
 	       
 	    }
 	    private void cambiarImagen() {
-	    	ImageIcon imagenMenu = new ImageIcon(getClass().getResource("resources/images/Menuimage.png"));
+	    	ImageIcon imagenMenu = new ImageIcon("resources/images/Menuimage.png");
 	    	
 	        Image imagenMenuEscalada = imagenMenu.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH);
 	        ImageIcon imagenMenuIcon = new ImageIcon(imagenMenuEscalada);
 	        // Load and scale images once at the start
-	        ImageIcon imagenMedicos = new ImageIcon(getClass().getResource("resources/images/MedicosFelices.png"));
+	        ImageIcon imagenMedicos = new ImageIcon("resources/images/MedicosFelices.png");
 	        Image imagenMedicosEscalada = imagenMedicos.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH);
 	        ImageIcon imagenMedicosIcon = new ImageIcon(imagenMedicosEscalada);
 
-	        ImageIcon imagenSala = new ImageIcon(getClass().getResource("resources/images/imagenSala.png"));
+	        ImageIcon imagenSala = new ImageIcon("resources/images/imagenSala.png");
 	        Image imagenSalaEscalada = imagenSala.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH);
 	        ImageIcon imagenSalaIcon = new ImageIcon(imagenSalaEscalada);
 	        List<ImageIcon>list = new ArrayList();
