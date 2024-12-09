@@ -173,15 +173,15 @@ public class MenuPaciente extends JFrame {
         private int currentIndex = 0;
 
         public void run() {
-            ImageIcon imagenMenu = new ImageIcon(getClass().getResource("/db/Menuimage.png"));
+            ImageIcon imagenMenu = new ImageIcon(getClass().getResource("resources/images/Menuimage.png"));
             Image imagenMenuEscalada = imagenMenu.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH);
             ImageIcon imagenMenuIcon = new ImageIcon(imagenMenuEscalada);
 
-            ImageIcon imagenMedicos = new ImageIcon(getClass().getResource("/db/MedicosFelices.png"));
+            ImageIcon imagenMedicos = new ImageIcon(getClass().getResource("resources/images/MedicosFelices.png"));
             Image imagenMedicosEscalada = imagenMedicos.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH);
             ImageIcon imagenMedicosIcon = new ImageIcon(imagenMedicosEscalada);
 
-            ImageIcon imagenSala = new ImageIcon(getClass().getResource("/db/imagenSala.png"));
+            ImageIcon imagenSala = new ImageIcon(getClass().getResource("resources/images/imagenSala.png"));
             Image imagenSalaEscalada = imagenSala.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH);
             ImageIcon imagenSalaIcon = new ImageIcon(imagenSalaEscalada);
 
