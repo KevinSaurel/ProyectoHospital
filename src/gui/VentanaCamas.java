@@ -59,7 +59,7 @@ public class VentanaCamas extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 700);
         setLayout(new BorderLayout());
-        ImageIcon i = new ImageIcon("resources/images/hospital.png");
+        ImageIcon i = new ImageIcon(getClass().getResource("/images/hospital.png"));
 		setIconImage(i.getImage());
 		
         initializeData();
