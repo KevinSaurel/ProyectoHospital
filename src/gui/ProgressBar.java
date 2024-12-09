@@ -39,7 +39,7 @@ public class ProgressBar extends JFrame {
         
         // Initialize icon label
         iconLabel = new JLabel();
-        ImageIcon icon = new ImageIcon(getClass().getResource("resources/images/Hospital.png")); // Replace with your icon path
+        ImageIcon icon = new ImageIcon(getClass().getResource("resources/images/hospital.png")); // Replace with your icon path
         Image scaledIcon = icon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH); // Scale the icon if needed
         iconLabel.setIcon(new ImageIcon(scaledIcon));
         
