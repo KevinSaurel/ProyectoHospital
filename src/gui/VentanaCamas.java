@@ -368,37 +368,31 @@ public class VentanaCamas extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         
-        // Establecer el borde según el tipo de cama
-        if (cama.getTipoCama().equals("UCI")) {
-            panel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(139, 0, 0), 3), // Borde rojo oscuro más grueso para UCI
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)
-            ));
-        } else {
-            panel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.BLACK),
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)
-            ));
-        }
         
-        // Crear el JLabel para la imagen
         JLabel imageLabel = new JLabel();
         imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        // Cargar la imagen según el estado de la cama
         try {
             ImageIcon icon;
-            if (cama.isOcupada()) {
-                icon = new ImageIcon(getClass().getResource("/db/CamaRoja.png"));
+            if (cama.getTipoCama().equals("UCI")) {
+                if (cama.isOcupada()) {
+                    icon = new ImageIcon(getClass().getResource("/db/CamaRojaUCI.png"));
+                } else {
+                    icon = new ImageIcon(getClass().getResource("/db/CamaVerdeUci.png"));
+                }
             } else {
-                icon = new ImageIcon(getClass().getResource("/db/CamaVerde.png"));
+                if (cama.isOcupada()) {
+                    icon = new ImageIcon(getClass().getResource("/db/CamaRoja.png"));
+                } else {
+                    icon = new ImageIcon(getClass().getResource("/db/CamaVerde.png"));
+                }
             }
-            
+
             // Redimensionar la imagen
             Image img = icon.getImage();
             Image newImg = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
             icon = new ImageIcon(newImg);
-            
+
             imageLabel.setIcon(icon);
         } catch (Exception e) {
             System.err.println("Error al cargar la imagen: " + e.getMessage());
@@ -690,17 +684,10 @@ public class VentanaCamas extends JFrame {
                     .findFirst()
                     .orElse(null);
                     
-                if (cama != null && cama.getTipoCama().equals("UCI")) {
-                    camaPanel.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(new Color(139, 0, 0), 3),
-                        BorderFactory.createEmptyBorder(5, 5, 5, 5)
-                    ));
-                } else {
-                    camaPanel.setBorder(BorderFactory.createCompoundBorder(
+                camaPanel.setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createLineBorder(Color.BLACK),
                         BorderFactory.createEmptyBorder(5, 5, 5, 5)
-                    ));
-                }
+                ));
             }
         }
         // Resaltar el panel seleccionado manteniendo el grosor del borde si es UCI
