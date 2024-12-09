@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ import domain.Context;
 import domain.Doctor;
 import domain.Paciente;
 import domain.Persona;
+import persistente.GestorBD;
 
 public class VentanaCitas extends JFrame {
 
@@ -58,6 +60,8 @@ public class VentanaCitas extends JFrame {
     private JButton btnBorrCita;
     private JButton btnBack;
     private Persona usuario;
+    
+    private GestorBD gestorBD;
 
     public VentanaCitas(List<Cita> citas, Persona usuario) {
         // Inicializar lista de citas
@@ -74,7 +78,15 @@ public class VentanaCitas extends JFrame {
         initComponents(); // Inicializar componentes
         llenarTablaCitas(); // Llenar la tabla con los datos de citas
         
-        agregarDatosPrueba(); // comentar cuando no se esté usando, esto es solo para probar
+        //agregarDatosPrueba(); // comentar cuando no se esté usando, esto es solo para probar
+      //agregarDatosPrueba(); // comentar cuando no se esté usando, esto es solo para probar
+        try {
+			agregarDatos();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
         
         setVisible(true);
     }
@@ -267,6 +279,19 @@ public class VentanaCitas extends JFrame {
         // Llenar la tabla con los datos de prueba
         llenarTablaCitas();
     }
+    private void agregarDatos() throws SQLException {
+  	  gestorBD = new GestorBD();
+  	  //gestorBD.conectar("citas.bd");
+  	  gestorBD.crearBBDD();
+  	  gestorBD.insertarCita();
+  	        // Use bdCitas to get the appointments from the database
+  	        this.citas = gestorBD.getCitas(); // This fetches the list of Cita objects from the database
+
+  	        // Populate the table with the data retrieved from the database
+  	        llenarTablaCitas();
+  	    
+  	
+  }
 
     
 }

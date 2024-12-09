@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,14 +24,16 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import domain.Administrador;
+import domain.Cama;
 import domain.Cita;
 import domain.Doctor;
 import domain.Historial;
 import domain.Paciente;
 import domain.Persona;
 
+
 public class GestorBD {
-	private final String PROPERTIES_FILE = "bd/app.properties";
+	private final String PROPERTIES_FILE = "resources/config/app.properties";
 	private final String CSV_DOCOTORES = "bd/doctores.csv";
 	private final String CSV_PACIENTES = "bd/pacientes.csv";
 	private final String CSV_CAMAS = "bd/camas.csv";
@@ -43,6 +46,8 @@ public class GestorBD {
 	private String driverName;
 	private String databaseFile;
 	private String connectionString;
+	public ArrayList<Cita>citas;
+
 
 	private static Logger logger = Logger.getLogger(GestorBD.class.getName());
 
@@ -125,6 +130,15 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
                 + " FOREIGN KEY(doctor_id) REFERENCES doctor(id),\n"
                 + " UNIQUE(paciente_id, doctor_id, fecha_hora)\n"
                 + ");";
+String sql6="CREATE TABLE IF NOT EXISTS cama (\n"
+				+ " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+				+ " num_cama INTEGER NOT NULL,\n"
+				+ " ocupada TEXT INTEGER NOT NULL,\n"
+				+ " tipo_cama TEXT NOT NULL,\n"
+				+ " FOREIGN KEY(paciente_id) REFERENCES paciente(id),\n"
+				+ " UNIQUE(paciente_id)\n"
+				+ ");";
+
         //Se abre la conexión y se crea un PreparedStatement para crer cada tabla
 		//Al abrir la conexión, si no existía el fichero por defecto, se crea.
 		try (Connection con = DriverManager.getConnection(connectionString);
@@ -132,8 +146,9 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
 			 PreparedStatement pStmt2 = con.prepareStatement(sql2);
 			 PreparedStatement pStmt3 = con.prepareStatement(sql3);
 			 PreparedStatement pStmt4 = con.prepareStatement(sql4);
-			 PreparedStatement pStmt5 = con.prepareStatement(sql5)){
-			
+			 PreparedStatement pStmt5 = con.prepareStatement(sql5);
+			 PreparedStatement pStmt6 = con.prepareStatement(sql6)){
+
 			//Se ejecutan las sentencias de creación de las tablas
 	        if (!pStmt1.execute() && !pStmt2.execute() && !pStmt3.execute()) {
 	        	logger.info("Se han creado las tablas");
@@ -150,6 +165,7 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
 			String sql3 = "DROP TABLE IF EXISTS doctor;";
 			String sql4 = "DROP TABLE IF EXISTS historial";
 			String sql5 = "DROP TABLE IF EXISTS cita;";
+			String sql6 = "DROP TABLE IF EXISTS camas;";
 			
 	        //Se abre la conexión y se crea un PreparedStatement para borrar cada tabla
 			try (Connection con = DriverManager.getConnection(connectionString);
@@ -157,10 +173,11 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
 				 PreparedStatement pStmt2 = con.prepareStatement(sql2);
 				 PreparedStatement pStmt3 = con.prepareStatement(sql3);
 				 PreparedStatement pStmt4 = con.prepareStatement(sql4);
-				 PreparedStatement pStmt5 = con.prepareStatement(sql5)) {
+				 PreparedStatement pStmt5 = con.prepareStatement(sql5);
+				 PreparedStatement pStmt6 = con.prepareStatement(sql6)) {
 				
 				//Se ejecutan las sentencias de borrado de las tablas
-		        if (!pStmt1.execute() && !pStmt2.execute() && !pStmt3.execute()&& !pStmt4.execute()&& !pStmt5.execute()) {
+		        if (!pStmt1.execute() && !pStmt2.execute() && !pStmt3.execute()&& !pStmt4.execute()&& !pStmt5.execute()&& !pStmt6.execute()) {
 		        	logger.info("Se han borrado las tablas");
 		        }
 			} catch (Exception ex) {
@@ -194,6 +211,60 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
 	        } catch (SQLException e) {
 	            logger.warning("Error inserting doctors: " + e.getMessage());
 	        }
+	    }
+	 public List<Cita> getCitas() {
+	        List<Cita> citas = new ArrayList<>();
+	        String sql = "SELECT c.id, c.paciente_id, c.doctor_id, c.fecha_hora, " +
+	                     "p.contrasena AS paciente_contrasena, p.nombre AS paciente_nombre, " +
+	                     "p.apellido AS paciente_apellido, p.edad AS paciente_edad, p.ubicacion AS paciente_ubicacion, " +
+	                     "d.contrasena AS doctor_contrasena, d.nombre AS doctor_nombre, " +
+	                     "d.apellido AS doctor_apellido, d.edad AS doctor_edad, d.ubicacion AS doctor_ubicacion, " +
+	                     "d.especialidad AS doctor_especialidad, d.horario AS doctor_horario " +
+	                     "FROM cita c " +
+	                     "JOIN paciente p ON c.paciente_id = p.id " +
+	                     "JOIN doctor d ON c.doctor_id = d.id";
+
+	        try (Connection con = DriverManager.getConnection(connectionString);
+	             PreparedStatement pStmt = con.prepareStatement(sql)) {
+
+	            // Execute the query and get the result set
+	            ResultSet rs = pStmt.executeQuery();
+	            while (rs.next()) {
+	                // Get the patient and doctor details
+	                Paciente paciente = new Paciente(
+	                        rs.getString("paciente_contrasena"),
+	                        rs.getString("paciente_nombre"),
+	                        rs.getString("paciente_apellido"),
+	                        rs.getInt("paciente_edad"),
+	                        rs.getString("paciente_ubicacion"),
+	                        rs.getInt("paciente_id"),
+	                        null // Historial entries can be fetched if needed
+	                );
+
+	                Doctor doctor = new Doctor(
+	                        rs.getString("doctor_contrasena"),
+	                        rs.getString("doctor_nombre"),
+	                        rs.getString("doctor_apellido"),
+	                        rs.getInt("doctor_edad"),
+	                        rs.getString("doctor_ubicacion"),
+	                        rs.getString("doctor_especialidad"),
+	                        rs.getString("doctor_horario")
+	                );
+
+	                // Convert the appointment date from the result set
+	                Date fecha = rs.getDate("fecha_hora");
+
+	                // Create a Cita object and add it to the list
+	                Cita cita = new Cita(paciente, doctor, fecha);
+	                citas.add(cita);
+	            }
+
+	            logger.info(String.format("Se han recuperado %d citas", citas.size()));
+	        } catch (SQLException e) {
+	            logger.warning(String.format("Error al recuperar las citas: %s", e.getMessage()));
+	        }
+
+	        return citas;
 	    }
 
 	    public void insertarPacientes(List<Paciente> pacientes) {
@@ -254,7 +325,8 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
 	            logger.info("Patient histories inserted successfully");
 	        }
 	    }
-	    private void insertarCita(List<Cita> citas) throws  SQLException{
+	    public void insertarCita() throws  SQLException{
+	    	citas = (ArrayList<Cita>) cargarCitas();
 	    	String sql="INSERT INTO cita(id,paciente_id,doctor_id,fecha_hora) VALUES(?,?,?)";
 	        try (Connection con = DriverManager.getConnection(connectionString);
 		             PreparedStatement pstmt = con.prepareStatement(sql)) {
@@ -386,5 +458,169 @@ String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
 	        }
 	        return pacientes;
 	    }
-	    
+	    private static List<Historial> cargarHistorialCsv2(String serializedHistorial, SimpleDateFormat dateFormat) {
+	        List<Historial> historial = new ArrayList<>();
+	        if (serializedHistorial.endsWith(";")) {
+	            serializedHistorial = serializedHistorial.substring(0, serializedHistorial.length() - 1);
+	        }
+	        String[] entries = serializedHistorial.split(":");
+	        for (String entry : entries) {
+	            String[] parts = entry.split("\\|");
+	            if (parts.length == 2) {
+	                try {
+	                    String description = parts[0];
+	                    java.util.Date utilDate = dateFormat.parse(parts[1]);
+	                    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+	                    historial.add(new Historial(description, sqlDate));
+	                } catch (ParseException e) {
+	                    System.err.println("Error parsing date: " + parts[1]);
+	                    e.printStackTrace();
+	                }
+	            }
+	        }
+	        return historial;
+	    }
+	    public List<Cita> cargarCitas() {
+	         citas = new ArrayList<>();
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+	        try (BufferedReader br = new BufferedReader(new FileReader("src/db/citas.csv"))) {//"resources/data/citas.csv"
+	            String linea;
+	            while ((linea = br.readLine()) != null) {
+	                String[] parts = linea.split(",");
+
+	                // Validate that the parts array is correctly structured before parsing
+	                if (parts.length < 14) {
+	                    System.err.println("Invalid line format: " + linea);
+	                    continue;  // Skip this line if it's invalid
+	                }
+
+	                // Parse the patient details
+	                String contrasena = parts[0];
+	                String nombre = parts[1];
+	                String apellido = parts[2];
+	                int edad = parseInt(parts[3], "Edad");
+	                String ubicacion = parts[4];
+	                int codigoPaciente = parseInt(parts[5], "Codigo Paciente");
+
+	                // Handle medical history
+	                String historialEntriesSerialized = parts[6];
+	                List<Historial> historialEntries = cargarHistorialCsv2(historialEntriesSerialized, dateFormat);
+	                Paciente nuevoPaciente = new Paciente(contrasena, nombre, apellido, edad, ubicacion, codigoPaciente, historialEntries);
+
+	                // Parse the doctor details
+	                String contrasenaM = parts[7];
+	                String nombreM = parts[8];
+	                String apellidoM = parts[9];
+	                int edadM = parseInt(parts[10], "Edad Medico");
+	                String ubicacionM = parts[11];
+	                String especialidad = parts[12];
+	                String horario = parts[13];
+	                Doctor nuevoMedico = new Doctor(contrasenaM, nombreM, apellidoM, edadM, ubicacionM, especialidad, horario);
+
+	                // **Correctly parse the appointment date from the last column** (assuming it's parts[13] for the appointment date)
+	                Date fecha = null;
+	                try {
+	                    // Parse the date as java.util.Date first
+	                    java.util.Date utilDate = dateFormat.parse(parts[13]);
+	                    
+	                    // Convert to java.sql.Date
+	                    fecha = new java.sql.Date(utilDate.getTime());
+	                } catch (ParseException e) {
+	                    System.out.println("Fecha invalida en historial: " + parts[13]);
+	                    continue;  // Skip this line if the date is invalid
+	                }
+
+	                // Create the appointment
+	                Cita cita = new Cita(nuevoPaciente, nuevoMedico, fecha);
+	                citas.add(cita);
+	            }
+	        } catch (IOException e) {
+	            System.out.println("Error al cargar los pacientes: " + e.getMessage());
+	        }
+	        return citas;
+	    }
+	    public void insertarCamas() throws SQLException {
+	    	List<Cama> camas=new ArrayList<>();
+	        camas = (ArrayList<Cama>) cargarCamas(); // Assuming you have a method to load beds
+	        String sql = "INSERT INTO cama (num_cama, ocupada, tipo_cama, paciente_id) VALUES (?, ?, ?, ?)";
+	        
+	        try (Connection con = DriverManager.getConnection(connectionString);
+	             PreparedStatement pstmt = con.prepareStatement(sql)) {
+	            
+	            for (Cama cama : camas) {
+	                pstmt.setInt(1, cama.getNumCama());
+	                pstmt.setBoolean(2, cama.isOcupada());
+	                pstmt.setString(3, cama.getTipoCama());
+	                
+	                // Check if paciente is null before trying to get its ID
+	                if (cama.getPaciente() != null) {
+	                    pstmt.setInt(4, cama.getPaciente().getCodigoPaciente());
+	                } else {
+	                    pstmt.setNull(4, java.sql.Types.INTEGER);
+	                }
+	                
+	                pstmt.executeUpdate();
+	            }
+	            
+	            logger.info("Beds inserted successfully");
+	        } catch (SQLException e) {
+	            System.out.println("Error al cargar los camas: " + e.getMessage());
+	            throw e;
+	        }
+	    }
+	    public List<Cama> cargarCamas() {
+	    	List<Cama> camas=new ArrayList<>();
+
+	        try (BufferedReader br = new BufferedReader(new FileReader("resources/data/camas.csv"))) {
+	            String linea;
+	            while ((linea = br.readLine()) != null) {
+	                String[] parts = linea.split(",");
+
+	                // Validate that the parts array is correctly structured before parsing
+	                if (parts.length < 5) {
+	                    System.err.println("Invalid line format: " + linea);
+	                    continue; // Skip this line if it's invalid
+	                }
+
+	                // Parse the bed details
+	                int numCama = parseInt(parts[0], "Número de Cama");
+	                boolean ocupada = Boolean.parseBoolean(parts[1]);
+	                String tipoCama = parts[2];
+
+	                // Parse patient details (if the bed is occupied)
+	                Paciente paciente = null;
+	                if (ocupada) {
+	                    String contrasena = parts[3];
+	                    String nombre = parts[4];
+	                    String apellido = parts[5];
+	                    int edad = parseInt(parts[6], "Edad Paciente");
+	                    String ubicacion = parts[7];
+	                    int codigoPaciente = parseInt(parts[8], "Codigo Paciente");
+
+	                    // Create an empty historial for the patient
+	                    List<Historial> historialEntries = new ArrayList<>();
+
+	                    paciente = new Paciente(contrasena, nombre, apellido, edad, ubicacion, codigoPaciente, historialEntries);
+	                }
+
+	                // Create the bed
+	                Cama cama = new Cama(numCama, ocupada, tipoCama, paciente);
+	                camas.add(cama);
+	            }
+	        } catch (IOException e) {
+	            System.out.println("Error al cargar las camas: " + e.getMessage());
+	        }
+	        return camas;
+	    }
+	 // Helper method to parse integer values with error handling
+	    private int parseInt(String value, String fieldName) {
+	        try {
+	            return Integer.parseInt(value);
+	        } catch (NumberFormatException e) {
+	            System.err.println("Error al convertir el campo '" + fieldName + "' a entero: " + value);
+	            return -1;  // Return a default value or handle the error
+	        }
+	    }
+
 }
