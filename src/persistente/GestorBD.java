@@ -83,79 +83,85 @@ public class GestorBD {
 	}
 
 	public void crearBBDD() {
-	//Sólo se crea la BBDD si la propiedad initBBDD es true.
-	if (properties.get("createBBDD").equals("true")) {
-		//La base de datos tiene 5 tablas: Administrador, Camas, Citas, Pacientes, Doctores
-		 // @todo crear las peticiones sql 
-		String sql1 = "CREATE TABLE IF NOT EXISTS persona (\n"
-                + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
-                + " contrasena TEXT NOT NULL,\n"
-                + " nombre TEXT NOT NULL,\n"
-                + " apellido TEXT NOT NULL,\n"
-                + " edad INTEGER NOT NULL,\n"
-                + " ubicacion TEXT NOT NULL\n"
-                + ");";
+	    // Check if the database creation is enabled
+	    if (properties.get("createBBDD").equals("true")) {
 
-		String sql2 = "CREATE TABLE IF NOT EXISTS paciente (\n"
-                + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
-                + " codigo_paciente INTEGER NOT NULL UNIQUE,\n"
-                + " persona_id INTEGER NOT NULL,\n"
-                + " FOREIGN KEY(persona_id) REFERENCES persona(id)\n"
-                + ");";
+	        // SQL statements for creating tables
+	        String sql1 = "CREATE TABLE IF NOT EXISTS persona (\n"
+	                + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+	                + " contrasena TEXT NOT NULL,\n"
+	                + " nombre TEXT NOT NULL,\n"
+	                + " apellido TEXT NOT NULL,\n"
+	                + " edad INTEGER NOT NULL,\n"
+	                + " ubicacion TEXT NOT NULL\n"
+	                + ");";
 
-		String sql3 = "CREATE TABLE IF NOT EXISTS doctor (\n"
-                + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
-                + " especialidad TEXT NOT NULL,\n"
-                + " horario TEXT NOT NULL,\n"
-                + " persona_id INTEGER NOT NULL,\n"
-                + " FOREIGN KEY(persona_id) REFERENCES persona(id)\n"
-                + ");";
+	        String sql2 = "CREATE TABLE IF NOT EXISTS paciente (\n"
+	                + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+	                + " codigo_paciente INTEGER NOT NULL UNIQUE,\n"
+	                + " persona_id INTEGER NOT NULL,\n"
+	                + " FOREIGN KEY(persona_id) REFERENCES persona(id)\n"
+	                + ");";
 
-		String sql4 = "CREATE TABLE IF NOT EXISTS historial (\n"
-                + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
-                + " causa TEXT NOT NULL,\n"
-                + " fecha DATE NOT NULL,\n"
-                + " medico_id INTEGER NOT NULL,\n"
-                + " paciente_id INTEGER NOT NULL,\n"
-                + " FOREIGN KEY(medico_id) REFERENCES doctor(id),\n"
-                + " FOREIGN KEY(paciente_id) REFERENCES paciente(id)\n"
-                + ");";
+	        String sql3 = "CREATE TABLE IF NOT EXISTS doctor (\n"
+	                + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+	                + " especialidad TEXT NOT NULL,\n"
+	                + " horario TEXT NOT NULL,\n"
+	                + " persona_id INTEGER NOT NULL,\n"
+	                + " FOREIGN KEY(persona_id) REFERENCES persona(id)\n"
+	                + ");";
 
-		String sql5 = "CREATE TABLE IF NOT EXISTS cita ("
-                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "codigoPaciente INTEGER NOT NULL, "
-                + "nombreDoctor TEXT NOT NULL, "
-                + "fechaHora TEXT NOT NULL, "
-                + "FOREIGN KEY(codigoPaciente) REFERENCES paciente(codigoPaciente)"
-                + ");";
-		String sql6 = "CREATE TABLE IF NOT EXISTS cama (\n" +
-			    " id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-			    " num_cama INTEGER NOT NULL,\n" +
-			    " ocupada INTEGER NOT NULL,\n" +
-			    " tipo_cama TEXT NOT NULL,\n" +
-			    " paciente_id INTEGER,\n" +
-			    " FOREIGN KEY(paciente_id) REFERENCES paciente(id)\n" +
-			    ");";
+	        String sql4 = "CREATE TABLE IF NOT EXISTS historial (\n"
+	                + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+	                + " causa TEXT NOT NULL,\n"
+	                + " fecha DATE NOT NULL,\n"
+	                + " medico_id INTEGER NOT NULL,\n"
+	                + " paciente_id INTEGER NOT NULL,\n"
+	                + " FOREIGN KEY(medico_id) REFERENCES doctor(id),\n"
+	                + " FOREIGN KEY(paciente_id) REFERENCES paciente(id)\n"
+	                + ");";
 
-        //Se abre la conexión y se crea un PreparedStatement para crer cada tabla
-		//Al abrir la conexión, si no existía el fichero por defecto, se crea.
-		try (Connection con = DriverManager.getConnection(connectionString);
-		     PreparedStatement pStmt1 = con.prepareStatement(sql1);
-			 PreparedStatement pStmt2 = con.prepareStatement(sql2);
-			 PreparedStatement pStmt3 = con.prepareStatement(sql3);
-			 PreparedStatement pStmt4 = con.prepareStatement(sql4);
-			 PreparedStatement pStmt5 = con.prepareStatement(sql5);
-			 PreparedStatement pStmt6 = con.prepareStatement(sql6)){
+	        String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
+	                + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+	                + " codigo_paciente INTEGER NOT NULL,\n"
+	                + " nombre_doctor TEXT NOT NULL,\n"
+	                + " fecha_hora TEXT NOT NULL,\n"
+	                + " FOREIGN KEY(codigo_paciente) REFERENCES paciente(codigo_paciente)\n"
+	                + ");";
 
-			//Se ejecutan las sentencias de creación de las tablas
-	        if (!pStmt1.execute() && !pStmt2.execute() && !pStmt3.execute()) {
-	        	logger.info("Se han creado las tablas");
+	        String sql6 = "CREATE TABLE IF NOT EXISTS cama (\n"
+	                + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+	                + " num_cama INTEGER NOT NULL,\n"
+	                + " ocupada INTEGER NOT NULL,\n"
+	                + " tipo_cama TEXT NOT NULL,\n"
+	                + " paciente_id INTEGER,\n"
+	                + " FOREIGN KEY(paciente_id) REFERENCES paciente(id)\n"
+	                + ");";
+
+	        // Execute table creation statements
+	        try (Connection con = DriverManager.getConnection(connectionString);
+	             PreparedStatement pStmt1 = con.prepareStatement(sql1);
+	             PreparedStatement pStmt2 = con.prepareStatement(sql2);
+	             PreparedStatement pStmt3 = con.prepareStatement(sql3);
+	             PreparedStatement pStmt4 = con.prepareStatement(sql4);
+	             PreparedStatement pStmt5 = con.prepareStatement(sql5);
+	             PreparedStatement pStmt6 = con.prepareStatement(sql6)) {
+
+	            pStmt1.executeUpdate();
+	            pStmt2.executeUpdate();
+	            pStmt3.executeUpdate();
+	            pStmt4.executeUpdate();
+	            pStmt5.executeUpdate();
+	            pStmt6.executeUpdate();
+
+	            logger.info("Base de datos y tablas creadas correctamente.");
+
+	        } catch (SQLException ex) {
+	            logger.warning("Error al crear las tablas: " + ex.getMessage());
 	        }
-		} catch (Exception ex) {
-			logger.warning(String.format("Error al crear las tablas: %s", ex.getMessage()));
-			}
-		}
+	    }
 	}
+
 	public void borrarBBDD() {
 		if (properties.get("deleteBBDD").equals("true")) {	
 			String sql1 = "DROP TABLE IF EXISTS persona;";
@@ -323,22 +329,33 @@ public class GestorBD {
 	            logger.info("Patient histories inserted successfully");
 	        }
 	    }
-	    public void insertarCita() throws  SQLException{
-	    	citas = (ArrayList<Cita>) cargarCitas();
-	    	String sql="INSERT INTO cita(id,paciente_id,doctor_id,fecha_hora) VALUES(?,?,?)";
+	    public void insertarCita() throws SQLException {
+	        // Load existing citas
+	        citas = (ArrayList<Cita>) cargarCitas();
+	        
+	        // SQL query for inserting data into the cita table
+	        String sql = "INSERT INTO cita(codigo_paciente, nombre_doctor, fecha_hora) VALUES(?, ?, ?)";
+	        
 	        try (Connection con = DriverManager.getConnection(connectionString);
-		             PreparedStatement pstmt = con.prepareStatement(sql)) {
-	        	 for (Cita cita : citas) {
-		                pstmt.setInt(1, cita.getPaciente().getCodigoPaciente() );
-		                pstmt.setInt(2, insertarPersona(cita.getDoctor()) );
-		                pstmt.setDate(3, new java.sql.Date(cita.getFechaHora().getTime()));
-		                pstmt.executeUpdate();
-	        }
-	        	 
-	        	 logger.info("Patient cita inserted successfully");
-	   
+	             PreparedStatement pstmt = con.prepareStatement(sql)) {
+	             
+	            for (Cita cita : citas) {
+	                // Set the prepared statement parameters
+	                pstmt.setInt(1, cita.getPaciente().getCodigoPaciente()); // Use codigo_paciente
+	                pstmt.setString(2, cita.getDoctor().getNombre()); // Use doctor's name
+	                pstmt.setString(3, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cita.getFechaHora())); // Format date
+	                
+	                // Execute the statement
+	                pstmt.executeUpdate();
+	            }
+	            
+	            logger.info("Citas inserted successfully.");
+	        } catch (SQLException e) {
+	            logger.severe("Error inserting citas: " + e.getMessage());
+	            throw e;
 	        }
 	    }
+
 
 	    public void insertarAdministradores(List<Administrador> administradores) {
 	        String sql = "INSERT INTO administrador (persona_id, turno) VALUES (?, ?)";
