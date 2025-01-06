@@ -46,6 +46,7 @@ public class VentanaHistorial extends JFrame{
 	
 	//JLabel jlabel;
 	public VentanaHistorial(Paciente paciente , Persona usuario) {
+		System.out.println("Empieza a construir ventanaH");
 		Context context = Context.getInstance();  
     	this.u = context.getPaciente();
     	this.listaPacientes = context.getPacientes();

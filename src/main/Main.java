@@ -20,6 +20,7 @@ import domain.Cama;
 import domain.Cita;
 import domain.Doctor;
 import domain.Paciente;
+import domain.Persona;
 import gui.VentanaSeleccion;
 import persistente.GestorBD;
 
@@ -37,10 +38,16 @@ public class Main {
        System.out.println();
        
        GestorBD gestorBD = new GestorBD();
-       gestorBD.crearBBDD();
+      
        
        
        try {
+    	   gestorBD.crearBBDD();
+//    	   List<Persona> personas = gestorBD.cargarPersonasCsv();
+//    	   for(Persona p : personas) {
+//
+//               gestorBD.insertarPersona(p);
+//    	   }
            
            List<Doctor> doctores = gestorBD.cargarMedicosCsv();
            gestorBD.insertarDoctores(doctores);
@@ -48,14 +55,14 @@ public class Main {
            List<Paciente> pacientes = gestorBD.cargarPacientes();
            gestorBD.insertarPacientes(pacientes);
            
-           List<Administrador> administradores = gestorBD.cargarAdmins();
-           gestorBD.insertarAdministradores(administradores);
-           
+//           List<Administrador> administradores = gestorBD.cargarAdmins();
+//           gestorBD.insertarAdministradores(administradores);
+//           
            List<Cita> citas = gestorBD.cargarCitas();
            gestorBD.insertarCita();
            
-           List<Cama> camas = gestorBD.cargarCamas();
-           gestorBD.insertarCamas();
+//           List<Cama> camas = gestorBD.cargarCamas();
+//           gestorBD.insertarCamas();
            
            // Retrieve citas to verify
            List<Cita> citasRecuperadas = gestorBD.getCitas();

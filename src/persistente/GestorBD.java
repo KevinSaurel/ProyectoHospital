@@ -97,18 +97,16 @@ public class GestorBD {
 	                + ");";
 
 	        String sql2 = "CREATE TABLE IF NOT EXISTS paciente (\n"
-	                + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
-	                + " codigo_paciente INTEGER NOT NULL UNIQUE,\n"
-	                + " persona_id INTEGER NOT NULL,\n"
-	                + " FOREIGN KEY(persona_id) REFERENCES persona(id)\n"
+	                + " id INTEGER PRIMARY KEY ,\n"
+	                + " codigo_paciente INTEGER NOT NULL,\n"
+	                + " FOREIGN KEY(id) REFERENCES persona(id)\n"
 	                + ");";
 
 	        String sql3 = "CREATE TABLE IF NOT EXISTS doctor (\n"
-	                + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+	                + " id INTEGER PRIMARY KEY ,\n"
 	                + " especialidad TEXT NOT NULL,\n"
 	                + " horario TEXT NOT NULL,\n"
-	                + " persona_id INTEGER NOT NULL,\n"
-	                + " FOREIGN KEY(persona_id) REFERENCES persona(id)\n"
+	                + " FOREIGN KEY(id) REFERENCES persona(id)\n"
 	                + ");";
 
 	        String sql4 = "CREATE TABLE IF NOT EXISTS historial (\n"
@@ -123,20 +121,22 @@ public class GestorBD {
 
 	        String sql5 = "CREATE TABLE IF NOT EXISTS cita (\n"
 	                + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
-	                + " codigo_paciente INTEGER NOT NULL,\n"
-	                + " nombre_doctor TEXT NOT NULL,\n"
+	                + " paciente_id INTEGER NOT NULL,\n"
+	                + " medico_id TEXT NOT NULL,\n"
 	                + " fecha_hora TEXT NOT NULL,\n"
-	                + " FOREIGN KEY(codigo_paciente) REFERENCES paciente(codigo_paciente)\n"
+	                + " FOREIGN KEY(paciente_id) REFERENCES paciente(id),\n"
+	                + " FOREIGN KEY(medico_id) REFERENCES doctor(id)\n"
 	                + ");";
 
-	        String sql6 = "CREATE TABLE IF NOT EXISTS cama (\n"
-	                + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
-	                + " num_cama INTEGER NOT NULL,\n"
-	                + " ocupada INTEGER NOT NULL,\n"
-	                + " tipo_cama TEXT NOT NULL,\n"
-	                + " paciente_id INTEGER,\n"
-	                + " FOREIGN KEY(paciente_id) REFERENCES paciente(id)\n"
-	                + ");";
+//	        String sql6 = "CREATE TABLE IF NOT EXISTS cama (\n"
+//	                + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+//	                + " num_cama INTEGER NOT NULL,\n"
+//	                + " ocupada INTEGER NOT NULL,\n"
+//	                + " tipo_cama TEXT NOT NULL,\n"
+//	                + " paciente_id INTEGER,\n"
+//	                + " FOREIGN KEY(paciente_id) REFERENCES paciente(id)\n"
+//	                + ");"
+	        ;
 
 	        // Execute table creation statements
 	        try (Connection con = DriverManager.getConnection(connectionString);
@@ -145,14 +145,15 @@ public class GestorBD {
 	             PreparedStatement pStmt3 = con.prepareStatement(sql3);
 	             PreparedStatement pStmt4 = con.prepareStatement(sql4);
 	             PreparedStatement pStmt5 = con.prepareStatement(sql5);
-	             PreparedStatement pStmt6 = con.prepareStatement(sql6)) {
+	         //    PreparedStatement pStmt6 = con.prepareStatement(sql6)
+	        		){
 
 	            pStmt1.executeUpdate();
 	            pStmt2.executeUpdate();
 	            pStmt3.executeUpdate();
 	            pStmt4.executeUpdate();
 	            pStmt5.executeUpdate();
-	            pStmt6.executeUpdate();
+	          //  pStmt6.executeUpdate();
 
 	            logger.info("Base de datos y tablas creadas correctamente.");
 
@@ -198,7 +199,7 @@ public class GestorBD {
 		}
 	}
 	 public void insertarDoctores(List<Doctor> doctores) {
-	        String sql = "INSERT INTO doctor (especialidad, horario, persona_id) VALUES (?, ?, ?)";
+	        String sql = "INSERT INTO doctor (especialidad, horario) VALUES (?, ?)";
 	        try (Connection con = DriverManager.getConnection(connectionString);
 	             PreparedStatement pstmt = con.prepareStatement(sql)) {
 
@@ -206,7 +207,6 @@ public class GestorBD {
 	                int personaId = insertarPersona(doctor);
 	                pstmt.setString(1, doctor.getEspecialidad());
 	                pstmt.setString(2, doctor.getHorario());
-	                pstmt.setInt(3, personaId);
 	                pstmt.executeUpdate();
 	            }
 
@@ -217,101 +217,134 @@ public class GestorBD {
 	        }
 	    }
 	 public List<Cita> getCitas() {
-	        List<Cita> citas = new ArrayList<>();
-	        String sql = "SELECT c.id, c.paciente_id, c.doctor_id, c.fecha_hora, " +
-	                     "p.contrasena AS paciente_contrasena, p.nombre AS paciente_nombre, " +
-	                     "p.apellido AS paciente_apellido, p.edad AS paciente_edad, p.ubicacion AS paciente_ubicacion, " +
-	                     "d.contrasena AS doctor_contrasena, d.nombre AS doctor_nombre, " +
-	                     "d.apellido AS doctor_apellido, d.edad AS doctor_edad, d.ubicacion AS doctor_ubicacion, " +
-	                     "d.especialidad AS doctor_especialidad, d.horario AS doctor_horario " +
-	                     "FROM cita c " +
-	                     "JOIN paciente p ON c.paciente_id = p.id " +
-	                     "JOIN doctor d ON c.doctor_id = d.id";
+		    List<Cita> citas = new ArrayList<>();
+		    String sql = "SELECT c.id, c.paciente_id, c.medico_id, c.fecha_hora " +
+		                 "FROM cita c " +
+		                 "INNER JOIN paciente p ON c.paciente_id = p.id " +
+		                 "INNER JOIN doctor d ON c.medico_id = d.id";
 
-	        try (Connection con = DriverManager.getConnection(connectionString);
-	             PreparedStatement pStmt = con.prepareStatement(sql)) {
+		    try (Connection con = DriverManager.getConnection(connectionString);
+		         PreparedStatement pstmt = con.prepareStatement(sql);
+		         ResultSet rs = pstmt.executeQuery()) {
 
-	            // Execute the query and get the result set
-	            ResultSet rs = pStmt.executeQuery();
-	            while (rs.next()) {
-	                // Get the patient and doctor details
-	                Paciente paciente = new Paciente(
-	                        rs.getString("paciente_contrasena"),
-	                        rs.getString("paciente_nombre"),
-	                        rs.getString("paciente_apellido"),
-	                        rs.getInt("paciente_edad"),
-	                        rs.getString("paciente_ubicacion"),
-	                        rs.getInt("paciente_id"),
-	                        null // Historial entries can be fetched if needed
-	                );
+		        while (rs.next()) {
+		            // Map ResultSet to Cita object
+		            int citaId = rs.getInt("id");
+		            int pacienteId = rs.getInt("paciente_id");
+		            int medicoId = rs.getInt("medico_id");
+		            String fechaHora = rs.getString("fecha_hora");
 
-	                Doctor doctor = new Doctor(
-	                        rs.getString("doctor_contrasena"),
-	                        rs.getString("doctor_nombre"),
-	                        rs.getString("doctor_apellido"),
-	                        rs.getInt("doctor_edad"),
-	                        rs.getString("doctor_ubicacion"),
-	                        rs.getString("doctor_especialidad"),
-	                        rs.getString("doctor_horario")
-	                );
+		            // Retrieve Paciente and Doctor by their IDs
+		            Paciente paciente = obtenerPacientePorId(pacienteId);
+		            Doctor doctor = obtenerDoctorPorId(medicoId);
 
-	                // Convert the appointment date from the result set
-	                Date fecha = rs.getDate("fecha_hora");
+		            // Convert fechaHora to Date
+		            Date fecha = (Date) new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(fechaHora);
 
-	                // Create a Cita object and add it to the list
-	                Cita cita = new Cita(paciente, doctor, fecha);
-	                citas.add(cita);
-	            }
+		            // Create Cita object and add to list
+		            citas.add(new Cita( paciente, doctor, fecha));
+		        }
+		        logger.info("Citas retrieved successfully: " + citas.size());
+		    } catch (SQLException | ParseException e) {
+		        logger.warning("Error retrieving citas: " + e.getMessage());
+		    }
+		    return citas;
+		}
+	 public Paciente obtenerPacientePorId(int id) throws SQLException {
+		    String sql = "SELECT * FROM paciente WHERE id = ?";
+		    try (Connection con = DriverManager.getConnection(connectionString);
+		         PreparedStatement pstmt = con.prepareStatement(sql)) {
+		        pstmt.setInt(1, id);
+		        try (ResultSet rs = pstmt.executeQuery()) {
+		            if (rs.next()) {
+		                return new Paciente(
+		                    rs.getString("contrasena"),
+		                    rs.getString("nombre"),
+		                    rs.getString("apellido"),
+		                    rs.getInt("edad"),
+		                    rs.getString("ubicacion"),
+		                    rs.getInt("codigo_paciente"),
+		                    null // Assuming no historial loaded here
+		                );
+		            }
+		        }
+		    }
+		    return null;
+		}
 
-	            logger.info(String.format("Se han recuperado %d citas", citas.size()));
-	        } catch (SQLException e) {
-	            logger.warning(String.format("Error al recuperar las citas: %s", e.getMessage()));
-	        }
+		public Doctor obtenerDoctorPorId(int id) throws SQLException {
+		    String sql = "SELECT * FROM doctor WHERE id = ?";
+		    try (Connection con = DriverManager.getConnection(connectionString);
+		         PreparedStatement pstmt = con.prepareStatement(sql)) {
+		        pstmt.setInt(1, id);
+		        try (ResultSet rs = pstmt.executeQuery()) {
+		            if (rs.next()) {
+		                return new Doctor(
+		                    rs.getString("contrasena"),
+		                    rs.getString("nombre"),
+		                    rs.getString("apellido"),
+		                    rs.getInt("edad"),
+		                    rs.getString("ubicacion"),
+		                    rs.getString("especialidad"),
+		                    rs.getString("horario")
+		                );
+		            }
+		        }
+		    }
+		    return null;
+		}
 
-	        return citas;
-	    }
 
-	    public void insertarPacientes(List<Paciente> pacientes) {
-	        String sql = "INSERT INTO paciente (codigo_paciente, persona_id) VALUES (?, ?)";
-	        try (Connection con = DriverManager.getConnection(connectionString);
-	             PreparedStatement pstmt = con.prepareStatement(sql)) {
+		public void insertarPacientes(List<Paciente> pacientes) {
+		    String pacienteSql = "INSERT INTO paciente (id, codigo_paciente) VALUES (?, ?)";
+		    try (Connection con = DriverManager.getConnection(connectionString);
+		         PreparedStatement pacientePstmt = con.prepareStatement(pacienteSql)) {
 
-	            for (Paciente paciente : pacientes) {
-	                int personaId = insertarPersona(paciente);
-	                pstmt.setInt(1, paciente.getCodigoPaciente());
-	                pstmt.setInt(2, personaId);
-	                pstmt.executeUpdate();
+		        for (Paciente paciente : pacientes) {
+		            // Step 1: Insert the persona and retrieve the generated ID
+		            int personaId = insertarPersona(paciente);
+		            System.out.println(personaId);
+		            // Step 2: Insert the paciente record with the same ID as persona
+		            pacientePstmt.setInt(1, personaId); // Use the persona ID as the primary key for paciente
+		            pacientePstmt.setInt(2, paciente.getCodigoPaciente());
+		            pacientePstmt.executeUpdate();
+		        }
 
-	                insertarHistorial(paciente);
-	            }
+		        logger.info("Patients inserted successfully");
 
-	            logger.info("Patients inserted successfully");
+		    } catch (SQLException e) {
+		        logger.warning("Error inserting patients: " + e.getMessage());
+		    }
+		}
 
-	        } catch (SQLException e) {
-	            logger.warning("Error inserting patients: " + e.getMessage());
-	        }
-	    }
+		public int insertarPersona(Persona persona) throws SQLException {
+		    String sql = "INSERT INTO persona(contrasena, nombre, apellido, edad, ubicacion) VALUES (?, ?, ?, ?, ?)";
+		    String getIdSql = "SELECT last_insert_rowid() AS id"; // SQLite-specific query to get the last inserted ID
 
-	    private int insertarPersona(Persona persona) throws SQLException {
-	        String sql = "INSERT INTO persona (contrasena, nombre, apellido, edad, ubicacion) VALUES (?, ?, ?, ?, ?)";
-	        try (Connection con = DriverManager.getConnection(connectionString);
-	             PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		    try (Connection con = DriverManager.getConnection(connectionString);
+		         PreparedStatement pstmt = con.prepareStatement(sql);
+		         Statement stmt = con.createStatement()) {
 
-	            pstmt.setString(1, persona.getContrasena());
-	            pstmt.setString(2, persona.getNombre());
-	            pstmt.setString(3, persona.getApellido());
-	            pstmt.setInt(4, persona.getEdad());
-	            pstmt.setString(5, persona.getUbicacion());
-	            pstmt.executeUpdate();
+		        // Insert persona details
+		        pstmt.setString(1, persona.getContrasena());
+		        pstmt.setString(2, persona.getNombre());
+		        pstmt.setString(3, persona.getApellido());
+		        pstmt.setInt(4, persona.getEdad());
+		        pstmt.setString(5, persona.getUbicacion());
+		        pstmt.executeUpdate();
 
-	            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
-	                if (generatedKeys.next()) {
-	                    return generatedKeys.getInt(1);
-	                }
-	                throw new SQLException("Creating persona failed, no ID obtained.");
-	            }
-	        }
-	    }
+		        // Retrieve the generated ID
+		        try (ResultSet rs = stmt.executeQuery(getIdSql)) {
+		            if (rs.next()) {
+		            	System.out.println(rs.getInt("id")+"id Persona");
+		                return rs.getInt("id"); // Return the newly generated ID
+		            }
+		        }
+		    }
+		    throw new SQLException("Error retrieving the last inserted ID for persona");
+		}
+
+
 
 	    private void insertarHistorial(Paciente paciente) throws SQLException {
 	        String sql = "INSERT INTO historial (causa, fecha, medico_id, paciente_id) VALUES (?, ?, ?, ?)";
@@ -330,51 +363,50 @@ public class GestorBD {
 	        }
 	    }
 	    public void insertarCita() throws SQLException {
-	        // Load existing citas
-	        citas = (ArrayList<Cita>) cargarCitas();
-	        
-	        // SQL query for inserting data into the cita table
-	        String sql = "INSERT INTO cita(codigo_paciente, nombre_doctor, fecha_hora) VALUES(?, ?, ?)";
-	        
+	        citas = (ArrayList<Cita>) cargarCitas(); // Load citas from wherever they are stored.
+	        String sql = "INSERT INTO cita(paciente_id, medico_id, fecha_hora) VALUES (?, ?, ?)";
+
 	        try (Connection con = DriverManager.getConnection(connectionString);
 	             PreparedStatement pstmt = con.prepareStatement(sql)) {
-	             
+
 	            for (Cita cita : citas) {
-	                // Set the prepared statement parameters
-	                pstmt.setInt(1, cita.getPaciente().getCodigoPaciente()); // Use codigo_paciente
-	                pstmt.setString(2, cita.getDoctor().getNombre()); // Use doctor's name
-	                pstmt.setString(3, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cita.getFechaHora())); // Format date
-	                
-	                // Execute the statement
+	                // Insert Persona and retrieve their auto-generated IDs
+	                int pacienteId = insertarPersona(cita.getPaciente());
+	                int doctorId = insertarPersona(cita.getDoctor());
+
+	                // Insert the cita record using these IDs
+	                pstmt.setInt(1, pacienteId); // Set paciente_id
+	                pstmt.setInt(2, doctorId);  // Set medico_id
+	                pstmt.setString(3, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cita.getFechaHora())); // Set fecha_hora
 	                pstmt.executeUpdate();
 	            }
-	            
-	            logger.info("Citas inserted successfully.");
+
+	            logger.info("Cita records inserted successfully");
 	        } catch (SQLException e) {
-	            logger.severe("Error inserting citas: " + e.getMessage());
-	            throw e;
+	            logger.warning("Error inserting citas: " + e.getMessage());
 	        }
 	    }
 
 
-	    public void insertarAdministradores(List<Administrador> administradores) {
-	        String sql = "INSERT INTO administrador (persona_id, turno) VALUES (?, ?)";
-	        try (Connection con = DriverManager.getConnection(connectionString);
-	             PreparedStatement pstmt = con.prepareStatement(sql)) {
 
-	            for (Administrador admin : administradores) {
-	                int personaId = insertarPersona(admin);
-	                pstmt.setInt(1, personaId);
-	                pstmt.setString(2, admin.getTurno());
-	                pstmt.executeUpdate();
-	            }
-
-	            logger.info("Administrators inserted successfully");
-
-	        } catch (SQLException e) {
-	            logger.warning("Error inserting administrators: " + e.getMessage());
-	        }
-	    }
+//	    public void insertarAdministradores(List<Administrador> administradores) {
+//	        String sql = "INSERT INTO administrador (persona_id, turno) VALUES (?, ?)";
+//	        try (Connection con = DriverManager.getConnection(connectionString);
+//	             PreparedStatement pstmt = con.prepareStatement(sql)) {
+//
+//	            for (Administrador admin : administradores) {
+//	                int personaId = insertarPersona(admin);
+//	                pstmt.setInt(1, personaId);
+//	                pstmt.setString(2, admin.getTurno());
+//	                pstmt.executeUpdate();
+//	            }
+//
+//	            logger.info("Administrators inserted successfully");
+//
+//	        } catch (SQLException e) {
+//	            logger.warning("Error inserting administrators: " + e.getMessage());
+//	        }
+//	    }
 
 	   public List<Doctor> cargarMedicosCsv() {
 		   List<Doctor>medicos = new ArrayList();
@@ -421,6 +453,69 @@ public class GestorBD {
 	        }
 	        
 	        return historiales;
+	    }
+	   public List<Persona> cargarPersonasCsv() {
+	    	List<Persona> personas = new ArrayList();
+	        try (BufferedReader br = new BufferedReader(new FileReader("resources/data/Administradores.csv"))) {
+	            String linea;
+	            while ((linea = br.readLine()) != null) {
+	                String[] parts = linea.split(",");
+	                
+	                String contrasena = parts[0];
+	                String nombre = parts[1];
+	                String apellido = parts[2];
+	                int edad = Integer.parseInt(parts[3]);
+	                String ubicacion = parts[4];
+
+	                
+	                
+
+	                Persona nuevaP = new Persona(contrasena, nombre, apellido, edad, ubicacion);
+	                personas.add(nuevaP);
+	            }
+	        } catch (IOException e) {
+	            System.out.println("Error al cargar los admins: " + e.getMessage());
+	        }
+	        try (BufferedReader br = new BufferedReader(new FileReader("resources/data/doctores.csv"))) {
+	            String linea;
+	            while ((linea = br.readLine()) != null) {
+	                String[] parts = linea.split(",");
+	                
+	                String contrasena = parts[0];
+	                String nombre = parts[1];
+	                String apellido = parts[2];
+	                int edad = Integer.parseInt(parts[3]);
+	                String ubicacion = parts[4];
+
+	                
+	                
+
+	                Persona nuevaP = new Persona(contrasena, nombre, apellido, edad, ubicacion);
+	                personas.add(nuevaP);
+	            }
+	        } catch (IOException e) {
+	            System.out.println("Error al cargar los admins: " + e.getMessage());
+	        }   try (BufferedReader br = new BufferedReader(new FileReader("resources/data/pacientes.csv"))) {
+	            String linea;
+	            while ((linea = br.readLine()) != null) {
+	                String[] parts = linea.split(",");
+	                
+	                String contrasena = parts[0];
+	                String nombre = parts[1];
+	                String apellido = parts[2];
+	                int edad = Integer.parseInt(parts[3]);
+	                String ubicacion = parts[4];
+
+	                
+	                
+
+	                Persona nuevaP = new Persona(contrasena, nombre, apellido, edad, ubicacion);
+	                personas.add(nuevaP);
+	            }
+	        } catch (IOException e) {
+	            System.out.println("Error al cargar los admins: " + e.getMessage());
+	        }
+	        return personas;
 	    }
 	    public List<Administrador> cargarAdmins() {
 	    	List<Administrador> admins = new ArrayList();
@@ -556,79 +651,79 @@ public class GestorBD {
 	        }
 	        return citas;
 	    }
-	    public void insertarCamas() throws SQLException {
-	    	List<Cama> camas=new ArrayList<>();
-	        camas = (ArrayList<Cama>) cargarCamas(); // Assuming you have a method to load beds
-	        String sql = "INSERT INTO cama (num_cama, ocupada, tipo_cama, paciente_id) VALUES (?, ?, ?, ?)";
-	        
-	        try (Connection con = DriverManager.getConnection(connectionString);
-	             PreparedStatement pstmt = con.prepareStatement(sql)) {
-	            
-	            for (Cama cama : camas) {
-	                pstmt.setInt(1, cama.getNumCama());
-	                pstmt.setBoolean(2, cama.isOcupada());
-	                pstmt.setString(3, cama.getTipoCama());
-	                
-	                // Check if paciente is null before trying to get its ID
-	                if (cama.getPaciente() != null) {
-	                    pstmt.setInt(4, cama.getPaciente().getCodigoPaciente());
-	                } else {
-	                    pstmt.setNull(4, java.sql.Types.INTEGER);
-	                }
-	                
-	                pstmt.executeUpdate();
-	            }
-	            
-	            logger.info("Beds inserted successfully");
-	        } catch (SQLException e) {
-	            System.out.println("Error al cargar los camas: " + e.getMessage());
-	            throw e;
-	        }
-	    }
-	    public List<Cama> cargarCamas() {
-	    	List<Cama> camas=new ArrayList<>();
-
-	        try (BufferedReader br = new BufferedReader(new FileReader("resources/data/camas.csv"))) {
-	            String linea;
-	            while ((linea = br.readLine()) != null) {
-	                String[] parts = linea.split(",");
-
-	                // Validate that the parts array is correctly structured before parsing
-	                if (parts.length < 5) {
-	                    System.err.println("Invalid line format: " + linea);
-	                    continue; // Skip this line if it's invalid
-	                }
-
-	                // Parse the bed details
-	                int numCama = parseInt(parts[0], "Número de Cama");
-	                boolean ocupada = Boolean.parseBoolean(parts[1]);
-	                String tipoCama = parts[2];
-
-	                // Parse patient details (if the bed is occupied)
-	                Paciente paciente = null;
-	                if (ocupada) {
-	                    String contrasena = parts[3];
-	                    String nombre = parts[4];
-	                    String apellido = parts[5];
-	                    int edad = parseInt(parts[6], "Edad Paciente");
-	                    String ubicacion = parts[7];
-	                    int codigoPaciente = parseInt(parts[8], "Codigo Paciente");
-
-	                    // Create an empty historial for the patient
-	                    List<Historial> historialEntries = new ArrayList<>();
-
-	                    paciente = new Paciente(contrasena, nombre, apellido, edad, ubicacion, codigoPaciente, historialEntries);
-	                }
-
-	                // Create the bed
-	                Cama cama = new Cama(numCama, ocupada, tipoCama, paciente);
-	                camas.add(cama);
-	            }
-	        } catch (IOException e) {
-	            System.out.println("Error al cargar las camas: " + e.getMessage());
-	        }
-	        return camas;
-	    }
+//	    public void insertarCamas() throws SQLException {
+//	    	List<Cama> camas=new ArrayList<>();
+//	        camas = (ArrayList<Cama>) cargarCamas(); // Assuming you have a method to load beds
+//	        String sql = "INSERT INTO cama (num_cama, ocupada, tipo_cama, paciente_id) VALUES (?, ?, ?, ?)";
+//	        
+//	        try (Connection con = DriverManager.getConnection(connectionString);
+//	             PreparedStatement pstmt = con.prepareStatement(sql)) {
+//	            
+//	            for (Cama cama : camas) {
+//	                pstmt.setInt(1, cama.getNumCama());
+//	                pstmt.setBoolean(2, cama.isOcupada());
+//	                pstmt.setString(3, cama.getTipoCama());
+//	                
+//	                // Check if paciente is null before trying to get its ID
+//	                if (cama.getPaciente() != null) {
+//	                    pstmt.setInt(4, cama.getPaciente().getCodigoPaciente());
+//	                } else {
+//	                    pstmt.setNull(4, java.sql.Types.INTEGER);
+//	                }
+//	                
+//	                pstmt.executeUpdate();
+//	            }
+//	            
+//	            logger.info("Beds inserted successfully");
+//	        } catch (SQLException e) {
+//	            System.out.println("Error al cargar los camas: " + e.getMessage());
+//	            throw e;
+//	        }
+//	    }
+//	    public List<Cama> cargarCamas() {
+//	    	List<Cama> camas=new ArrayList<>();
+//
+//	        try (BufferedReader br = new BufferedReader(new FileReader("resources/data/camas.csv"))) {
+//	            String linea;
+//	            while ((linea = br.readLine()) != null) {
+//	                String[] parts = linea.split(",");
+//
+//	                // Validate that the parts array is correctly structured before parsing
+//	                if (parts.length < 5) {
+//	                    System.err.println("Invalid line format: " + linea);
+//	                    continue; // Skip this line if it's invalid
+//	                }
+//
+//	                // Parse the bed details
+//	                int numCama = parseInt(parts[0], "Número de Cama");
+//	                boolean ocupada = Boolean.parseBoolean(parts[1]);
+//	                String tipoCama = parts[2];
+//
+//	                // Parse patient details (if the bed is occupied)
+//	                Paciente paciente = null;
+//	                if (ocupada) {
+//	                    String contrasena = parts[3];
+//	                    String nombre = parts[4];
+//	                    String apellido = parts[5];
+//	                    int edad = parseInt(parts[6], "Edad Paciente");
+//	                    String ubicacion = parts[7];
+//	                    int codigoPaciente = parseInt(parts[8], "Codigo Paciente");
+//
+//	                    // Create an empty historial for the patient
+//	                    List<Historial> historialEntries = new ArrayList<>();
+//
+//	                    paciente = new Paciente(contrasena, nombre, apellido, edad, ubicacion, codigoPaciente, historialEntries);
+//	                }
+//
+//	                // Create the bed
+//	                Cama cama = new Cama(numCama, ocupada, tipoCama, paciente);
+//	                camas.add(cama);
+//	            }
+//	        } catch (IOException e) {
+//	            System.out.println("Error al cargar las camas: " + e.getMessage());
+//	        }
+//	        return camas;
+//	    }
 	 // Helper method to parse integer values with error handling
 	    private int parseInt(String value, String fieldName) {
 	        try {
