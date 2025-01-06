@@ -13,6 +13,7 @@ import domain.Context;
 import domain.Doctor;
 import domain.Paciente;
 import domain.Persona;
+import persistente.GestorBD;
 
 public class VentanaSeleccion extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -27,7 +28,7 @@ public class VentanaSeleccion extends JFrame {
     private ArrayList<Paciente>listaPacientes;
     private Persona usuario;
 
-    public VentanaSeleccion() {
+    public VentanaSeleccion(GestorBD gestorBD) {
     	ImageIcon i = new ImageIcon("/images/hospital.png");
     	ImageIcon icon = new ImageIcon("/images/hospital.png");
     	Image scaledImage = i.getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
@@ -70,7 +71,7 @@ public class VentanaSeleccion extends JFrame {
 //                MenuTrabajador ventana = new MenuTrabajador(usuario);
 //                ventana.setVisible(true);
                 SwingUtilities.invokeLater(() -> {
-                    ProgressBar progressBar = new ProgressBar(usuario , false);
+                    ProgressBar progressBar = new ProgressBar(usuario , false , gestorBD);
                     progressBar.setVisible(true);
                 });              
             } else {
@@ -88,7 +89,7 @@ public class VentanaSeleccion extends JFrame {
             if (listaGetNombre(usuarioN, contrasena)) {
                 JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso!", "Bienvenido: " + usuarioN, JOptionPane.INFORMATION_MESSAGE);
                 SwingUtilities.invokeLater(() -> {
-                    ProgressBar progressBar = new ProgressBar(usuario , true);
+                    ProgressBar progressBar = new ProgressBar(usuario , true, gestorBD);
                     progressBar.setVisible(true);
                 });         
             } else {

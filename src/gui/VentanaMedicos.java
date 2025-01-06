@@ -29,6 +29,7 @@ import javax.swing.table.TableCellRenderer;
 import domain.Doctor;
 import domain.Paciente;
 import domain.Persona;
+import persistente.GestorBD;
 
 public class VentanaMedicos extends JFrame {
 
@@ -39,7 +40,7 @@ public class VentanaMedicos extends JFrame {
     private DefaultTableModel modeloDatosMedicos;
     private JButton btnAnadirM;
 
-    public VentanaMedicos(List<Doctor> medicos,Persona usuario) {
+    public VentanaMedicos(List<Doctor> medicos,Persona usuario,GestorBD gestorBD) {
         this.medicos = medicos;
         Color color = new Color(6,99,133);
         
@@ -92,7 +93,7 @@ public class VentanaMedicos extends JFrame {
         btnBack.setPreferredSize(new Dimension(80, 25));
         btnBack.addActionListener(e -> {
            
-            MenuPaciente ventana = new MenuPaciente(usuario);
+            MenuPaciente ventana = new MenuPaciente(usuario, null);
             ventana.setVisible(true);
             this.dispose(); 
         });
@@ -113,7 +114,7 @@ public class VentanaMedicos extends JFrame {
         });
         btnBack.addActionListener(e ->{
   		  
-  			MenuTrabajador ventana = new MenuTrabajador(usuario);
+  			MenuTrabajador ventana = new MenuTrabajador(usuario, gestorBD);
   			ventana.setVisible(true);
   			this.dispose();
         });

@@ -8,6 +8,7 @@ import javax.swing.border.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 import domain.*;
+import persistente.GestorBD;
 
 public class VentanaPacientes extends JFrame {
     private static final Color PRIMARY_COLOR = new Color(6, 99, 133);
@@ -27,7 +28,7 @@ public class VentanaPacientes extends JFrame {
     private  JButton btnBorrarP;
     private  Persona usuario;
 
-    public VentanaPacientes(List<Paciente> pacientes, Persona usuarioP) {
+    public VentanaPacientes(List<Paciente> pacientes, Persona usuarioP , GestorBD gestorBD) {
         this.pacientes = pacientes;
         this.usuario = usuarioP;
 
@@ -185,7 +186,7 @@ public class VentanaPacientes extends JFrame {
         styleButton(btnBack);
         btnBack.setPreferredSize(new Dimension(80, 35));
         btnBack.addActionListener(e -> {
-            MenuTrabajador window = new MenuTrabajador(usuario);
+            MenuTrabajador window = new MenuTrabajador(usuario, null);
             window.setVisible(true);
             dispose();
         });
@@ -455,7 +456,7 @@ public class VentanaPacientes extends JFrame {
                         List<Historial> history = p.getHistorialPaciente();
                         Paciente patient = new Paciente(password, name, surname, age, location, patientCode, history);
                         if (usuario instanceof Doctor) {
-                            VentanaHistorial historyWindow = new VentanaHistorial(patient, usuario);
+                            VentanaHistorial historyWindow = new VentanaHistorial(patient, usuario, null);
                             historyWindow.setVisible(true);
                         } else if (usuario instanceof Administrador) {
                             JOptionPane.showMessageDialog(this.button, "Solo un medico puede acceder al historial de un paciente", "Acceso rechazado", JOptionPane.ERROR_MESSAGE);

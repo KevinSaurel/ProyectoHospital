@@ -41,42 +41,35 @@ public class Main {
       
        
        
-       try {
-    	   gestorBD.crearBBDD();
+       gestorBD.crearBBDD();
 //    	   List<Persona> personas = gestorBD.cargarPersonasCsv();
 //    	   for(Persona p : personas) {
 //
 //               gestorBD.insertarPersona(p);
 //    	   }
-           
-           List<Doctor> doctores = gestorBD.cargarMedicosCsv();
-           gestorBD.insertarDoctores(doctores);
-           
-           List<Paciente> pacientes = gestorBD.cargarPacientes();
-           gestorBD.insertarPacientes(pacientes);
-           
-//           List<Administrador> administradores = gestorBD.cargarAdmins();
-//           gestorBD.insertarAdministradores(administradores);
+//           List<Doctor> doctores = gestorBD.cargarMedicosCsv();
+//           gestorBD.insertarDoctores(doctores);
 //           
-           List<Cita> citas = gestorBD.cargarCitas();
-           gestorBD.insertarCita();
-           
+//           List<Paciente> pacientes = gestorBD.cargarPacientes();
+//           gestorBD.insertarPacientes(pacientes);
+//           
+////           List<Administrador> administradores = gestorBD.cargarAdmins();
+////           gestorBD.insertarAdministradores(administradores);
+////           
+//           List<Cita> citas = gestorBD.cargarCitas();
+//           gestorBD.insertarCita();
+//           
 //           List<Cama> camas = gestorBD.cargarCamas();
 //           gestorBD.insertarCamas();
-           
-           // Retrieve citas to verify
-           List<Cita> citasRecuperadas = gestorBD.getCitas();
-           System.out.println("Número de citas recuperadas: " + citasRecuperadas.size());
-           
-       } catch (SQLException e) {
-           System.err.println("Error al insertar datos: " + e.getMessage());
-           e.printStackTrace();
-       }
+	   
+	   // Retrieve citas to verify
+	   List<Cita> citasRecuperadas = gestorBD.getCitas();
+	   System.out.println("Número de citas recuperadas: " + citasRecuperadas.size());
     	
     	
     	
         SwingUtilities.invokeLater(() -> {
-            VentanaSeleccion ventanaHistorial = new VentanaSeleccion();
+            VentanaSeleccion ventanaHistorial = new VentanaSeleccion( gestorBD);
             ventanaHistorial.setVisible(true);
           
         });

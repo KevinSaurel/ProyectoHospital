@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import domain.Persona;
+import persistente.GestorBD;
 
 public class VentanaVisualizarUsuario extends JFrame {
     
@@ -15,11 +16,12 @@ public class VentanaVisualizarUsuario extends JFrame {
     private static final Font LABEL_FONT = new Font("Segoe UI", Font.BOLD, 16);
     private static final Font BUTTON_FONT = new Font("Segoe UI", Font.PLAIN, 14);
     private static final int SPACING = 20;
-    
+    protected GestorBD gestorBD;
     private final JButton btnVolver;
     private final Persona usuario;
     
-    public VentanaVisualizarUsuario(Persona usuario) {
+    public VentanaVisualizarUsuario(Persona usuario , GestorBD gestorBD) {
+    	this.gestorBD = gestorBD;
         this.usuario = usuario;
         this.btnVolver = new JButton();
         
@@ -145,7 +147,7 @@ public class VentanaVisualizarUsuario extends JFrame {
         btnVolver.setPreferredSize(new Dimension(80, 35));
         
         btnVolver.addActionListener(e -> {
-            MenuTrabajador ventana = new MenuTrabajador(usuario);
+            MenuTrabajador ventana = new MenuTrabajador(usuario, gestorBD);
             ventana.setVisible(true);
             dispose();
         });

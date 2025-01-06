@@ -29,6 +29,7 @@ import domain.Context;
 import domain.Doctor;
 import domain.Paciente;
 import domain.Persona;
+import persistente.GestorBD;
 
 import java.awt.BorderLayout;
 public class MenuTrabajador extends JFrame{
@@ -49,14 +50,15 @@ public class MenuTrabajador extends JFrame{
 	
 	private JPanel panelHilo; 
 	private JLabel labelMedicos;
+	protected GestorBD gestorBD;
 	
 	
-	public  MenuTrabajador(Persona usuario) {
+	public  MenuTrabajador(Persona usuario, GestorBD gestorBD) {
 		
 		  
 		Context context = Context.getInstance();  
     	this.pacientes = context.getPacientes();
-    	this.medicos = context.getMedicos();
+    	this.medicos = gestorBD.getMedicos();
     	ImageIcon i = new ImageIcon("resources/images/hospital.png");
 
     	//ImageIcon i = new ImageIcon("/resources/images/hospital.png");
@@ -161,28 +163,28 @@ public class MenuTrabajador extends JFrame{
         
         
         btnPacientes .addActionListener(e -> {
-            VentanaPacientes ventana = new VentanaPacientes(pacientes , usuario);
+            VentanaPacientes ventana = new VentanaPacientes(pacientes , usuario, gestorBD);
             ventana.setVisible(true);
             this.dispose(); 
         });
         btnMedicos .addActionListener(e -> {
-            VentanaMedicos ventana = new VentanaMedicos(medicos , usuario);
+            VentanaMedicos ventana = new VentanaMedicos(medicos , usuario, gestorBD);
             ventana.setVisible(true);
             this.dispose(); 
         });
         btnUsuario.addActionListener(e -> {
-            VentanaVisualizarUsuario ventana = new VentanaVisualizarUsuario(usuario);
+            VentanaVisualizarUsuario ventana = new VentanaVisualizarUsuario(usuario, gestorBD);
             ventana.setVisible(true);
             this.dispose(); 
         });
         btnSesion.addActionListener(e -> {
-            VentanaSeleccion ventana = new VentanaSeleccion();
+            VentanaSeleccion ventana = new VentanaSeleccion(gestorBD);
             ventana.setVisible(true);
             this.dispose(); 
         });
         
         btnCamas.addActionListener((e) -> {
-            VentanaCamas ventana = new VentanaCamas();
+            VentanaCamas ventana = new VentanaCamas(gestorBD);
             ventana.setVisible(true);
             this.dispose();
         });

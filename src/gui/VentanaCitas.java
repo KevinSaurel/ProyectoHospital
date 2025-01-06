@@ -98,7 +98,7 @@ public class VentanaCitas extends JFrame {
         btnBack.setBackground(PRIMARY_COLOR);
         btnBack.setPreferredSize(new Dimension(80, 25));
         btnBack.addActionListener(e -> {
-            MenuTrabajador ventana = new MenuTrabajador(usuario);
+            MenuTrabajador ventana = new MenuTrabajador(usuario, gestorBD);
             ventana.setVisible(true);
             this.dispose();
         });

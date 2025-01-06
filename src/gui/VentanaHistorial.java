@@ -33,6 +33,7 @@ import domain.Doctor;
 import domain.Historial;
 import domain.Paciente;
 import domain.Persona;
+import persistente.GestorBD;
 
 public class VentanaHistorial extends JFrame{
 	JButton btnAnadir ;
@@ -43,9 +44,11 @@ public class VentanaHistorial extends JFrame{
 	private Paciente u;
 	private List<Paciente>listaPacientes;
 	private Persona usuario;
+	protected GestorBD gestorBD;
 	
 	//JLabel jlabel;
-	public VentanaHistorial(Paciente paciente , Persona usuario) {
+	public VentanaHistorial(Paciente paciente , Persona usuario , GestorBD gestorBD) {
+		this.gestorBD = gestorBD;
 		System.out.println("Empieza a construir ventanaH");
 		Context context = Context.getInstance();  
     	this.u = context.getPaciente();
@@ -301,12 +304,12 @@ private JPanel crearPanelN() {
 	anadirColores(grid.getComponents(),color);
 	 btnVolver.addActionListener(e ->{
 		  if(u instanceof Paciente) {
-			MenuPaciente ventana = new MenuPaciente(u);
+			MenuPaciente ventana = new MenuPaciente(u, null);
 			ventana.setVisible(true);
 			this.dispose();
 		  
 		  }else {
-			  VentanaPacientes ventana = new VentanaPacientes(listaPacientes,usuario);
+			  VentanaPacientes ventana = new VentanaPacientes(listaPacientes,usuario, gestorBD);
 			  ventana.setVisible(true);
 				this.dispose();
 

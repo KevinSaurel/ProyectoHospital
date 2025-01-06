@@ -51,7 +51,7 @@ public class GestorBD {
 
 	private static Logger logger = Logger.getLogger(GestorBD.class.getName());
 
-	public GestorBD() {
+	public GestorBD()  {
 		try (FileInputStream fis = new FileInputStream("resources/config/logger.properties")) {
 			LogManager.getLogManager().readConfiguration(fis);
 
@@ -80,6 +80,11 @@ public class GestorBD {
 		} catch (Exception ex) {
 			logger.warning(String.format("Error al cargar el driver de BBDD: %s", ex.getMessage()));
 		}
+		borrarBBDD();
+		crearBBDD();
+		
+		insertarDoctores(cargarMedicosCsv());
+		insertarPacientes(cargarPacientes());
 	}
 
 	public void crearBBDD() {
@@ -97,16 +102,26 @@ public class GestorBD {
 	                + ");";
 
 	        String sql2 = "CREATE TABLE IF NOT EXISTS paciente (\n"
-	                + " id INTEGER PRIMARY KEY ,\n"
-	                + " codigo_paciente INTEGER NOT NULL,\n"
-	                + " FOREIGN KEY(id) REFERENCES persona(id)\n"
+	                + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+	                + " contrasena TEXT NOT NULL,\n"
+	                + " nombre TEXT NOT NULL,\n"
+	                + " apellido TEXT NOT NULL,\n"
+	                + " edad INTEGER NOT NULL,\n"
+	                + " ubicacion TEXT NOT NULL,\n"
+	                + " codigo_paciente INTEGER NOT NULL\n"
+	                
 	                + ");";
 
 	        String sql3 = "CREATE TABLE IF NOT EXISTS doctor (\n"
-	                + " id INTEGER PRIMARY KEY ,\n"
+	        		+ " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+	                + " contrasena TEXT NOT NULL,\n"
+	                + " nombre TEXT NOT NULL,\n"
+	                + " apellido TEXT NOT NULL,\n"
+	                + " edad INTEGER NOT NULL,\n"
+	                + " ubicacion TEXT NOT NULL,\n"
 	                + " especialidad TEXT NOT NULL,\n"
-	                + " horario TEXT NOT NULL,\n"
-	                + " FOREIGN KEY(id) REFERENCES persona(id)\n"
+	                + " horario TEXT NOT NULL\n"
+	               
 	                + ");";
 
 	        String sql4 = "CREATE TABLE IF NOT EXISTS historial (\n"
@@ -198,24 +213,86 @@ public class GestorBD {
 			}
 		}
 	}
-	 public void insertarDoctores(List<Doctor> doctores) {
-	        String sql = "INSERT INTO doctor (especialidad, horario) VALUES (?, ?)";
-	        try (Connection con = DriverManager.getConnection(connectionString);
-	             PreparedStatement pstmt = con.prepareStatement(sql)) {
+	public void insertarDoctores(List<Doctor> doctores) {
+	    String sql = "INSERT INTO doctor (contrasena, nombre, apellido, edad, ubicacion, especialidad, horario) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	    
+	    try (Connection con = DriverManager.getConnection(connectionString);
+	         PreparedStatement pstmt = con.prepareStatement(sql)) {
 
-	            for (Doctor doctor : doctores) {
-	                int personaId = insertarPersona(doctor);
-	                pstmt.setString(1, doctor.getEspecialidad());
-	                pstmt.setString(2, doctor.getHorario());
-	                pstmt.executeUpdate();
-	            }
-
-	            logger.info("Doctors inserted successfully");
-
-	        } catch (SQLException e) {
-	            logger.warning("Error inserting doctors: " + e.getMessage());
+	        for (Doctor doctor : doctores) {
+	            // Set all attributes for the doctor
+	            pstmt.setString(1, doctor.getContrasena());  // contrasena
+	            pstmt.setString(2, doctor.getNombre());      // nombre
+	            pstmt.setString(3, doctor.getApellido());    // apellido
+	            pstmt.setInt(4, doctor.getEdad());           // edad
+	            pstmt.setString(5, doctor.getUbicacion());   // ubicacion
+	            pstmt.setString(6, doctor.getEspecialidad()); // especialidad
+	            pstmt.setString(7, doctor.getHorario());     // horario
+	            pstmt.executeUpdate();  // Execute the insert statement
 	        }
+
+	        logger.info("Doctors inserted successfully");
+
+	    } catch (SQLException e) {
+	        logger.warning("Error inserting doctors: " + e.getMessage());
 	    }
+	}
+	public void insertarDoctores(Doctor doctor) {
+	    String sql = "INSERT INTO doctor (contrasena, nombre, apellido, edad, ubicacion, especialidad, horario) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	    
+	    try (Connection con = DriverManager.getConnection(connectionString);
+	         PreparedStatement pstmt = con.prepareStatement(sql)) {
+
+	       
+	            // Set all attributes for the doctor
+	            pstmt.setString(1, doctor.getContrasena());  // contrasena
+	            pstmt.setString(2, doctor.getNombre());      // nombre
+	            pstmt.setString(3, doctor.getApellido());    // apellido
+	            pstmt.setInt(4, doctor.getEdad());           // edad
+	            pstmt.setString(5, doctor.getUbicacion());   // ubicacion
+	            pstmt.setString(6, doctor.getEspecialidad()); // especialidad
+	            pstmt.setString(7, doctor.getHorario());     // horario
+	            pstmt.executeUpdate();  // Execute the insert statement
+	        
+
+	        logger.info("Doctors inserted successfully");
+
+	    } catch (SQLException e) {
+	        logger.warning("Error inserting doctors: " + e.getMessage());
+	    }
+	}
+	public List<Doctor> getMedicos() {
+	    List<Doctor> medicos = new ArrayList<>();
+	    String sql = "SELECT id, contrasena, nombre, apellido, edad, ubicacion, especialidad, horario FROM doctor";
+
+	    try (Connection con = DriverManager.getConnection(connectionString);
+	         PreparedStatement pstmt = con.prepareStatement(sql);
+	         ResultSet rs = pstmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            // Map ResultSet to Doctor object
+	            int id = rs.getInt("id");
+	            String contrasena = rs.getString("contrasena");
+	            String nombre = rs.getString("nombre");
+	            String apellido = rs.getString("apellido");
+	            int edad = rs.getInt("edad");
+	            String ubicacion = rs.getString("ubicacion");
+	            String especialidad = rs.getString("especialidad");
+	            String horario = rs.getString("horario");
+
+	            // Create Doctor object and add to the list
+	            Doctor doctor = new Doctor( contrasena, nombre, apellido, edad, ubicacion, especialidad, horario);
+	            medicos.add(doctor);
+	        }
+
+	        logger.info("Medicos retrieved successfully: " + medicos.size());
+	    } catch (SQLException e) {
+	        logger.warning("Error retrieving medicos: " + e.getMessage());
+	    }
+
+	    return medicos;
+	}
+
 	 public List<Cita> getCitas() {
 		    List<Cita> citas = new ArrayList<>();
 		    String sql = "SELECT c.id, c.paciente_id, c.medico_id, c.fecha_hora " +
@@ -239,10 +316,13 @@ public class GestorBD {
 		            Doctor doctor = obtenerDoctorPorId(medicoId);
 
 		            // Convert fechaHora to Date
-		            Date fecha = (Date) new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(fechaHora);
+		            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		            java.util.Date utilDate = sdf.parse(fechaHora);
 
+		            // Convert java.util.Date to java.sql.Date
+		            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 		            // Create Cita object and add to list
-		            citas.add(new Cita( paciente, doctor, fecha));
+		            citas.add(new Cita( paciente, doctor, sqlDate));
 		        }
 		        logger.info("Citas retrieved successfully: " + citas.size());
 		    } catch (SQLException | ParseException e) {
@@ -294,20 +374,23 @@ public class GestorBD {
 		    return null;
 		}
 
-
 		public void insertarPacientes(List<Paciente> pacientes) {
-		    String pacienteSql = "INSERT INTO paciente (id, codigo_paciente) VALUES (?, ?)";
+		    // SQL to insert paciente (with contrasena, nombre, apellido, etc.)
+		    String pacienteSql = "INSERT INTO paciente (contrasena, nombre, apellido, edad, ubicacion, codigo_paciente) VALUES (?, ?, ?, ?, ?, ?)";
+		    
 		    try (Connection con = DriverManager.getConnection(connectionString);
 		         PreparedStatement pacientePstmt = con.prepareStatement(pacienteSql)) {
 
 		        for (Paciente paciente : pacientes) {
-		            // Step 1: Insert the persona and retrieve the generated ID
-		            int personaId = insertarPersona(paciente);
-		            System.out.println(personaId);
-		            // Step 2: Insert the paciente record with the same ID as persona
-		            pacientePstmt.setInt(1, personaId); // Use the persona ID as the primary key for paciente
-		            pacientePstmt.setInt(2, paciente.getCodigoPaciente());
-		            pacientePstmt.executeUpdate();
+		            // Step 1: Insert all attributes for paciente into the paciente table
+		            pacientePstmt.setString(1, paciente.getContrasena());  // contrasena
+		            pacientePstmt.setString(2, paciente.getNombre());      // nombre
+		            pacientePstmt.setString(3, paciente.getApellido());    // apellido
+		            pacientePstmt.setInt(4, paciente.getEdad());           // edad
+		            pacientePstmt.setString(5, paciente.getUbicacion());   // ubicacion
+		            pacientePstmt.setInt(6, paciente.getCodigoPaciente()); // codigo_paciente
+
+		            pacientePstmt.executeUpdate();  // Execute the insert statement
 		        }
 
 		        logger.info("Patients inserted successfully");
@@ -316,6 +399,7 @@ public class GestorBD {
 		        logger.warning("Error inserting patients: " + e.getMessage());
 		    }
 		}
+
 
 		public int insertarPersona(Persona persona) throws SQLException {
 		    String sql = "INSERT INTO persona(contrasena, nombre, apellido, edad, ubicacion) VALUES (?, ?, ?, ?, ?)";

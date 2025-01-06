@@ -24,6 +24,7 @@ import domain.Context;
 import domain.Doctor;
 import domain.Paciente;
 import domain.Persona;
+import persistente.GestorBD;
 
 public class MenuPaciente extends JFrame {
 
@@ -42,7 +43,7 @@ public class MenuPaciente extends JFrame {
     private JPanel panelHilo;
     private JLabel labelMedicos;
 
-    public MenuPaciente(Persona usuario) {
+    public MenuPaciente(Persona usuario, GestorBD gestorBD) {
         paciente = (Paciente) usuario;
         medicos = new ArrayList<>();
         Context context = Context.getInstance();
@@ -124,14 +125,14 @@ public class MenuPaciente extends JFrame {
         btnHistorial.addActionListener(e -> {
             Persona p = new Persona("title", "title", "title", 1, "");
             if (usuario instanceof Paciente) {
-                VentanaHistorial ventana = new VentanaHistorial(paciente, p);
+                VentanaHistorial ventana = new VentanaHistorial(paciente, p, gestorBD);
                 ventana.setVisible(true);
             }
         });
 
         btnMedicos.addActionListener(e -> {
             if (paciente instanceof Paciente) {
-                VentanaMedicos ventana = new VentanaMedicos(medicos, paciente);
+                VentanaMedicos ventana = new VentanaMedicos(medicos, paciente, gestorBD);
                 ventana.setVisible(true);
             }
         });

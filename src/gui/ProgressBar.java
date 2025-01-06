@@ -9,6 +9,7 @@ import javax.swing.*;
 
 import domain.Paciente;
 import domain.Persona;
+import persistente.GestorBD;
 
 public class ProgressBar extends JFrame {
     private JProgressBar bar = new JProgressBar(0, 100);
@@ -21,9 +22,11 @@ public class ProgressBar extends JFrame {
     private Boolean finished;
     private Persona usuario;
     private Boolean P ;
+    private GestorBD gestorBD;
 
-    public ProgressBar(Persona usuario ,Boolean p) {
+    public ProgressBar(Persona usuario ,Boolean p, GestorBD gestorBD) {
         // Set up the main layout
+    	this.gestorBD = gestorBD;
     	 this.P=p;
     	this. usuario =  usuario;
     	 this.color = new Color(6,99,133);
@@ -93,14 +96,14 @@ public void fin() {
 	if(finished == true) {
 		if(P==true) {
 			 SwingUtilities.invokeLater(() -> {
-	             MenuPaciente ventanaHistorial = new MenuPaciente(usuario);
+	             MenuPaciente ventanaHistorial = new MenuPaciente(usuario , gestorBD);
 	             ventanaHistorial.setVisible(true);
 	             this.dispose();
 	           
 	         });  
 		}else if (P==false) {
 		 SwingUtilities.invokeLater(() -> {
-             MenuTrabajador ventanaHistorial = new MenuTrabajador(usuario);
+             MenuTrabajador ventanaHistorial = new MenuTrabajador(usuario , gestorBD);
              ventanaHistorial.setVisible(true);
              this.dispose();
            
