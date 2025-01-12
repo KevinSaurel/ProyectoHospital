@@ -38,6 +38,7 @@ import javax.swing.table.DefaultTableModel;
 import domain.Cama;
 import domain.Historial;
 import domain.Paciente;
+import domain.Persona;
 import persistente.GestorBD;
 
 
@@ -54,8 +55,12 @@ public class VentanaCamas extends JFrame {
     private static final Color PRIMARY_COLOR = new Color(6, 99, 133);
     private static final Color SECONDARY_COLOR = new Color(7, 120, 163);
     private static final Font BUTTON_FONT = new Font("Segoe UI", Font.PLAIN, 14);
+    private Persona p ;
+    private GestorBD gestorBD;
     
-    public VentanaCamas(GestorBD gestorBD) {
+    public VentanaCamas(Persona p ,GestorBD gestorBD) {
+    	this.p=p;
+    	this.gestorBD=gestorBD;
         setTitle("Gestión de Camas del Hospiatal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 700);
@@ -178,7 +183,7 @@ public class VentanaCamas extends JFrame {
         styleButton(btnBack);
         btnBack.setPreferredSize(new Dimension(80, 35));
         btnBack.addActionListener(e -> {
-            MenuTrabajador window = new MenuTrabajador(null, null);
+            MenuTrabajador window = new MenuTrabajador(p, gestorBD);
             window.setVisible(true);
             dispose();
         });

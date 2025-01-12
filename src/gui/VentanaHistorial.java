@@ -1,322 +1,233 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Iterator;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.table.*;
 import java.util.List;
+import java.util.Date;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableColumn;
-
-import domain.Administrador;
-import domain.Context;
-import domain.Doctor;
-import domain.Historial;
-import domain.Paciente;
-import domain.Persona;
+import domain.*;
 import persistente.GestorBD;
 
-public class VentanaHistorial extends JFrame{
-	JButton btnAnadir ;
-	private JTable tableHistorial;
-	private HistorialTableModel tableModel;	
-	private Color color;
-	private JButton btnVolver;
-	private Paciente u;
-	private List<Paciente>listaPacientes;
-	private Persona usuario;
-	protected GestorBD gestorBD;
-	
-	//JLabel jlabel;
-	public VentanaHistorial(Paciente paciente , Persona usuario , GestorBD gestorBD) {
-		this.gestorBD = gestorBD;
-		System.out.println("Empieza a construir ventanaH");
-		Context context = Context.getInstance();  
-    	this.u = context.getPaciente();
-    	this.listaPacientes = context.getPacientes();
-    	this.usuario = usuario;
-		 btnAnadir = new JButton("Anadir");
-		
-		 btnVolver = new JButton("Volver");
-		 
-		 color =  new Color(6,99,133);
-		
-		 ImageIcon im = new ImageIcon("/images/hospital.png");
-		 setIconImage(im.getImage());
-		 
-		 JPanel panelN = new JPanel(new BorderLayout());
-		GridLayout grid1 = new GridLayout(1,6);
-		
-		JPanel panelPrincipal = new JPanel(new GridLayout(2,1));
-		// panelPrincipal.add(grid1 , BorderLayout.NORTH);
-		//Mitad 1 del panel osea  la suerior ,panelN North
-		 JPanel panelUpper = new JPanel(grid1);
-		for (int i = 0; i < 5; i++) {
-			JLabel l = new JLabel("");
-			panelUpper.add(l);
-			}
-		if(!(paciente instanceof Paciente)) {
-		panelUpper.add(btnAnadir);
-		}
-		JPanel p2 = new JPanel(new BorderLayout());
-		JPanel pU = crearPanelN();
-		p2.add(pU,BorderLayout.NORTH);
-		p2.add(panelUpper,BorderLayout.CENTER);
-		panelN.add(p2 , BorderLayout.NORTH);
-		///panelN , center
-		GridLayout grid2 = new GridLayout(2,3);
-		JPanel panelCenter = new JPanel(grid2);
-		
-		Font font = new Font("Arial", Font.PLAIN, 20);
-		
-		JLabel nombre = new JLabel("Nombre: " + paciente.getNombre());
-		JLabel apellido = new JLabel("Apellido: " + paciente.getApellido());
-		JLabel edad = new JLabel("Edad: " + paciente.getEdad());
-		JLabel ubicacion = new JLabel("Ubicaci�n: " + paciente.getUbicacion());
-		JLabel codigoPaciente = new JLabel("C�digo Paciente: " + paciente.getCodigoPaciente());
-		
-		//nombre.setFont(font);
-		
-		panelCenter.add(nombre);
-		panelCenter.add(apellido);
-		panelCenter.add(edad);
-		panelCenter.add(ubicacion);
-		panelCenter.add(codigoPaciente);
-		panelCenter.add(new JLabel(""));
-		anadirColores(panelCenter.getComponents(), new Color(6,99,133));
-		panelCenter.setBackground(color);
-		/////
-		//anadir panelupper and panelCenert
-		
-		panelN.add(panelCenter , BorderLayout.CENTER);
-		/////
-		JPanel panelS = new JPanel(new BorderLayout());
-		JPanel panel2Upper = new JPanel(new GridLayout(1,6));
-		setEmptyLabel(panel2Upper,5);
-		panel2Upper.add(btnAnadir);
-		////
-		// panelHistorial = new JPanel(new GridLayout(0, 1));
-		 tableModel = new HistorialTableModel(paciente.getHistorialPaciente());
-	        tableHistorial = new JTable(tableModel);
-	        initTableStyle();
-	        tableHistorial.setFillsViewportHeight(true);
-	        
-		JScrollPane pane = new JScrollPane(tableHistorial);
-		
-		
-		
-		
-		panelS.add(panel2Upper,BorderLayout.NORTH);
-		panelS.add(pane,BorderLayout.CENTER);
-		///
-		panelPrincipal.add(panelN);
-		panelPrincipal.add(panelS);
-		setContentPane(panelPrincipal); 
-        panelPrincipal.setVisible(true);
-        
-        
-		
-		  btnAnadir.addActionListener(e ->{
-			  if(usuario instanceof Doctor) {
-				  
-			  anadirHistorial(paciente , usuario);
-			  }
-	        });
-		  
-		  
+public class VentanaHistorial extends JFrame {
+    private static final Color PRIMARY_COLOR = new Color(6, 99, 133);
+    private static final Color SECONDARY_COLOR = new Color(7, 120, 163);
+    private static final Color BACKGROUND_COLOR = Color.WHITE;
+    private static final Font HEADER_FONT = new Font("Segoe UI", Font.BOLD, 24);
+    private static final Font LABEL_FONT = new Font("Segoe UI", Font.BOLD, 16);
+    private static final Font BUTTON_FONT = new Font("Segoe UI", Font.PLAIN, 14);
 
-	        setTitle("Historial del Paciente");
-	        setExtendedState(JFrame.MAXIMIZED_BOTH);
-	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        setLocationRelativeTo(null);
-	        setVisible(true);
-	      
-	        
-	}
-	
-	   private void initTableStyle() {
-		   tableHistorial.setDefaultRenderer(Object.class, (table, value, isSelected, hasFocus, row, column) -> {
-	            JLabel result = new JLabel(value != null ? value.toString() : "");
-	            result.setHorizontalAlignment(JLabel.CENTER);
-	            return result;
-	        });
-		   tableHistorial.setRowHeight(40);
-		   tableHistorial.getTableHeader().setReorderingAllowed(false);
-	        tableHistorial.getTableHeader().setResizingAllowed(false);
-	        tableHistorial.setAutoCreateRowSorter(true);
-	        tableHistorial.getColumnModel().getColumn(2).setPreferredWidth(400);
+    private final JButton btnAnadir;
+    private final JTable tableHistorial;
+    private final HistorialTableModel tableModel;
+    private final Paciente paciente;
+    private final List<Paciente> listaPacientes;
+    private final Persona usuario;
+    private final GestorBD gestorBD;
 
-	        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-	        headerRenderer.setBackground(color);
-	        headerRenderer.setForeground(Color.WHITE);
-	        headerRenderer.setHorizontalAlignment(JLabel.CENTER);
-	        headerRenderer.setFont(tableHistorial.getFont().deriveFont(Font.BOLD));
+    public VentanaHistorial(Paciente paciente, Persona usuario, GestorBD gestorBD) {
+        this.paciente = paciente;
+        this.usuario = usuario;
+        this.gestorBD = gestorBD;
+        this.listaPacientes = Context.getInstance().getPacientes();
 
-	        for (int i = 0; i < tableHistorial.getColumnModel().getColumnCount(); i++) {
-	        	tableHistorial.getColumnModel().getColumn(i).setHeaderRenderer(headerRenderer);
-	        }
-	    }
+        // Initialize components
+        btnAnadir = createStyledButton("Añadir");
+        tableModel = new HistorialTableModel(paciente.getHistorialPaciente());
+        tableHistorial = new JTable(tableModel);
 
-
- 
-public Object setEmptyLabel(JPanel panel, int numeroLabels) {
-    JLabel emptyLabel = new JLabel("");
-    for (int i = 0; i < numeroLabels; i++) {
-        panel.add(emptyLabel);
+        // Setup UI
+        setupFrame();
+        setupMainPanel();
+        setupListeners();
     }
-    return panel;
-}
 
-public void anadirHistorial(Paciente paciente , Persona medico) {
-    JPanel panel = new JPanel();
-    panel.setLayout(new BorderLayout());
-    panel.setSize(300, 150);
+    private void setupFrame() {
+        setTitle("Historial del Paciente");
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setIconImage(new ImageIcon("resources/images/hospital.png").getImage());
+    }
 
-    JTextField textField = new JTextField();
-    panel.add(textField, BorderLayout.CENTER);
+    private void setupMainPanel() {
+        JPanel mainPanel = new JPanel(new GridLayout(2, 1));
+        mainPanel.add(createUpperPanel());
+        mainPanel.add(createLowerPanel());
+        setContentPane(mainPanel);
+    }
 
-    JButton btnSubmit = new JButton("Guardar");
-    panel.add(btnSubmit, BorderLayout.SOUTH);
+    private JPanel createUpperPanel() {
+        JPanel upperPanel = new JPanel(new BorderLayout());
+        upperPanel.add(createHeaderPanel(), BorderLayout.NORTH);
+        upperPanel.add(createPatientInfoPanel(), BorderLayout.CENTER);
+        return upperPanel;
+    }
 
-    btnSubmit.addActionListener(e -> {
-        String newEntry = textField.getText();
-        if (!newEntry.isEmpty()) {
-            // Assuming that getHistorialPaciente() returns a List<Historial> and Historial has a setCausa method
-            Historial nuevoHistorial = new Historial();
-            nuevoHistorial.setCausa(newEntry);
-            nuevoHistorial.setFecha(new java.util.Date());
-            
-            if(medico instanceof Doctor) {
-            	 nuevoHistorial.setMedico((Doctor) medico); 
-            //nuevoHistorial.setMedico(medico);
-            }
-            paciente.getHistorialPaciente().add(0, nuevoHistorial);
+    private JPanel createHeaderPanel() {
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setBackground(BACKGROUND_COLOR);
 
-            // Update table model after adding new entry
-            tableModel.fireTableDataChanged();
-            JOptionPane.showMessageDialog(this, "Historial a�adido exitosamente.");
+        JButton btnVolver = createBackButton();
+        JLabel logoLabel = createLogoLabel();
+
+        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        leftPanel.setBackground(BACKGROUND_COLOR);
+        leftPanel.add(btnVolver);
+        leftPanel.add(logoLabel);
+
+        headerPanel.add(leftPanel, BorderLayout.WEST);
+        return headerPanel;
+    }
+
+    private JButton createBackButton() {
+        JButton btnVolver = createStyledButton("");
+        btnVolver.setIcon(new ImageIcon("resources/images/icons8-back-25.png"));
+        btnVolver.setPreferredSize(new Dimension(80, 35));
+        btnVolver.addActionListener(e -> handleBack());
+        return btnVolver;
+    }
+
+    private JLabel createLogoLabel() {
+        ImageIcon iconoHospital = new ImageIcon("resources/images/hospital.png");
+        Image scaledImage = iconoHospital.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        return new JLabel(new ImageIcon(scaledImage));
+    }
+
+    private JPanel createPatientInfoPanel() {
+        JPanel infoPanel = new JPanel(new GridLayout(2, 3, 10, 10));
+        infoPanel.setBackground(BACKGROUND_COLOR);
+        infoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        addInfoLabel(infoPanel, "Nombre: " + paciente.getNombre());
+        addInfoLabel(infoPanel, "Apellido: " + paciente.getApellido());
+        addInfoLabel(infoPanel, "Edad: " + paciente.getEdad());
+        addInfoLabel(infoPanel, "Ubicación: " + paciente.getUbicacion());
+        addInfoLabel(infoPanel, "Código Paciente: " + paciente.getCodigoPaciente());
+        
+        if (usuario instanceof Doctor) {
+            infoPanel.add(btnAnadir);
         } else {
-            JOptionPane.showMessageDialog(panel, "Por favor, ingrese un texto.");
+            infoPanel.add(new JLabel());
         }
-    });
 
-    JOptionPane.showMessageDialog(this, panel, "A�adir Historial", JOptionPane.PLAIN_MESSAGE);
+        return infoPanel;
+    }
+
+    private void addInfoLabel(JPanel panel, String text) {
+        JLabel label = new JLabel(text, SwingConstants.CENTER);
+        label.setFont(LABEL_FONT);
+        label.setForeground(PRIMARY_COLOR);
+        panel.add(label);
+    }
+
+    private JPanel createLowerPanel() {
+        JPanel lowerPanel = new JPanel(new BorderLayout());
+        initializeTable();
+        lowerPanel.add(new JScrollPane(tableHistorial), BorderLayout.CENTER);
+        return lowerPanel;
+    }
+
+    private void initializeTable() {
+        tableHistorial.setRowHeight(40);
+        tableHistorial.getTableHeader().setReorderingAllowed(false);
+        tableHistorial.getTableHeader().setResizingAllowed(false);
+        tableHistorial.setAutoCreateRowSorter(true);
+        tableHistorial.getColumnModel().getColumn(2).setPreferredWidth(400);
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        
+        for (int i = 0; i < tableHistorial.getColumnCount(); i++) {
+            TableColumn column = tableHistorial.getColumnModel().getColumn(i);
+            column.setCellRenderer(centerRenderer);
+            
+            JTableHeader header = tableHistorial.getTableHeader();
+            header.setBackground(PRIMARY_COLOR);
+            header.setForeground(Color.WHITE);
+            header.setFont(BUTTON_FONT);
+        }
+    }
+
+    private JButton createStyledButton(String text) {
+        JButton button = new JButton(text);
+        button.setFont(BUTTON_FONT);
+        button.setBackground(PRIMARY_COLOR);
+        button.setForeground(Color.WHITE);
+        button.setBorderPainted(false);
+        button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(SECONDARY_COLOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(PRIMARY_COLOR);
+            }
+        });
+
+        return button;
+    }
+
+    private void setupListeners() {
+        btnAnadir.addActionListener(e -> {
+            if (usuario instanceof Doctor) {
+                anadirHistorial();
+            }
+        });
+    }
+
+    private void anadirHistorial() {
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JTextField textField = new JTextField();
+        textField.setPreferredSize(new Dimension(300, 100));
+        
+        JButton btnSubmit = createStyledButton("Guardar");
+
+        panel.add(new JLabel("Ingrese el historial:"), BorderLayout.NORTH);
+        panel.add(textField, BorderLayout.CENTER);
+        panel.add(btnSubmit, BorderLayout.SOUTH);
+
+        btnSubmit.addActionListener(e -> {
+            String newEntry = textField.getText().trim();
+            if (!newEntry.isEmpty()) {
+                Historial nuevoHistorial = new Historial();
+                nuevoHistorial.setCausa(newEntry);
+                nuevoHistorial.setFecha(new Date());
+                
+                if (usuario instanceof Doctor) {
+                    nuevoHistorial.setMedico((Doctor) usuario);
+                }
+                
+                paciente.getHistorialPaciente().add(0, nuevoHistorial);
+                tableModel.fireTableDataChanged();
+                JOptionPane.showMessageDialog(this, "Historial añadido exitosamente.");
+                
+                Window window = SwingUtilities.getWindowAncestor(panel);
+                if (window != null) {
+                    window.dispose();
+                }
+            } else {
+                JOptionPane.showMessageDialog(panel, "Por favor, ingrese un texto.");
+            }
+        });
+
+        JOptionPane.showMessageDialog(this, panel, "Añadir Historial", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private void handleBack() {
+        if (paciente instanceof Paciente) {
+            new MenuPaciente(paciente, gestorBD).setVisible(true);
+        } else {
+            new VentanaPacientes(listaPacientes, usuario, gestorBD).setVisible(true);
+        }
+        dispose();
+    }
 }
-
-
-private void anadirColores(Component[] components ,Color color) {
-	Font font = new Font("Arial", Font.PLAIN, 20);
-	for(Component component :components) {
-		if(component instanceof JLabel) {
-			JLabel label = (JLabel)component;
-		label.setFont(font);
-		 label.setHorizontalAlignment(SwingConstants.CENTER);
-		//component.setBackground(color);
-		label.setForeground(color.white);
-		
-		}else if (component instanceof JButton) {
-
-			
-			component.setBackground(color);
-			component.setForeground(Color.white);
-			component.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
-			component.addMouseListener(new MouseAdapter() {
-				 
-		            @Override
-		            public void mouseEntered(MouseEvent e) {
-		            	component.setBackground(Color.white); 
-		            	component.setForeground(color);
-		            }
-
-		            @Override
-		            public void mouseExited(MouseEvent e) {
-		            	component.setBackground(color); 
-		            	component.setForeground(Color.white);
-		            }
-		        });
-		}
-	}
-}
-private JPanel crearPanelN() {
-	JPanel grid = new JPanel();
-	grid.setLayout(new GridLayout(1,5,10,50));
-//aqui quiero meter el logo donde el primer hueco de grid 
-	JButton btnParametros = new JButton("Parametros");
-	JButton btnUsuario = new JButton("Usuario");
-	
-	ImageIcon iconoHospital = new ImageIcon("resources/images/hospital.png");
-
-	
-	Image imagenEscalada = iconoHospital.getImage().getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
-	iconoHospital = new ImageIcon(imagenEscalada);
-	
-	JLabel labelConIcono = new JLabel(iconoHospital);
-
-	grid.add(labelConIcono);
-	
-	grid.add(btnVolver);
-	grid.add(btnParametros);
-	grid.add(btnUsuario);
-	anadirColores(grid.getComponents(),color);
-	
-	
-	grid.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-	grid.setBackground(Color.white);
-	JPanel p = new JPanel();
-	
-	p.setBackground(color.white);
-	anadirColores(p.getComponents(), color);
-	p.setLayout(new GridLayout(1,2));
-	JPanel t = new JPanel();
-	t.setBackground(color.white);
-	anadirColores(t.getComponents(), color);
-	t.setLayout(new GridLayout(1,2));
-	t.add(btnVolver);
-	t.add(labelConIcono);
-	p.add(t);
-	p.add(new JLabel(""));
-	
-	grid.add(p);
-	grid.add(new JLabel(""));
-	
-	//grid.add(btnVolver);
-	grid.add(btnParametros);
-	grid.add(btnUsuario);
-	anadirColores(grid.getComponents(),color);
-	 btnVolver.addActionListener(e ->{
-		  if(u instanceof Paciente) {
-			MenuPaciente ventana = new MenuPaciente(u, null);
-			ventana.setVisible(true);
-			this.dispose();
-		  
-		  }else {
-			  VentanaPacientes ventana = new VentanaPacientes(listaPacientes,usuario, gestorBD);
-			  ventana.setVisible(true);
-				this.dispose();
-
-		  }
-       });
-	
-	return grid;
-}
-}
-

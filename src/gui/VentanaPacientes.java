@@ -27,8 +27,9 @@ public class VentanaPacientes extends JFrame {
     private  JButton btnAnadirP;
     private  JButton btnBorrarP;
     private  Persona usuario;
-
+    private GestorBD gestorBD;
     public VentanaPacientes(List<Paciente> pacientes, Persona usuarioP , GestorBD gestorBD) {
+    	this.gestorBD = gestorBD;
         this.pacientes = pacientes;
         this.usuario = usuarioP;
 
@@ -186,7 +187,7 @@ public class VentanaPacientes extends JFrame {
         styleButton(btnBack);
         btnBack.setPreferredSize(new Dimension(80, 35));
         btnBack.addActionListener(e -> {
-            MenuTrabajador window = new MenuTrabajador(usuario, null);
+            MenuTrabajador window = new MenuTrabajador(usuario, gestorBD);
             window.setVisible(true);
             dispose();
         });
@@ -456,7 +457,7 @@ public class VentanaPacientes extends JFrame {
                         List<Historial> history = p.getHistorialPaciente();
                         Paciente patient = new Paciente(password, name, surname, age, location, patientCode, history);
                         if (usuario instanceof Doctor) {
-                            VentanaHistorial historyWindow = new VentanaHistorial(patient, usuario, null);
+                            VentanaHistorial historyWindow = new VentanaHistorial(patient, usuario, gestorBD);
                             historyWindow.setVisible(true);
                         } else if (usuario instanceof Administrador) {
                             JOptionPane.showMessageDialog(this.button, "Solo un medico puede acceder al historial de un paciente", "Acceso rechazado", JOptionPane.ERROR_MESSAGE);
