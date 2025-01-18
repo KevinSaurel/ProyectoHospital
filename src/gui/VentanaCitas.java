@@ -70,10 +70,11 @@ public class VentanaCitas extends JFrame {
     private Persona usuario;
     private GestorBD gestorBD;
 
-    public VentanaCitas(List<Cita> citas, Persona usuario) {
+    public VentanaCitas(List<Cita> citas, Persona usuario,  GestorBD gestorBD) {
         // Inicializar lista de citas
         this.citas = (citas != null) ? citas : new ArrayList<>();
         this.usuario = usuario;
+        this.gestorBD = gestorBD;
 
         // Configurar ventana
         setTitle("Gestión de Citas");
@@ -135,7 +136,9 @@ public class VentanaCitas extends JFrame {
         // Botón "Eliminar Cita"
         btnBorrCita = createStyledButton("Eliminar Cita");
         panelSur.add(btnBorrCita);
-
+        	// se añade la funcionalidad de eliminar las citas
+        btnBorrCita.addActionListener(e -> borrarCita());
+        
         // Panel central (tabla)
         scrollPaneCitas = new JScrollPane();
         panelBase.add(scrollPaneCitas, BorderLayout.CENTER);
@@ -191,13 +194,23 @@ public class VentanaCitas extends JFrame {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             String formattedDate = dateFormat.format(cita.getFechaHora());
         	
-            modeloDatosCitas.addRow(new Object[]{
-                cita.getPaciente().getCodigoPaciente(),             // Código del paciente
-                cita.getPaciente().getNombre(),                     // Nombre del paciente
-                cita.getPaciente().getApellido(),                   // Apellido del paciente
-                cita.getDoctor().getNombre() + " " + cita.getDoctor().getApellido(), // Nombre del doctor
-                cita.getFechaHora()                                 // Fecha y hora de la cita
-            });
+//            modeloDatosCitas.addRow(new Object[]{
+//                cita.getPaciente().getCodigoPaciente(),             // Código del paciente
+//                cita.getPaciente().getNombre(),                     // Nombre del paciente
+//                cita.getPaciente().getApellido(),                   // Apellido del paciente
+//                cita.getDoctor().getNombre() + " " + cita.getDoctor().getApellido(), // Nombre del doctor
+//                cita.getFechaHora()                                 // Fecha y hora de la cita
+//            });
+            
+            Object[] row = {
+            		cita.getPaciente().getCodigoPaciente(),             // Código del paciente
+                    cita.getPaciente().getNombre(),                     // Nombre del paciente
+                    cita.getPaciente().getApellido(),                   // Apellido del paciente
+                    cita.getDoctor().getNombre() + " " + cita.getDoctor().getApellido(), // Nombre del doctor
+                    cita.getFechaHora()                                 // Fecha y hora de la cita
+            };
+            
+            modeloDatosCitas.addRow(row);
         }
 
         	// Se define el modelo de datos sobre como se mostrarán las citas
@@ -295,8 +308,41 @@ public class VentanaCitas extends JFrame {
     }
 
     // Añadir funcionalidad al btnAddCita;
+    
+    
     // Añadir funcionalidad al btnModCita;
+    
+    
     // Añadir funcionalidad al btnBorrCita;
+    
+    	//Función para eliminar una fila de la tabla citas
+    private void borrarCita() {
+   	 int selectedRow = tablaCitas.getSelectedRow();
+   	 
+   	 if (selectedRow != -1) {
+   	 int confirm = JOptionPane.showConfirmDialog(this, 
+   	            "¿Estás seguro de que quieres borrar este paciente?", 
+   	            "Confirmar eliminación", 
+   	            JOptionPane.YES_NO_OPTION);
+
+   	        if (confirm == JOptionPane.YES_OPTION) {
+   	            // Get the patient's code from the selected row
+   	            int patientCode = (int) modeloDatosCitas.getValueAt(selectedRow, 0);
+
+   	            // Remove from the pacientes list
+   	            citas.removeIf(cita -> cita.getPaciente().getCodigoPaciente() == patientCode);
+
+   	            // Remove from the table model
+   	            modeloDatosCitas.removeRow(selectedRow);
+
+   	            JOptionPane.showMessageDialog(this, "Paciente eliminado con éxito.", 
+   	                "Eliminación completa", JOptionPane.INFORMATION_MESSAGE);
+   	        }
+   	    } else {
+   	        JOptionPane.showMessageDialog(this, "Selecciona un paciente para borrar.", 
+   	            "Error", JOptionPane.ERROR_MESSAGE);
+   	    }
+   }
 
     
 }

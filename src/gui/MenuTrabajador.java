@@ -190,7 +190,7 @@ public class MenuTrabajador extends JFrame{
         });
         
         btnCitas.addActionListener((e) -> {
-        	VentanaCitas ventana = new VentanaCitas(citas, usuario);
+        	VentanaCitas ventana = new VentanaCitas(citas, usuario, gestorBD);
             ventana.setVisible(true);
             this.dispose();
         });

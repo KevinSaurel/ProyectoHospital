@@ -144,7 +144,7 @@ public class MenuPaciente extends JFrame {
                     l.add(c);
                 }
             }
-            VentanaCitas ventana = new VentanaCitas(l, usuario);
+            VentanaCitas ventana = new VentanaCitas(l, usuario, gestorBD);
             ventana.setVisible(true);
         });
 
