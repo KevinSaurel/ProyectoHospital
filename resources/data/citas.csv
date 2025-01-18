@@ -1,8 +1,3 @@
-123,fran,Lopez,30,Sala 101,1,Gripe|2024-01-01:Fiebre|2024-02-01;,1234,Dra. María,García,23,Cardiología,Bilbao,2024-12-02
-123,fran,Lopez,30,Sala 101,1,Gripe|2024-01-01:Fiebre|2024-02-01;,1234,Dra. María,García,23,Cardiología,Bilbao,2024-12-02
-123,fran,Lopez,30,Sala 101,1,Gripe|2024-01-01:Fiebre|2024-02-01;,1234,Dra. María,García,23,Cardiología,Bilbao,2024-12-02
-123,fran,Lopez,30,Sala 101,1,Gripe|2024-01-01:Fiebre|2024-02-01;,1234,Dra. María,García,23,Cardiología,Bilbao,2024-12-02
-123,fran,Lopez,30,Sala 101,1,Gripe|2024-01-01:Fiebre|2024-02-01;,1234,Dra. María,García,23,Cardiología,Bilbao,2024-12-02
-123,fran,Lopez,30,Sala 101,1,Gripe|2024-01-01:Fiebre|2024-02-01;,1234,Dra. María,García,23,Cardiología,Bilbao,2024-12-02
-cont1,ana,Martínez,25,Sala 202,2,Tos|2023-11-15:Asma|2024-01-10;,12342,Dr. Juan,Pérez,33,Pediatría,Madrid,2024-12-03
-cont2,carlos,Ruiz,40,Sala 303,3,Diabetes|2023-12-05:Hipertensión|2024-02-20;,cont3,Dra. Carmen,López,56,Endocrinología,Barcelona,2024-12-04
+123,fran,Lopez,30,Sala 101,1,,1234,Dra. María,García,23,Cardiología,Bilbao,2024-12-02,2024-12-02
+cont1,ana,Martínez,25,Sala 202,2,,12342,Dr. Juan,Pérez,33,Pediatría,Madrid,2024-12-03,2024-12-03
+cont2,carlos,Ruiz,40,Sala 303,3,,cont3,Dra. Carmen,López,56,Endocrinología,Barcelona,2024-12-04,2024-12-04

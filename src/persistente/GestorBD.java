@@ -1,9 +1,11 @@
 package persistente;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,6 +24,8 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
 
 import domain.Administrador;
 import domain.Cama;
@@ -734,6 +738,39 @@ public class GestorBD {
 	            System.out.println("Error al cargar los pacientes: " + e.getMessage());
 	        }
 	        return citas;
+	    }
+	    
+	    public void guardarCitasEnCSV() {
+	        try (BufferedWriter bw = new BufferedWriter(new FileWriter("resources/data/citas.csv"))) {
+	            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+	            for (Cita cita : citas) {
+	                Paciente paciente = cita.getPaciente();
+	                Doctor doctor = cita.getDoctor();
+	                String fecha = dateFormat.format(cita.getFechaHora());
+
+	                String linea = paciente.getContrasena() + "," +
+	                               paciente.getNombre() + "," +
+	                               paciente.getApellido() + "," +
+	                               paciente.getEdad() + "," +
+	                               paciente.getUbicacion() + "," +
+	                               paciente.getCodigoPaciente() + "," +
+	                               "" + "," +  // Historial vacío o agregar si es necesario
+	                               doctor.getContrasena() + "," +
+	                               doctor.getNombre() + "," +
+	                               doctor.getApellido() + "," +
+	                               doctor.getEdad() + "," +
+	                               doctor.getUbicacion() + "," +
+	                               doctor.getEspecialidad() + "," +
+	                               doctor.getHorario() + "," +
+	                               fecha + "\n";
+
+	                bw.write(linea);
+	            }
+	            bw.flush();
+	        } catch (IOException e) {
+	        	System.err.println("Error al guardar las citas: " + e.getMessage());
+	        }
 	    }
 //	    public void insertarCamas() throws SQLException {
 //	    	List<Cama> camas=new ArrayList<>();

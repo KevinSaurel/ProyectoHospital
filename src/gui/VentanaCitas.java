@@ -9,12 +9,16 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -131,6 +135,8 @@ public class VentanaCitas extends JFrame {
         // Botón "Añadir Cita"
         btnAddCita = createStyledButton("Añadir Cita");
         panelSur.add(btnAddCita);
+     // se añade la funcionalidad de añadir citas
+        btnAddCita.addActionListener(e -> showAddAppointmentDialog());
 
         // Botón "Modificar Cita"
         btnModCita = createStyledButton("Modificar Cita");
@@ -332,13 +338,90 @@ public class VentanaCitas extends JFrame {
 
     // Añadir funcionalidad al btnAddCita;
     
+    private void showAddAppointmentDialog() {
+        JDialog newAppointmentDialog = new JDialog(this, "Añadir Nueva Cita", true);
+        newAppointmentDialog.setSize(400, 300);
+        newAppointmentDialog.setLayout(new GridLayout(6, 2, SPACING, SPACING));
+        newAppointmentDialog.getContentPane().setBackground(PRIMARY_COLOR);
+
+        JLabel lblPacienteID = createLabel("ID Paciente:");
+        JTextField txtPacienteID = new JTextField();
+        JLabel lblPacienteNombre = createLabel("Nombre del Paciente:");
+        JTextField txtPacienteNombre = new JTextField();
+        JLabel lblPacienteApellido = createLabel("Apellido del Paciente:");
+        JTextField txtPacienteApellido = new JTextField();
+        JLabel lblMedicoNombre = createLabel("Nombre del Médico:");
+        JTextField txtMedicoNombre = new JTextField();
+        JLabel lblFechaCita = createLabel("Fecha de Cita (YYYY-MM-DD):");
+        JTextField txtFechaCita = new JTextField();
+
+        JButton btnAdd = createStyledButton("Añadir Cita");
+        btnAdd.addActionListener(e -> {
+            if (validateAppointmentData(txtPacienteID, txtPacienteNombre, txtPacienteApellido, txtMedicoNombre, txtFechaCita)) {
+                int pacienteId = Integer.parseInt(txtPacienteID.getText());
+                String pacienteNombre = txtPacienteNombre.getText();
+                String pacienteApellido = txtPacienteApellido.getText();
+                String medicoNombre = txtMedicoNombre.getText();
+                String fechaHoraStr = txtFechaCita.getText();
+
+                try {
+                    Date fechaHora = Date.valueOf(fechaHoraStr.split(" ")[0]);
+                    GestorBD gestorBD = new GestorBD();
+                    // Inserta la cita en la base de datos
+                    gestorBD.insertarCita();
+                    // Añadir la nueva cita al modelo de datos
+                    modeloDatosCitas.addRow(new Object[]{pacienteId, pacienteNombre, pacienteApellido, medicoNombre, fechaHora});
+                    newAppointmentDialog.dispose();
+                    JOptionPane.showMessageDialog(this, "Cita añadida exitosamente.");
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Error al insertar la cita en la base de datos: " + ex.getMessage());
+                }
+            }
+        });
+
+        newAppointmentDialog.add(lblPacienteID);
+        newAppointmentDialog.add(txtPacienteID);
+        newAppointmentDialog.add(lblPacienteNombre);
+        newAppointmentDialog.add(txtPacienteNombre);
+        newAppointmentDialog.add(lblPacienteApellido);
+        newAppointmentDialog.add(txtPacienteApellido);
+        newAppointmentDialog.add(lblMedicoNombre);
+        newAppointmentDialog.add(txtMedicoNombre);
+        newAppointmentDialog.add(lblFechaCita);
+        newAppointmentDialog.add(txtFechaCita);
+        newAppointmentDialog.add(new JLabel());
+        newAppointmentDialog.add(btnAdd);
+
+        newAppointmentDialog.setLocationRelativeTo(this);
+        newAppointmentDialog.setVisible(true);
+    }
+
+    private boolean validateAppointmentData(JTextField txtPacienteID, JTextField txtPacienteNombre, JTextField txtPacienteApellido, JTextField txtMedicoNombre, JTextField txtFechaCita) {
+        try {
+            Integer.parseInt(txtPacienteID.getText());
+            String pacienteNombre = txtPacienteNombre.getText();
+            String pacienteApellido = txtPacienteApellido.getText();
+            String medicoNombre = txtMedicoNombre.getText();
+            String fechaHora = txtFechaCita.getText();
+
+            if (fechaHora.isEmpty() || pacienteNombre.isEmpty() || pacienteApellido.isEmpty() || medicoNombre.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
+                return false;
+            }
+            return true;
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Los IDs deben ser números válidos.");
+            return false;
+        }
+    }
+
     
-    	// Funcion que crea un label de texto (bastante util para no sobrecargar de codigo xd)
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text);
         label.setForeground(Color.WHITE);
         return label;
     }
+    
     // Añadir funcionalidad al btnModCita;
     
     
@@ -346,32 +429,35 @@ public class VentanaCitas extends JFrame {
     
     	//Función para eliminar una fila de la tabla citas
     private void borrarCita() {
-   	 int selectedRow = tablaCitas.getSelectedRow();
-   	 
-   	 if (selectedRow != -1) {
-   	 int confirm = JOptionPane.showConfirmDialog(this, 
-   	            "¿Estás seguro de que quieres borrar este paciente?", 
-   	            "Confirmar eliminación", 
-   	            JOptionPane.YES_NO_OPTION);
+        int selectedRow = tablaCitas.getSelectedRow();
 
-   	        if (confirm == JOptionPane.YES_OPTION) {
-   	            // Get the patient's code from the selected row
-   	            int patientCode = (int) modeloDatosCitas.getValueAt(selectedRow, 0);
+        if (selectedRow != -1) {
+            int confirm = JOptionPane.showConfirmDialog(this,
+                    "¿Estás seguro de que quieres borrar esta cita?",
+                    "Confirmar eliminación",
+                    JOptionPane.YES_NO_OPTION);
 
-   	            // Remove from the pacientes list
-   	            citas.removeIf(cita -> cita.getPaciente().getCodigoPaciente() == patientCode);
+            if (confirm == JOptionPane.YES_OPTION) {
+                // Obtener el código del paciente desde la fila seleccionada
+                int patientCode = (int) modeloDatosCitas.getValueAt(selectedRow, 0);
 
-   	            // Remove from the table model
-   	            modeloDatosCitas.removeRow(selectedRow);
+                // Eliminar la cita de la lista
+                citas.removeIf(cita -> cita.getPaciente().getCodigoPaciente() == patientCode);
 
-   	            JOptionPane.showMessageDialog(this, "Paciente eliminado con éxito.", 
-   	                "Eliminación completa", JOptionPane.INFORMATION_MESSAGE);
-   	        }
-   	    } else {
-   	        JOptionPane.showMessageDialog(this, "Selecciona un paciente para borrar.", 
-   	            "Error", JOptionPane.ERROR_MESSAGE);
-   	    }
-   }
+                // Eliminar la fila del modelo de la tabla
+                modeloDatosCitas.removeRow(selectedRow);
+
+                // Guardar los cambios en el archivo CSV
+                gestorBD.guardarCitasEnCSV();
+
+                JOptionPane.showMessageDialog(this, "Cita eliminada con éxito.",
+                        "Eliminación completa", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecciona una cita para borrar.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     
 }
