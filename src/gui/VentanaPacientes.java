@@ -25,6 +25,7 @@ public class VentanaPacientes extends JFrame {
     private  JTextField txtFiltro;
     private  DefaultTableModel modeloDatosPacientes;
     private  JButton btnAnadirP;
+    private  JButton btnGruposp;
     private  JButton btnBorrarP;
     private  Persona usuario;
     private GestorBD gestorBD;
@@ -70,7 +71,9 @@ public class VentanaPacientes extends JFrame {
         rightSection.setBackground(BACKGROUND_COLOR);
         rightSection.add(createFilterField());
         rightSection.add(createAddButton());
+        rightSection.add(createGrupoButton());
         rightSection.add(createDeleteButton());
+        
 
         headerPanel.add(leftSection, BorderLayout.WEST);
         headerPanel.add(rightSection, BorderLayout.EAST);
@@ -199,12 +202,24 @@ public class VentanaPacientes extends JFrame {
         btnAnadirP.addActionListener(e -> showAddPatientDialog());
         return btnAnadirP;
     }
-
+    private JButton createGrupoButton() {
+    	btnGruposp = createStyledButton("Crear Grupo");
+    	btnGruposp.addActionListener(e -> crearGrupo());
+        return btnGruposp;
+    }
     private JButton createDeleteButton() {
         btnBorrarP = createStyledButton("Borrar Paciente");
         // Add delete functionality here
         btnBorrarP.addActionListener(e -> borrarP());
         return btnBorrarP;
+    }
+    private void crearGrupo(){
+    	//Añadir el codigo recursivo
+    	
+    	
+    	
+    	
+    	
     }
     private void borrarP() {
     	 int selectedRow = tablaPacientes.getSelectedRow();
