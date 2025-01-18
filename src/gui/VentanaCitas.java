@@ -42,25 +42,32 @@ import persistente.GestorBD;
 
 public class VentanaCitas extends JFrame {
 
+	// datos para que las ventanas casen con coherencia
+	
+		// Colores
     private static final Color PRIMARY_COLOR = new Color(6, 99, 133);
     private static final Color SECONDARY_COLOR = new Color(7, 120, 163);
     private static final Color BACKGROUND_COLOR = Color.WHITE;
-
+    
+    	// Fuentes
     private static final Font HEADER_FONT = new Font("Segoe UI", Font.BOLD, 24);
     private static final Font LABEL_FONT = new Font("Segoe UI", Font.BOLD, 16);
     private static final Font BUTTON_FONT = new Font("Segoe UI", Font.PLAIN, 14);
 
+    	// Entidades necesarias
     private List<Cita> citas; // Lista de citas
-    private JTable tablaCitas;
-    private JScrollPane scrollPaneCitas;
-    private JTextField txtFiltro;
-    private DefaultTableModel modeloDatosCitas;
+    private JTable tablaCitas; // Tabla principal
+    private JScrollPane scrollPaneCitas; // ScrollPane donde irá la tabla
+    private JTextField txtFiltro; // Caja de texto donde se mostrará el filtro
+    private DefaultTableModel modeloDatosCitas; // Modelo de datos para la tabla principal
+    
+    	// Botones necesarios en la ventana
     private JButton btnAddCita;
     private JButton btnModCita;
     private JButton btnBorrCita;
     private JButton btnBack;
+    	// Unión a otras clases necesarias
     private Persona usuario;
-    
     private GestorBD gestorBD;
 
     public VentanaCitas(List<Cita> citas, Persona usuario) {
@@ -78,7 +85,6 @@ public class VentanaCitas extends JFrame {
 
         initComponents(); // Inicializar componentes
         llenarTablaCitas(); // Llenar la tabla con los datos de citas
-      //agregarDatosPrueba(); // comentar cuando no se esté usando, esto es solo para probar
         agregarDatos();
 		
         setVisible(true);
@@ -175,7 +181,7 @@ public class VentanaCitas extends JFrame {
         });
         return button;
     }
-
+    	// Llamada a la función que plasma los datos de las citas en la tabla
     private void llenarTablaCitas() {
         modeloDatosCitas.setRowCount(0); // Limpiar la tabla
 
@@ -194,7 +200,7 @@ public class VentanaCitas extends JFrame {
             });
         }
 
-        // Estilo de la tabla
+        	// Se define el modelo de datos sobre como se mostrarán las citas
         tablaCitas.setDefaultRenderer(Object.class, (table, value, isSelected, hasFocus, row, column) -> {
             JLabel result = new JLabel(value != null ? value.toString() : "");
             result.setHorizontalAlignment(JLabel.CENTER);
@@ -238,50 +244,7 @@ public class VentanaCitas extends JFrame {
         tablaCitas.repaint();
     }
     
-//    private void agregarDatosPrueba() {
-//        // Crear pacientes de prueba
-//        Paciente paciente1 = new Paciente("1234", "Juan", "Pérez", 30, "Ciudad A", 1, new ArrayList<>());
-//        Paciente paciente2 = new Paciente("5678", "Ana", "Gómez", 25, "Ciudad B", 2, new ArrayList<>());
-//        Paciente paciente3 = new Paciente("91011", "Luis", "Martínez", 50, "Ciudad C", 3, new ArrayList<>());
-//        Paciente paciente4 = new Paciente("1213", "María", "López", 45, "Ciudad D", 4, new ArrayList<>());
-//
-//        // Crear doctores de prueba
-//        Doctor doctor1 = new Doctor("abcd", "Carlos", "Lopez", 40, "Hospital Central", "Cardiología", "9:00 - 17:00");
-//        Doctor doctor2 = new Doctor("efgh", "Marta", "Sánchez", 35, "Clínica Norte", "Neurología", "10:00 - 18:00");
-//        Doctor doctor3 = new Doctor("ijkl", "Pedro", "García", 50, "Hospital Sur", "Dermatología", "8:00 - 16:00");
-//
-//        // Crear fechas de ejemplo
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-//        Date fecha1 = null;
-//        Date fecha2 = null;
-//        Date fecha3 = null;
-//        Date fecha4 = null;
-//
-//        try {
-//            fecha1 = new java.sql.Date(dateFormat.parse("10/12/2024 09:30").getTime());
-//            fecha2 = new java.sql.Date(dateFormat.parse("11/12/2024 14:00").getTime());
-//            fecha3 = new java.sql.Date(dateFormat.parse("12/12/2024 11:15").getTime());
-//            fecha4 = new java.sql.Date(dateFormat.parse("13/12/2024 16:45").getTime());
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//
-//        // Crear citas de prueba
-//        List<Cita> citasPrueba = new ArrayList<>();
-//        citasPrueba.add(new Cita(paciente1, doctor1, fecha1));
-//        citasPrueba.add(new Cita(paciente2, doctor2, fecha2));
-//        citasPrueba.add(new Cita(paciente3, doctor3, fecha3));
-//        citasPrueba.add(new Cita(paciente4, doctor1, fecha4));
-//
-//        // Asignar las citas generadas a la lista de la ventana
-//        this.citas = citasPrueba;
-//
-//        // Llenar la tabla con los datos de prueba
-//        llenarTablaCitas();
-//    }
-    
-    
-    
+    	// función que trae los datos ed la base de datos.
     private void agregarDatos() {
         try {
             gestorBD = new GestorBD();
@@ -304,7 +267,7 @@ public class VentanaCitas extends JFrame {
             // Si el filtro está vacío, mostrar todas las citas
             llenarTablaCitas();
             return;
-        }
+        } 
 
         for (Cita cita : citas) {
             String codigoPaciente = String.valueOf(cita.getPaciente().getCodigoPaciente()); // Convertir a String
@@ -331,18 +294,10 @@ public class VentanaCitas extends JFrame {
         }
     }
 
-//    private void addCitaData() {
-//        for (Cita cita : citas) {
-//            Object[] row = {
-//                String.valueOf(cita.getPaciente().getCodigoPaciente()), // Código del paciente convertido a String
-//                cita.getPaciente().getNombre(),                        // Nombre del paciente
-//                cita.getPaciente().getApellido(),                      // Apellido del paciente
-//                cita.getDoctor().getNombre() + " " + cita.getDoctor().getApellido(), // Nombre completo del doctor
-//                new SimpleDateFormat("dd/MM/yyyy HH:mm").format(cita.getFechaHora()) // Fecha y hora formateada
-//            };
-//            modeloDatosCitas.addRow(row); // Añadir la fila al modelo de la tabla
-//        }
-//    }
+    // Añadir funcionalidad al btnAddCita;
+    // Añadir funcionalidad al btnModCita;
+    // Añadir funcionalidad al btnBorrCita;
+
     
 }
     
