@@ -141,6 +141,8 @@ public class VentanaCitas extends JFrame {
         // Botón "Modificar Cita"
         btnModCita = createStyledButton("Modificar Cita");
         panelSur.add(btnModCita);
+        	// se añade la funcionalidad de modificar las citas
+        btnModCita.addActionListener(e -> modificarCita());
 
         // Botón "Eliminar Cita"
         btnBorrCita = createStyledButton("Eliminar Cita");
@@ -424,6 +426,9 @@ public class VentanaCitas extends JFrame {
     
     // Añadir funcionalidad al btnModCita;
     
+    private void modificarCita() {
+        
+    }
     
     // Añadir funcionalidad al btnBorrCita;
     
