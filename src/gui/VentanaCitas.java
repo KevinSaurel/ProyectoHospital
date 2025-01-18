@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -36,6 +37,7 @@ import javax.swing.table.TableRowSorter;
 import domain.Cita;
 import domain.Context;
 import domain.Doctor;
+import domain.Historial;
 import domain.Paciente;
 import domain.Persona;
 import persistente.GestorBD;
@@ -53,6 +55,7 @@ public class VentanaCitas extends JFrame {
     private static final Font HEADER_FONT = new Font("Segoe UI", Font.BOLD, 24);
     private static final Font LABEL_FONT = new Font("Segoe UI", Font.BOLD, 16);
     private static final Font BUTTON_FONT = new Font("Segoe UI", Font.PLAIN, 14);
+    private static final int SPACING = 20;
 
     	// Entidades necesarias
     private List<Cita> citas; // Lista de citas
@@ -194,14 +197,6 @@ public class VentanaCitas extends JFrame {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             String formattedDate = dateFormat.format(cita.getFechaHora());
         	
-//            modeloDatosCitas.addRow(new Object[]{
-//                cita.getPaciente().getCodigoPaciente(),             // Código del paciente
-//                cita.getPaciente().getNombre(),                     // Nombre del paciente
-//                cita.getPaciente().getApellido(),                   // Apellido del paciente
-//                cita.getDoctor().getNombre() + " " + cita.getDoctor().getApellido(), // Nombre del doctor
-//                cita.getFechaHora()                                 // Fecha y hora de la cita
-//            });
-            
             Object[] row = {
             		cita.getPaciente().getCodigoPaciente(),             // Código del paciente
                     cita.getPaciente().getNombre(),                     // Nombre del paciente
@@ -280,36 +275,70 @@ public class VentanaCitas extends JFrame {
             // Si el filtro está vacío, mostrar todas las citas
             llenarTablaCitas();
             return;
-        } 
+        }
 
         for (Cita cita : citas) {
-            String codigoPaciente = String.valueOf(cita.getPaciente().getCodigoPaciente()); // Convertir a String
+            String codigoPaciente = String.valueOf(cita.getPaciente().getCodigoPaciente());
             String nombrePaciente = cita.getPaciente().getNombre();
             String apellidoPaciente = cita.getPaciente().getApellido();
             String nombreDoctor = cita.getDoctor().getNombre() + " " + cita.getDoctor().getApellido();
             String fechaHora = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(cita.getFechaHora());
 
-            boolean igual = codigoPaciente.contains(filter) ||
+            boolean matches = codigoPaciente.toLowerCase().contains(filter) ||
                               nombrePaciente.toLowerCase().contains(filter) ||
                               apellidoPaciente.toLowerCase().contains(filter) ||
                               nombreDoctor.toLowerCase().contains(filter) ||
                               fechaHora.toLowerCase().contains(filter);
 
-            if (igual) {
-                modeloDatosCitas.addRow(new Object[]{
-                    codigoPaciente,
-                    nombrePaciente,
-                    apellidoPaciente,
-                    nombreDoctor,
-                    fechaHora
-                });
+            if (matches) {
+                String highlightedCodigoPaciente = highlightText(codigoPaciente, filter);
+                String highlightedNombrePaciente = highlightText(nombrePaciente, filter);
+                String highlightedApellidoPaciente = highlightText(apellidoPaciente, filter);
+                String highlightedNombreDoctor = highlightText(nombreDoctor, filter);
+                String highlightedFechaHora = highlightText(fechaHora, filter);
+
+                // Agregar la fila con el texto resaltado al modelo de la tabla
+                Object[] row = {
+                    highlightedCodigoPaciente,
+                    highlightedNombrePaciente,
+                    highlightedApellidoPaciente,
+                    highlightedNombreDoctor,
+                    highlightedFechaHora,
+                    "Ver Detalles"
+                };
+                modeloDatosCitas.addRow(row);
             }
         }
+    }
+
+    private String highlightText(String text, String filter) {
+        if (text.toLowerCase().contains(filter)) {
+            int startIndex = text.toLowerCase().indexOf(filter);
+            int endIndex = startIndex + filter.length();
+
+            String beforeMatch = text.substring(0, startIndex);
+            String match = text.substring(startIndex, endIndex);
+            String afterMatch = text.substring(endIndex);
+
+            // Crear el texto con formato HTML para resaltar la coincidencia
+            return "<html>" +
+                   beforeMatch +
+                   "<strong style='background-color:yellow; color:blue;'>" + match + "</strong>" +
+                   afterMatch +
+                   "</html>";
+        }
+        return text;
     }
 
     // Añadir funcionalidad al btnAddCita;
     
     
+    	// Funcion que crea un label de texto (bastante util para no sobrecargar de codigo xd)
+    private JLabel createLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setForeground(Color.WHITE);
+        return label;
+    }
     // Añadir funcionalidad al btnModCita;
     
     
