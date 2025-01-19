@@ -256,13 +256,13 @@ public class VentanaPacientes extends JFrame {
     
     
  // Método principal para generar grupos de consulta
-    public void generarGruposConsulta(List<Paciente> pacientes, int tiempoDisponible, TipoGrupo tipo, List<String> ubicaciones) {
+    public void generarGruposConsulta(List<Paciente> pacientes, int tiempoDisponible, TipoGrupo tipo ) {
         List<List<Paciente>> resultado = new ArrayList<>();
         
         // Filtramos los pacientes según criterios
         List<Paciente> pacientesFiltrados = new ArrayList<>();
         for (Paciente p : pacientes) {
-            if (tipo.incluyeEdad(p.getEdad()) && ubicaciones.contains(p.getUbicacion())) {
+            if (tipo.incluyeEdad(p.getEdad())) {
                 pacientesFiltrados.add(p);
             }
         }
@@ -271,12 +271,12 @@ public class VentanaPacientes extends JFrame {
         System.out.println("Pacientes que cumplen los criterios: " + pacientesFiltrados.size());
         for (Paciente p : pacientesFiltrados) {
             System.out.println("- " + p.getNombre() + " " + p.getApellido() + 
-                             " (Edad: " + p.getEdad() + ", Ubicación: " + p.getUbicacion() + ")");
+                             " (Edad: " + p.getEdad() +  ")");
         }
         
         if (pacientesFiltrados.isEmpty()) {
             System.out.println("No se encontraron pacientes que cumplan los criterios de edad (" + 
-                             tipo.edadMin + "-" + tipo.edadMax + " años) y ubicación " + ubicaciones);
+                             tipo.edadMin + "-" + tipo.edadMax + " años)");
             return;
         }
         
@@ -383,20 +383,20 @@ public class VentanaPacientes extends JFrame {
     private void crearGrupo(){
     	//Añadir el codigo recursivo
     	btnGruposp.addActionListener((e) -> {
-    		List<String> ubicaciones = Arrays.asList("Madrid", "Barcelona", "Valencia");
+//    		List<String> ubicaciones = Arrays.asList("Madrid", "Barcelona", "Valencia");
             
     	    
     	    // Generar grupos de pediatría (60 minutos)
     	    System.out.format("%nGenerando grupos de %s con duración de %d minutos...%n", "PEDIATRÍA", 60);
-    	    generarGruposConsulta(pacientes, 60, TipoGrupo.PEDIATRIA, ubicaciones);
+    	    generarGruposConsulta(pacientes, 60, TipoGrupo.PEDIATRIA );
 
     	    // Generar grupos de adultos (90 minutos)
     	    System.out.format("%nGenerando grupos de %s con duración de %d minutos...%n", "ADULTOS", 90);
-    	    generarGruposConsulta(pacientes, 90, TipoGrupo.ADULTOS, ubicaciones);
+    	    generarGruposConsulta(pacientes, 90, TipoGrupo.ADULTOS );
 
     	    // Generar grupos de geriatría (45 minutos)
     	    System.out.format("%nGenerando grupos de %s con duración de %d minutos...%n", "GERIATRÍA", 45);
-    	    generarGruposConsulta(pacientes, 45, TipoGrupo.GERIATRIA, ubicaciones);
+    	    generarGruposConsulta(pacientes, 45, TipoGrupo.GERIATRIA);
             
     	});
     	
