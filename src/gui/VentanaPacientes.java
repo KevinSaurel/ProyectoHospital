@@ -1,13 +1,53 @@
 package gui;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import domain.*;
+
+import javax.swing.AbstractAction;
+import javax.swing.AbstractCellEditor;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+
+import domain.Administrador;
+import domain.Context;
+import domain.Doctor;
+import domain.Historial;
+import domain.Paciente;
+import domain.Persona;
 import persistente.GestorBD;
 
 public class VentanaPacientes extends JFrame {
@@ -204,7 +244,7 @@ public class VentanaPacientes extends JFrame {
     }
     private JButton createGrupoButton() {
     	btnGruposp = createStyledButton("Crear Grupo");
-    	btnGruposp.addActionListener(e -> crearGrupo());
+        btnGruposp.addActionListener(e -> crearGrupo());
         return btnGruposp;
     }
     private JButton createDeleteButton() {
@@ -213,9 +253,152 @@ public class VentanaPacientes extends JFrame {
         btnBorrarP.addActionListener(e -> borrarP());
         return btnBorrarP;
     }
+    
+    
+ // Método principal para generar grupos de consulta
+    public void generarGruposConsulta(List<Paciente> pacientes, int tiempoDisponible, TipoGrupo tipo, List<String> ubicaciones) {
+        List<List<Paciente>> resultado = new ArrayList<>();
+        
+        // Filtramos los pacientes según criterios
+        List<Paciente> pacientesFiltrados = new ArrayList<>();
+        for (Paciente p : pacientes) {
+            if (tipo.incluyeEdad(p.getEdad()) && ubicaciones.contains(p.getUbicacion())) {
+                pacientesFiltrados.add(p);
+            }
+        }
+        
+        // Debug: Imprimir información sobre pacientes filtrados
+        System.out.println("Pacientes que cumplen los criterios: " + pacientesFiltrados.size());
+        for (Paciente p : pacientesFiltrados) {
+            System.out.println("- " + p.getNombre() + " " + p.getApellido() + 
+                             " (Edad: " + p.getEdad() + ", Ubicación: " + p.getUbicacion() + ")");
+        }
+        
+        if (pacientesFiltrados.isEmpty()) {
+            System.out.println("No se encontraron pacientes que cumplan los criterios de edad (" + 
+                             tipo.edadMin + "-" + tipo.edadMax + " años) y ubicación " + ubicaciones);
+            return;
+        }
+        
+        // Generamos las combinaciones
+        int tiempoTotal = tiempoDisponible;
+        List<Paciente> grupoActual = new ArrayList<>();
+        generarCombinacionesPacientes(resultado, pacientesFiltrados, tiempoTotal, grupoActual);
+        
+        // Debug: Imprimir información sobre grupos generados
+        System.out.println("\nGrupos generados: " + resultado.size());
+        for (int i = 0; i < resultado.size(); i++) {
+            List<Paciente> grupo = resultado.get(i);
+            System.out.println("\nGrupo " + (i + 1) + ":");
+            for (Paciente p : grupo) {
+                System.out.println("- " + p.getNombre() + " " + p.getApellido());
+            }
+        }
+        
+        // Mostramos los resultados en la tabla
+        if (!resultado.isEmpty()) {
+            mostrarGruposEnTabla(resultado);
+        }
+    }
+
+    // Método recursivo mejorado para generar combinaciones
+    private void generarCombinacionesPacientes(List<List<Paciente>> resultado, 
+                                             List<Paciente> pacientes, 
+                                             int tiempoDisponible, 
+                                             List<Paciente> grupoActual) {
+        // El tiempo mínimo por paciente es 15 minutos
+        final int TIEMPO_POR_PACIENTE = 15;
+        
+        // Si el grupo actual es válido (tiene al menos un paciente), lo añadimos a los resultados
+        if (!grupoActual.isEmpty() && tiempoDisponible >= 0) {
+            resultado.add(new ArrayList<>(grupoActual));
+        }
+        
+        // Caso base: si no hay tiempo suficiente para otro paciente
+        if (tiempoDisponible < TIEMPO_POR_PACIENTE) {
+            return;
+        }
+        
+        // Caso recursivo: probamos añadir cada paciente posible
+        for (int i = 0; i < pacientes.size(); i++) {
+            Paciente p = pacientes.get(i);
+            
+            // Si el paciente no está ya en el grupo y hay tiempo suficiente
+            if (!grupoActual.contains(p)) {
+                // Añadimos el paciente al grupo
+                grupoActual.add(p);
+                
+                // Llamada recursiva con el tiempo restante y los pacientes restantes
+                // (para evitar duplicados, solo consideramos pacientes después del actual)
+                List<Paciente> pacientesRestantes = new ArrayList<>(pacientes.subList(i + 1, pacientes.size()));
+                generarCombinacionesPacientes(resultado, pacientesRestantes, 
+                                            tiempoDisponible - TIEMPO_POR_PACIENTE, 
+                                            grupoActual);
+                
+                // Retrocedemos: quitamos el último paciente para probar otras combinaciones
+                grupoActual.remove(grupoActual.size() - 1);
+            }
+        }
+    }
+
+    public enum TipoGrupo {
+        PEDIATRIA(0, 14),
+        ADULTOS(15, 64),
+        GERIATRIA(65, 150);
+
+        public final int edadMin;
+        public final int edadMax;
+
+        TipoGrupo(int edadMin, int edadMax) {
+            this.edadMin = edadMin;
+            this.edadMax = edadMax;
+        }
+
+        public boolean incluyeEdad(int edad) {
+            return edad >= edadMin && edad <= edadMax;
+        }
+    }
+
+    // Método para mostrar los grupos en la tabla
+    private void mostrarGruposEnTabla(List<List<Paciente>> grupos) {
+        modeloDatosPacientes.setRowCount(0);
+        
+        for (List<Paciente> grupo : grupos) {
+            for (Paciente p : grupo) {
+                Object[] row = {
+                    p.getNombre(),
+                    p.getApellido(),
+                    p.getEdad(),
+                    p.getCodigoPaciente(),
+                    "Ver Historial"
+                };
+                modeloDatosPacientes.addRow(row);
+            }
+            // Añadimos una fila vacía entre grupos
+            modeloDatosPacientes.addRow(new Object[]{"---", "---", "---", "---", "---"});
+        }
+    }
+
+    
     private void crearGrupo(){
     	//Añadir el codigo recursivo
-    	
+    	btnGruposp.addActionListener((e) -> {
+    		List<String> ubicaciones = Arrays.asList("Madrid", "Barcelona", "Valencia");
+            
+    	    
+    	    // Generar grupos de pediatría (60 minutos)
+    	    System.out.format("%nGenerando grupos de %s con duración de %d minutos...%n", "PEDIATRÍA", 60);
+    	    generarGruposConsulta(pacientes, 60, TipoGrupo.PEDIATRIA, ubicaciones);
+
+    	    // Generar grupos de adultos (90 minutos)
+    	    System.out.format("%nGenerando grupos de %s con duración de %d minutos...%n", "ADULTOS", 90);
+    	    generarGruposConsulta(pacientes, 90, TipoGrupo.ADULTOS, ubicaciones);
+
+    	    // Generar grupos de geriatría (45 minutos)
+    	    System.out.format("%nGenerando grupos de %s con duración de %d minutos...%n", "GERIATRÍA", 45);
+    	    generarGruposConsulta(pacientes, 45, TipoGrupo.GERIATRIA, ubicaciones);
+            
+    	});
     	
     	
     	
