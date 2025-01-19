@@ -9,7 +9,6 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -17,8 +16,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -30,11 +27,13 @@ import domain.Doctor;
 import domain.Paciente;
 import domain.Persona;
 import persistente.GestorBD;
-
-import java.awt.BorderLayout;
 public class MenuTrabajador extends JFrame{
 	
-//	private JFrame vActual, vAnterior;
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	//	private JFrame vActual, vAnterior;
 //	
 	private List<Cama> camas;
 	private List<Cita> citas;

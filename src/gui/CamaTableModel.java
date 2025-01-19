@@ -11,6 +11,10 @@ import javax.swing.table.DefaultTableModel;
 import domain.Cama;
 
 public class CamaTableModel extends DefaultTableModel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final List<Cama> camaList;
 	private final List<String> lTitulos = Arrays.asList("Numero Cama", "Ocupada", "Tipo");
 	

@@ -1,18 +1,32 @@
 package gui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.URL;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
 
-import domain.Paciente;
 import domain.Persona;
 import persistente.GestorBD;
 
 public class ProgressBar extends JFrame {
-    private JProgressBar bar = new JProgressBar(0, 100);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JProgressBar bar = new JProgressBar(0, 100);
     private JButton start = new JButton("Start");
     private JButton pausa = new JButton("Pause");
     private Counter counter;

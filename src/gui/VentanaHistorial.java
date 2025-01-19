@@ -11,7 +11,11 @@ import domain.*;
 import persistente.GestorBD;
 
 public class VentanaHistorial extends JFrame {
-    private static final Color PRIMARY_COLOR = new Color(6, 99, 133);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static final Color PRIMARY_COLOR = new Color(6, 99, 133);
     private static final Color SECONDARY_COLOR = new Color(7, 120, 163);
     private static final Color BACKGROUND_COLOR = Color.WHITE;
     private static final Font HEADER_FONT = new Font("Segoe UI", Font.BOLD, 24);

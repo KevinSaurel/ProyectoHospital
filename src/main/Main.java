@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
@@ -15,12 +14,7 @@ import java.util.jar.JarFile;
 
 import javax.swing.SwingUtilities;
 
-import domain.Administrador;
-import domain.Cama;
 import domain.Cita;
-import domain.Doctor;
-import domain.Paciente;
-import domain.Persona;
 import gui.VentanaSeleccion;
 import persistente.GestorBD;
 

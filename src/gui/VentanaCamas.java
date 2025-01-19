@@ -43,7 +43,11 @@ import persistente.GestorBD;
 
 
 public class VentanaCamas extends JFrame {
-    private List<Cama> camas;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private List<Cama> camas;
     private List<Paciente> pacientes;
     private JPanel camasPanel;
     private JPanel pacientePanel;

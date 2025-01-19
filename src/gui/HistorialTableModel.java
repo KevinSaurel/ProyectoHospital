@@ -2,11 +2,11 @@ package gui;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+
 import javax.swing.table.DefaultTableModel;
 
 import domain.Doctor;
 import domain.Historial;
-import domain.Persona;
 
 public class HistorialTableModel extends DefaultTableModel {
     private static final long serialVersionUID = 1L;

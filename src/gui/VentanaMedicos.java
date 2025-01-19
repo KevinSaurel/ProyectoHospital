@@ -33,7 +33,11 @@ import persistente.GestorBD;
 
 public class VentanaMedicos extends JFrame {
 
-    private List<Doctor> medicos;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private List<Doctor> medicos;
     private JTable tablaMedicos;
     private JScrollPane scrollPaneMedicos;
     private JTextField txtFiltro;

@@ -28,7 +28,11 @@ import persistente.GestorBD;
 
 public class MenuPaciente extends JFrame {
 
-    private JButton btnVolver;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JButton btnVolver;
     private JButton btnCitas;
     private JButton btnHospitales;
     private JButton btnMedicos;
